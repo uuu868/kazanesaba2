@@ -1,0 +1,84 @@
+const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+	GatewayIntentBits.MessageContent,
+	GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.GuildVoiceStates,
+  ],
+});
+
+require('dotenv').config();
+const fs = require('node:fs');
+const path = require('node:path');
+
+//-----------commands------------
+
+require("./deploy-commands.js");
+
+//--------------------コマンドを読み込む--------------------------
+//スラッシュコマンド
+client.commands = new Collection();
+const slashcommandsPath = path.join(__dirname, 'commands');
+const slashcommandFiles = fs.readdirSync(slashcommandsPath).filter(file => file.endsWith('.js'));
+
+for (const file of slashcommandFiles) {
+	const slashfilePath = path.join(slashcommandsPath, file);
+	const command = require(slashfilePath);
+  console.log(`-> [Loaded Command] ${file.split('.')[0]}`);
+	client.commands.set(command.data.name, command);
+}
+
+//イベントコマンド
+const eventsPath = path.join(__dirname, 'events');
+const eventsFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
+
+for (const file of eventsFiles) {
+	const eventfilePath = path.join(eventsPath, file);
+	const event = require(eventfilePath);
+  if (event.once) {
+		client.once(event.name, (...args) => event.execute(...args));
+	} else {
+		client.on(event.name, (...args) => event.execute(...args));
+	}
+  console.log(`-> [Loaded Event] ${file.split('.')[0]}`);
+}
+
+client.on(Events.InteractionCreate, async interaction => {
+	if (!interaction.isChatInputCommand()) return;
+
+	const command = interaction.client.commands.get(interaction.commandName);
+
+	if (!command) {
+		console.error(`No command matching ${interaction.commandName} was found.`);
+		try {
+			await interaction.reply({ content: 'コマンドが見つかりません', flags: 64 }).catch(e => console.error(e));
+		} catch (e) {
+			console.error(e);
+		}
+		return;
+	}
+
+	try {
+		console.log(`[Command] ${interaction.commandName} を実行します`);
+		await command.execute(client, interaction);
+		console.log(`[Command] ${interaction.commandName} が完了しました`);
+	} catch (error) {
+		console.error(`[Command Error] ${interaction.commandName}:`, error);
+		try {
+			if (interaction.replied) {
+				await interaction.followUp({ content: 'コマンド実行中にエラーが発生しました', flags: 64 }).catch(e => console.error(e));
+			} else if (interaction.deferred) {
+				await interaction.editReply({ content: 'コマンド実行中にエラーが発生しました' }).catch(e => console.error(e));
+			} else {
+				await interaction.reply({ content: 'コマンド実行中にエラーが発生しました', flags: 64 }).catch(e => console.error(e));
+			}
+		} catch (replyError) {
+			console.error('[Reply Error]', replyError);
+		}
+	}
+});
+
+client.login(process.env.TOKEN);
