@@ -1,1 +1,22 @@
-{}
+{
+  "1448411216648343582": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1446124371297959966",
+    "copiedChannelId": "1448399304266875112",
+    "copiedMessageId": "1448411221018808330",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-10T20:29:10.481Z",
+    "deleted": true,
+    "deletedAt": "2025-12-10T20:29:30.561Z"
+  },
+  "1448411346054942760": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1446124371297959966",
+    "copiedChannelId": "1448399304266875112",
+    "copiedMessageId": "1448411350379397341",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-10T20:29:41.154Z",
+    "deleted": true,
+    "deletedAt": "2025-12-10T20:29:47.441Z"
+  }
+}

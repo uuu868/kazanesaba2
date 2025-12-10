@@ -14,6 +14,10 @@ module.exports = {
     }
 
     try {
+      // コピー先チャンネルに投稿された内容を再コピーしない
+      if (message.channel.id === config.imageChannelId) {
+        return;
+      }
       console.log(`[Pin Message] ユーザーメッセージ受信: ${message.author.username} (チャンネル: ${message.channel.name})`);
 
       // チャンネルの固定メッセージ情報を取得
@@ -69,9 +73,14 @@ module.exports = {
               files.push(attachment.url);
             }
 
+            // ファイルURLの重複を除去（同一URLが複数ある場合に備える）
+            const uniqueFiles = Array.from(new Set(files));
+            // Discord の添付ファイル上限（通常 10）を超えないように切り詰め
+            const cappedFiles = uniqueFiles.slice(0, 10);
+
             const sent = await imageChannel.send({ 
               content: content,
-              files: files
+              files: cappedFiles
             });
 
             // マッピングを保存（元メッセージID -> コピー先メッセージ）
