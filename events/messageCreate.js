@@ -1,6 +1,7 @@
 const { Events } = require('discord.js');
 const pinMessageCommand = require('../commands/pin-message.js');
 const config = require('../config.json');
+const dataStore = require('../utils/dataStore');
 
 module.exports = {
   name: Events.MessageCreate,
@@ -68,11 +69,25 @@ module.exports = {
               files.push(attachment.url);
             }
 
-            await imageChannel.send({ 
+            const sent = await imageChannel.send({ 
               content: content,
               files: files
             });
-            
+
+            // マッピングを保存（元メッセージID -> コピー先メッセージ）
+            try {
+              dataStore.saveMapping(message.id, {
+                guildId: message.guild.id,
+                originalChannelId: message.channel.id,
+                copiedChannelId: imageChannel.id,
+                copiedMessageId: sent.id,
+                attachmentCount: mediaAttachments.size,
+                createdAt: new Date().toISOString()
+              });
+            } catch (e) {
+              console.error('[Image Copy] マッピング保存に失敗しました:', e);
+            }
+
             console.log(`[Image Copy] メディアをコピーしました (チャンネル: ${imageChannel.name}, 枚数: ${mediaAttachments.size})`);
             
           } catch (error) {
