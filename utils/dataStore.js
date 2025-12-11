@@ -25,8 +25,27 @@ function writeAll(data) {
 }
 
 function saveMapping(originalMessageId, mapping) {
+  // mapping: an object containing at least { copiedChannelId, copiedMessageId, ... }
   const data = readAll();
-  data[originalMessageId] = mapping;
+  const existing = data[originalMessageId];
+
+  if (!existing) {
+    // Normalize to store copiedMessageIds array
+    const entry = Object.assign({}, mapping);
+    entry.copiedMessageIds = mapping.copiedMessageIds || (mapping.copiedMessageId ? [mapping.copiedMessageId] : []);
+    delete entry.copiedMessageId;
+    data[originalMessageId] = entry;
+  } else {
+    // Merge: ensure copiedMessageIds array contains the new id
+    if (!existing.copiedMessageIds) existing.copiedMessageIds = [];
+    if (mapping.copiedMessageId && !existing.copiedMessageIds.includes(mapping.copiedMessageId)) {
+      existing.copiedMessageIds.push(mapping.copiedMessageId);
+    }
+    // update other metadata (keep earliest createdAt)
+    existing.copiedChannelId = existing.copiedChannelId || mapping.copiedChannelId;
+    existing.attachmentCount = existing.attachmentCount || mapping.attachmentCount;
+  }
+
   writeAll(data);
 }
 

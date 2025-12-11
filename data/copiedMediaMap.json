@@ -18,5 +18,63 @@
     "createdAt": "2025-12-10T20:29:41.154Z",
     "deleted": true,
     "deletedAt": "2025-12-10T20:29:47.441Z"
+  },
+  "1448411935812092027": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1446124371297959966",
+    "copiedChannelId": "1448399304266875112",
+    "copiedMessageId": "1448411939586838679",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-10T20:32:01.789Z"
+  },
+  "1448411980653265059": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1446124371297959966",
+    "copiedChannelId": "1448399304266875112",
+    "copiedMessageId": "1448411984004513813",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-10T20:32:12.247Z"
+  },
+  "1448412046197657831": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1446124371297959966",
+    "copiedChannelId": "1448399304266875112",
+    "copiedMessageId": "1448412049599369388",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-10T20:32:27.834Z"
+  },
+  "1448412735267409920": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1446124371297959966",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 2,
+    "createdAt": "2025-12-10T20:35:12.359Z",
+    "copiedMessageIds": [
+      "1448412739046473802"
+    ],
+    "deleted": true,
+    "deletedAt": "2025-12-10T20:35:22.986Z"
+  },
+  "1448413237740699709": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1446124371297959966",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-10T20:37:13.085Z",
+    "copiedMessageIds": [
+      "1448413246167191622"
+    ]
+  },
+  "1448413313649086504": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1446124371297959966",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-10T20:37:30.152Z",
+    "copiedMessageIds": [
+      "1448413317117771808"
+    ],
+    "deleted": true,
+    "deletedAt": "2025-12-10T20:37:35.522Z"
   }
 }

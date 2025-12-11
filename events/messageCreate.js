@@ -62,6 +62,17 @@ module.exports = {
               return;
             }
 
+            // 既にコピー済みのマッピングがある場合は二重送信を防ぐ
+            try {
+              const existing = dataStore.getMapping(message.id);
+              if (existing && existing.copiedMessageIds && existing.copiedMessageIds.length > 0) {
+                console.log(`[Image Copy] 元メッセージ ${message.id} は既にコピー済みです。送信をスキップします`);
+                return;
+              }
+            } catch (e) {
+              console.error('[Image Copy] マッピング確認中にエラー:', e);
+            }
+
             console.log(`[Image Copy] チャンネル取得成功: ${imageChannel.name}`);
 
             // 画像と動画をコピー先チャンネルに送信
