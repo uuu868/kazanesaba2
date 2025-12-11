@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 
-// リマインド管理（チャンネルID_タイムスタンプ => {content, timeoutId}）
-const reminders = new Map();
+const reminderManager = require('../utils/reminderManager');
+const reminderStore = require('../utils/reminderStore');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -48,7 +48,14 @@ module.exports = {
         .setMinValue(0)
         .setMaxValue(59)
         .setRequired(false)
-    ),
+    )
+    // メンションするかどうか
+    .addBooleanOption(option =>
+      option.setName('mention')
+        .setDescription('リマインド時に作成者をメンションしますか？（デフォルト: true）')
+        .setRequired(false)
+    )
+,
 
   async execute(client, interaction) {
     try {
@@ -67,6 +74,9 @@ module.exports = {
       const hours = interaction.options.getInteger('hours') || 0;
       const minutes = interaction.options.getInteger('minutes') || 0;
       const seconds = interaction.options.getInteger('seconds') || 0;
+      const mentionOption = interaction.options.getBoolean('mention');
+      // デフォルトは false
+      const mention = typeof mentionOption === 'boolean' ? mentionOption : false;
 
       let totalMs;
       let scheduledTime;
@@ -128,36 +138,23 @@ module.exports = {
         return;
       }
 
-      // リマインド設定
+      // リマインド設定（永続化してスケジュール）
       const reminderId = `${interaction.channel.id}_${Date.now()}`;
-      const timeoutId = setTimeout(async () => {
-        try {
-          const embed = new EmbedBuilder()
-            .setTitle(title)
-            .setDescription(content)
-            .setColor(0xff9800)
-            .setTimestamp();
 
-          await interaction.channel.send({ 
-            content: `<@${interaction.user.id}>`,
-            embeds: [embed] 
-          });
-
-          reminders.delete(reminderId);
-          console.log(`[Remind] リマインド実行: ${reminderId}`);
-        } catch (err) {
-          console.error('[Remind] リマインド送信エラー:', err);
-        }
-      }, totalMs);
-
-      // リマインド情報を保存
-      reminders.set(reminderId, { 
-        content, 
-        timeoutId,
+      const reminder = {
+        id: reminderId,
+        content,
+        title,
         userId: interaction.user.id,
+        userTag: interaction.user.tag,
+        userAvatar: interaction.user.displayAvatarURL(),
         channelId: interaction.channel.id,
-        scheduledTime
-      });
+        scheduledTime: scheduledTime.toISOString(),
+        mention,
+      };
+
+      // 永続化してスケジュール
+      reminderManager.addReminder(client, reminder);
 
       // 表示用ラベル
       const displayDuration = dateStr ? '指定日時' : formatTime(hours, minutes, seconds);
@@ -169,6 +166,8 @@ module.exports = {
           { name: '📌 タイトル', value: title, inline: true },
           { name: '⏰ 設定時間', value: displayDuration, inline: true },
           { name: '📝 内容', value: content.substring(0, 100) + (content.length > 100 ? '...' : ''), inline: false },
+          { name: '👤 作成者', value: mention ? `<@${interaction.user.id}>` : '非公開', inline: true },
+          { name: '🔔 メンション', value: mention ? 'ON' : 'OFF', inline: true },
           { name: '⏳ 実行予定時刻', value: `<t:${Math.floor(scheduledTime.getTime() / 1000)}:F>`, inline: false }
         );
 
@@ -206,18 +205,17 @@ function formatTime(hours, minutes, seconds) {
  * 全リマインド情報を取得
  */
 module.exports.getReminders = function() {
-  return Array.from(reminders.values());
+  return reminderStore.getAllReminders();
 };
 
 /**
  * リマインドをキャンセル
  */
 module.exports.cancelReminder = function(reminderId) {
-  const reminder = reminders.get(reminderId);
-  if (reminder) {
-    clearTimeout(reminder.timeoutId);
-    reminders.delete(reminderId);
+  try {
+    reminderManager.cancelReminder(reminderId);
     return true;
+  } catch (e) {
+    return false;
   }
-  return false;
 };

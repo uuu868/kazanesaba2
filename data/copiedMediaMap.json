@@ -76,5 +76,35 @@
     ],
     "deleted": true,
     "deletedAt": "2025-12-10T20:37:35.522Z"
+  },
+  "1448695474784571465": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1314824400092139600",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-11T15:18:45.293Z",
+    "copiedMessageIds": [
+      "1448695481365692560"
+    ]
+  },
+  "1448695561837482154": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1448645822785785946",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-11T15:19:04.813Z",
+    "copiedMessageIds": [
+      "1448695568900689940"
+    ]
+  },
+  "1448695741253030112": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1380016485421940787",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-11T15:19:48.643Z",
+    "copiedMessageIds": [
+      "1448695752426520597"
+    ]
   }
 }
