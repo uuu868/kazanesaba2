@@ -34,6 +34,13 @@ module.exports = {
     
     // チケット閉じるボタンの処理
     if (interaction.isButton() && interaction.customId === 'ticket_close') {
+      // 既に処理中の場合はスキップ
+      if (processingInteractions.has(interaction.id)) {
+        return;
+      }
+      
+      processingInteractions.add(interaction.id);
+      
       try {
         await handleTicketClose(interaction);
       } catch (err) {
@@ -41,6 +48,11 @@ module.exports = {
         if (!interaction.replied && !interaction.deferred) {
           await interaction.reply({ content: 'チケットを閉じる際にエラーが発生しました。', flags: 64 }).catch(() => {});
         }
+      } finally {
+        // 処理完了後、一定時間後にクリーンアップ
+        setTimeout(() => {
+          processingInteractions.delete(interaction.id);
+        }, 5000);
       }
     }
   }
@@ -166,6 +178,11 @@ async function handleTicketCreate(interaction) {
 }
 
 async function handleTicketClose(interaction) {
+  // 既に応答済みの場合はスキップ
+  if (interaction.deferred || interaction.replied) {
+    return;
+  }
+  
   const channel = interaction.channel;
   
   // チケットチャンネルかどうかを確認
