@@ -9,12 +9,12 @@ module.exports = {
     .setDescription('指定した時間後にリマインドを送信します')
     .addStringOption(option =>
       option.setName('title')
-        .setDescription('リマインドのタイトル（オプション）')
-        .setRequired(false)
+        .setDescription('リマインドのタイトル（必須）')
+        .setRequired(true)
     )
     .addStringOption(option =>
       option.setName('content')
-        .setDescription('リマインド内容（最大2000文字）')
+        .setDescription('リマインド内容（最大2000文字・必須）')
         .setRequired(true)
     )
     .addStringOption(option =>
@@ -64,8 +64,8 @@ module.exports = {
 
       await interaction.deferReply({ flags: 64 });
 
+      const title = interaction.options.getString('title');
       const content = interaction.options.getString('content');
-      const title = interaction.options.getString('title') || '🔔 リマインド';
       const dateStr = interaction.options.getString('date');
       const timeStr = interaction.options.getString('time');
       const hours = interaction.options.getInteger('hours') || 0;
