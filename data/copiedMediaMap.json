@@ -136,5 +136,571 @@
     "copiedMessageIds": [
       "1449037602366816367"
     ]
+  },
+  "1449043941566451732": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T14:23:26.917Z",
+    "copiedMessageIds": [
+      "1449043951519535114"
+    ]
+  },
+  "1449044412825997332": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T14:25:18.432Z",
+    "copiedMessageIds": [
+      "1449044419377631253"
+    ]
+  },
+  "1449047722194636990": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1314834550760935494",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T14:38:30.595Z",
+    "copiedMessageIds": [
+      "1449047740234469483"
+    ]
+  },
+  "1449050839514742814": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T14:50:51.183Z",
+    "copiedMessageIds": [
+      "1449050848142557387"
+    ]
+  },
+  "1449052660966752276": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T14:58:05.373Z",
+    "copiedMessageIds": [
+      "1449052669292576891"
+    ]
+  },
+  "1449053132947587224": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T15:00:01.649Z",
+    "copiedMessageIds": [
+      "1449053156620238938"
+    ],
+    "deleted": true,
+    "deletedAt": "2025-12-12T15:02:13.494Z"
+  },
+  "1449053299277041856": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T15:00:39.491Z",
+    "copiedMessageIds": [
+      "1449053314951020574"
+    ]
+  },
+  "1449053349973594152": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T15:00:49.871Z",
+    "copiedMessageIds": [
+      "1449053358278312049"
+    ],
+    "deleted": true,
+    "deletedAt": "2025-12-12T15:02:09.888Z"
+  },
+  "1449053650201612413": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 2,
+    "createdAt": "2025-12-12T15:02:03.858Z",
+    "copiedMessageIds": [
+      "1449053668794961940"
+    ]
+  },
+  "1449053924542775369": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T15:03:07.038Z",
+    "copiedMessageIds": [
+      "1449053933673775238"
+    ],
+    "deleted": true,
+    "deletedAt": "2025-12-12T15:04:29.727Z"
+  },
+  "1449054234321485896": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 2,
+    "createdAt": "2025-12-12T15:04:21.318Z",
+    "copiedMessageIds": [
+      "1449054244824154235"
+    ],
+    "deleted": true,
+    "deletedAt": "2025-12-12T15:05:10.252Z"
+  },
+  "1449054410763403294": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T15:05:02.432Z",
+    "copiedMessageIds": [
+      "1449054418539380816"
+    ]
+  },
+  "1449054877484449923": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T15:06:54.629Z",
+    "copiedMessageIds": [
+      "1449054888318341190"
+    ],
+    "deleted": true,
+    "deletedAt": "2025-12-12T15:12:44.099Z"
+  },
+  "1449055370503913677": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T15:08:53.068Z",
+    "copiedMessageIds": [
+      "1449055386131894495"
+    ],
+    "deleted": true,
+    "deletedAt": "2025-12-12T15:12:37.877Z"
+  },
+  "1449057008924889251": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T15:15:21.280Z",
+    "copiedMessageIds": [
+      "1449057013521973361"
+    ],
+    "deleted": true,
+    "deletedAt": "2025-12-12T15:15:39.095Z"
+  },
+  "1449060926627250276": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T15:30:56.137Z",
+    "copiedMessageIds": [
+      "1449060933878939813"
+    ]
+  },
+  "1449062149564399708": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T15:35:47.769Z",
+    "copiedMessageIds": [
+      "1449062157726781511"
+    ]
+  },
+  "1449062420696924371": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1448182430094594080",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T15:36:51.423Z",
+    "copiedMessageIds": [
+      "1449062424777850912"
+    ]
+  },
+  "1449064644210724895": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T15:45:41.988Z",
+    "copiedMessageIds": [
+      "1449064650355511407"
+    ]
+  },
+  "1449067292452196412": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T15:56:13.011Z",
+    "copiedMessageIds": [
+      "1449067296520798241"
+    ]
+  },
+  "1449070425471586375": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T16:08:40.913Z",
+    "copiedMessageIds": [
+      "1449070433130512565"
+    ],
+    "deleted": true,
+    "deletedAt": "2025-12-12T16:08:49.093Z"
+  },
+  "1449072338812408052": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T16:16:17.427Z",
+    "copiedMessageIds": [
+      "1449072347549274336"
+    ],
+    "deleted": true,
+    "deletedAt": "2025-12-12T16:16:33.703Z"
+  },
+  "1449072483700445405": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T16:16:52.019Z",
+    "copiedMessageIds": [
+      "1449072493947125770"
+    ],
+    "deleted": true,
+    "deletedAt": "2025-12-12T16:16:57.195Z"
+  },
+  "1449083401083682857": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T17:00:17.120Z",
+    "copiedMessageIds": [
+      "1449083420205514782"
+    ]
+  },
+  "1449084389467361310": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T17:04:09.453Z",
+    "copiedMessageIds": [
+      "1449084393707540685"
+    ]
+  },
+  "1449086844271857736": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T17:13:54.603Z",
+    "copiedMessageIds": [
+      "1449086848264704113"
+    ]
+  },
+  "1449090861039227025": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T17:29:52.526Z",
+    "copiedMessageIds": [
+      "1449090866206609559"
+    ]
+  },
+  "1449092021884026900": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T17:34:29.184Z",
+    "copiedMessageIds": [
+      "1449092027202670805"
+    ]
+  },
+  "1449092258409218101": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T17:35:25.564Z",
+    "copiedMessageIds": [
+      "1449092263694041188"
+    ]
+  },
+  "1449092343348199547": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T17:35:45.613Z",
+    "copiedMessageIds": [
+      "1449092347739766855"
+    ]
+  },
+  "1449092675893723136": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T17:37:06.315Z",
+    "copiedMessageIds": [
+      "1449092686333218886"
+    ]
+  },
+  "1449098950371053802": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T18:02:04.322Z",
+    "copiedMessageIds": [
+      "1449098968242978826"
+    ]
+  },
+  "1449101057765675079": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T18:10:24.287Z",
+    "copiedMessageIds": [
+      "1449101065755689002"
+    ]
+  },
+  "1449101630074130494": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T18:12:51.579Z",
+    "copiedMessageIds": [
+      "1449101682209194005"
+    ]
+  },
+  "1449102824343343166": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T18:17:25.995Z",
+    "copiedMessageIds": [
+      "1449102833843572780"
+    ],
+    "deleted": true,
+    "deletedAt": "2025-12-12T18:17:45.674Z"
+  },
+  "1449102912990216412": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T18:17:49.072Z",
+    "copiedMessageIds": [
+      "1449102931084185622"
+    ]
+  },
+  "1449103192960008193": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T18:18:52.761Z",
+    "copiedMessageIds": [
+      "1449103198634774715"
+    ]
+  },
+  "1449103370748166215": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T18:19:36.866Z",
+    "copiedMessageIds": [
+      "1449103383079157793"
+    ],
+    "deleted": true,
+    "deletedAt": "2025-12-12T18:19:46.309Z"
+  },
+  "1449103422534979585": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T18:19:47.985Z",
+    "copiedMessageIds": [
+      "1449103430642565120"
+    ]
+  },
+  "1449103465853882430": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 2,
+    "createdAt": "2025-12-12T18:19:59.072Z",
+    "copiedMessageIds": [
+      "1449103476192710838"
+    ],
+    "deleted": true,
+    "deletedAt": "2025-12-12T18:22:09.568Z"
+  },
+  "1449104773562368082": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T18:25:10.600Z",
+    "copiedMessageIds": [
+      "1449104783599472742"
+    ]
+  },
+  "1449105014915207188": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T18:26:08.465Z",
+    "copiedMessageIds": [
+      "1449105025488916653"
+    ]
+  },
+  "1449108728824725657": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T18:40:53.585Z",
+    "copiedMessageIds": [
+      "1449108738999848960"
+    ]
+  },
+  "1449108988020129803": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T18:41:55.394Z",
+    "copiedMessageIds": [
+      "1449108997125701849"
+    ]
+  },
+  "1449109073315233843": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T18:42:15.687Z",
+    "copiedMessageIds": [
+      "1449109082803011912"
+    ]
+  },
+  "1449109969709563996": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T18:45:48.211Z",
+    "copiedMessageIds": [
+      "1449109974520434915"
+    ]
+  },
+  "1449110059622596708": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T18:46:12.931Z",
+    "copiedMessageIds": [
+      "1449110077393866794"
+    ]
+  },
+  "1449111297210847343": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T18:51:07.291Z",
+    "copiedMessageIds": [
+      "1449111312306012333"
+    ]
+  },
+  "1449112283883241625": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T18:55:00.215Z",
+    "copiedMessageIds": [
+      "1449112289918717983"
+    ]
+  },
+  "1449112335376715817": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T18:55:12.446Z",
+    "copiedMessageIds": [
+      "1449112340334247979"
+    ]
+  },
+  "1449112851556864081": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 4,
+    "createdAt": "2025-12-12T18:57:19.975Z",
+    "copiedMessageIds": [
+      "1449112875309469890"
+    ]
+  },
+  "1449113402659045406": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1449031424823922814",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 4,
+    "createdAt": "2025-12-12T18:59:29.534Z",
+    "copiedMessageIds": [
+      "1449113417045508177"
+    ]
+  },
+  "1449114064977662162": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1314824400092139600",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 4,
+    "createdAt": "2025-12-12T19:02:05.795Z",
+    "copiedMessageIds": [
+      "1449114074532024432"
+    ]
+  },
+  "1449128941557121215": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1314824400092139600",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-12T20:01:12.825Z",
+    "copiedMessageIds": [
+      "1449128949232963775"
+    ]
   }
 }
