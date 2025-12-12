@@ -48,6 +48,24 @@ module.exports = {
               emoji: '💡'
             },
             {
+              label: 'イベント主催のお問い合わせ',
+              description: 'イベント主催に関する相談',
+              value: 'event',
+              emoji: '🎉'
+            },
+            {
+              label: '問題のあるユーザーの報告',
+              description: '迷惑行為や違反ユーザーの報告',
+              value: 'report',
+              emoji: '⚠️'
+            },
+            {
+              label: '各種申請',
+              description: '募集中の運営等',
+              value: 'application',
+              emoji: '📝'
+            },
+            {
               label: 'その他',
               description: '上記以外のお問い合わせ',
               value: 'other',
