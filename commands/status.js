@@ -9,7 +9,7 @@ module.exports = {
     .addStringOption(option =>
       option.setName('message')
         .setDescription('ステータスメッセージ')
-        .setRequired(false)
+        .setRequired(true)
     )
     .addStringOption(option =>
       option.setName('type')
@@ -20,8 +20,7 @@ module.exports = {
           { name: '配信中', value: 'streaming' },
           { name: '聞いています', value: 'listening' },
           { name: '視聴中', value: 'watching' },
-          { name: '競争中', value: 'competing' },
-          { name: 'リセット', value: 'reset' }
+          { name: '競争中', value: 'competing' }
         )
     ),
 
@@ -37,37 +36,6 @@ module.exports = {
 
     const message = interaction.options.getString('message');
     const typeStr = interaction.options.getString('type') || 'playing';
-
-    // リセットが選択された場合
-    if (typeStr === 'reset') {
-      try {
-        client.user.setActivity(null);
-        
-        await interaction.reply({
-          content: '✅ ステータスをリセットしました。',
-          ephemeral: true
-        });
-
-        console.log('[Status] ステータスをリセットしました');
-        return;
-      } catch (error) {
-        console.error('[Status] ステータスリセットエラー:', error);
-        await interaction.reply({
-          content: 'ステータスのリセットに失敗しました。',
-          ephemeral: true
-        });
-        return;
-      }
-    }
-
-    // メッセージが指定されていない場合
-    if (!message) {
-      await interaction.reply({
-        content: 'メッセージを指定してください。',
-        ephemeral: true
-      });
-      return;
-    }
 
     // タイプをActivityTypeに変換
     const activityTypeMap = {
