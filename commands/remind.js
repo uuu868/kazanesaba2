@@ -48,12 +48,6 @@ module.exports = {
         .setMaxValue(59)
         .setRequired(false)
     )
-    // メンションするかどうか
-    .addBooleanOption(option =>
-      option.setName('mention')
-        .setDescription('リマインド時に作成者をメンションしますか？（デフォルト: false）')
-        .setRequired(false)
-    )
 ,
 
   async execute(client, interaction) {
@@ -71,9 +65,7 @@ module.exports = {
       const hours = interaction.options.getInteger('hours') || 0;
       const minutes = interaction.options.getInteger('minutes') || 0;
       const seconds = interaction.options.getInteger('seconds') || 0;
-      const mentionOption = interaction.options.getBoolean('mention');
-      // デフォルトは false
-      const mention = typeof mentionOption === 'boolean' ? mentionOption : false;
+      // メンション制御は廃止（デフォルトOFF）。内容中のメンションは送信時に分離処理します。
 
       let totalMs;
       let scheduledTime;
@@ -147,7 +139,7 @@ module.exports = {
         userAvatar: interaction.user.displayAvatarURL(),
         channelId: interaction.channel.id,
         scheduledTime: scheduledTime.toISOString(),
-        mention,
+        // mention 設定は不要
       };
 
       // 永続化してスケジュール
@@ -164,7 +156,6 @@ module.exports = {
           { name: '⏰ 設定時間', value: displayDuration, inline: true },
           { name: '📝 内容', value: content.substring(0, 100) + (content.length > 100 ? '...' : ''), inline: false },
           { name: '👤 作成者', value: '非公開', inline: true },
-          { name: '🔔 メンション', value: mention ? 'ON' : 'OFF', inline: true },
           { name: '⏳ 実行予定時刻', value: `<t:${Math.floor(scheduledTime.getTime() / 1000)}:F>`, inline: false }
         );
 
