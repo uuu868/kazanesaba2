@@ -10,19 +10,19 @@ module.exports = {
   async execute(client, interaction) {
     // ユーザーIDチェック
     if (interaction.user.id !== ALLOWED_USER_ID) {
-      await interaction.reply({ 
+      await interaction.reply({
         content: 'このコマンドを使用する権限がありません。', 
-        ephemeral: true 
+        flags: 64
       });
       return;
     }
 
     try {
-      client.user.setPresence({ activities: [] });
+      client.user.setPresence({ activities: [], status: 'online' });
       
       await interaction.reply({
         content: '✅ ステータスをクリアしました。',
-        ephemeral: true
+        flags: 64
       });
 
       console.log('[Status Clear] ステータスをクリアしました');
@@ -30,7 +30,7 @@ module.exports = {
       console.error('[Status Clear] ステータスクリアエラー:', error);
       await interaction.reply({
         content: 'ステータスのクリアに失敗しました。',
-        ephemeral: true
+        flags: 64
       });
     }
   }
