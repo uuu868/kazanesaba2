@@ -16,8 +16,9 @@ app.get("/", (req, res) => {
 })
 
 // サーバーを起動
-app.listen(3000, () => {
-    console.log(`サーバーを開きました`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`サーバーを開きました (ポート: ${PORT})`);
   });
   
   if (process.env.TOKEN == undefined || process.env.TOKEN == "") {
