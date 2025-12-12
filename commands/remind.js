@@ -163,7 +163,7 @@ module.exports = {
           { name: '📌 タイトル', value: title, inline: true },
           { name: '⏰ 設定時間', value: displayDuration, inline: true },
           { name: '📝 内容', value: content.substring(0, 100) + (content.length > 100 ? '...' : ''), inline: false },
-          { name: '👤 作成者', value: mention ? `<@${interaction.user.id}>` : '非公開', inline: true },
+          { name: '👤 作成者', value: '非公開', inline: true },
           { name: '🔔 メンション', value: mention ? 'ON' : 'OFF', inline: true },
           { name: '⏳ 実行予定時刻', value: `<t:${Math.floor(scheduledTime.getTime() / 1000)}:F>`, inline: false }
         );

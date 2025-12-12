@@ -1,5 +1,5 @@
 const reminderStore = require('./reminderStore');
-// Reminder dispatch without embeds (plain message)
+const { EmbedBuilder } = require('discord.js');
 
 // in-memory timers
 const timers = new Map();
@@ -16,17 +16,17 @@ async function sendReminder(client, reminder) {
       return;
     }
 
-    const lines = [];
-    if (reminder.mention) {
-      lines.push(`<@${reminder.userId}>`);
-      lines.push(`作成者: ${reminder.userTag}`);
-    }
-    lines.push(`タイトル: ${reminder.title || 'リマインド'}`);
-    lines.push(`内容: ${reminder.content}`);
+    const embed = new EmbedBuilder()
+      .setTitle(reminder.title || '🔔 リマインド')
+      .setDescription(reminder.content)
+      .setColor(0xff9800)
+      .setTimestamp();
 
-    const sendContent = lines.join('\n');
+    // 作成者表示は行わない（非公開）
 
-    await channel.send({ content: sendContent });
+    const sendContent = reminder.mention ? `<@${reminder.userId}>` : '';
+
+    await channel.send({ content: sendContent, embeds: [embed] });
     console.log(`[ReminderManager] リマインド送信: ${reminder.id}`);
   } catch (err) {
     console.error('[ReminderManager] リマインド送信失敗:', err);
