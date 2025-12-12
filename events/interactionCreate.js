@@ -47,6 +47,13 @@ async function handleTicketCreate(interaction) {
   const categoryId = interaction.channel?.parentId || null;
   const ticketType = interaction.values[0]; // 選択された用件のタイプ
 
+  // デバック用は特定のユーザーのみ選択可能
+  const ALLOWED_DEBUG_USER_ID = '1088020702583603270';
+  if (ticketType === 'debug' && interaction.user.id !== ALLOWED_DEBUG_USER_ID) {
+    await interaction.editReply({ content: '❌ デバック用チケットはbot作成者のみ選択できます。' });
+    return;
+  }
+
   // 用件タイプの日本語名を取得
   const typeNames = {
     'question': '質問',
@@ -108,12 +115,19 @@ async function handleTicketCreate(interaction) {
     permissionOverwrites: overwrites
   });
 
-  const staffPing = allowedRoleIds.map(id => `<@&${id}>`).join(' ');
-  const mentions = [interaction.user.toString(), staffPing].filter(Boolean).join(' ');
+  // デバック用の場合は特別な処理
+  if (ticketType === 'debug') {
+    await channel.send({
+      content: `${interaction.user.toString()}\nデバックチャンネルです`
+    });
+  } else {
+    const staffPing = allowedRoleIds.map(id => `<@&${id}>`).join(' ');
+    const mentions = [interaction.user.toString(), staffPing].filter(Boolean).join(' ');
 
-  await channel.send({
-    content: `${mentions}\n📌 **用件:** ${typeNames[ticketType]}\nチケットが作成されました。ご用件を記載してください。`
-  });
+    await channel.send({
+      content: `${mentions}\n📌 **用件:** ${typeNames[ticketType]}\nチケットが作成されました。ご用件を記載してください。`
+    });
+  }
 
   await interaction.editReply({ content: `✅ チャンネルを作成しました: ${channel}` });
 }
