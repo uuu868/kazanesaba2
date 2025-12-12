@@ -9,6 +9,9 @@ module.exports = {
 	    console.log(client.guilds.cache.map(guild => `${guild.name} || ${guild.memberCount}人`).join("\n"))
 	    console.log("------------------------------")
 
+	    // ステータスをクリア
+	    client.user.setPresence({ activities: [], status: 'online' });
+
 	    // 永続化されたリマインドをロードしてスケジュール
 	    try {
 	      const reminderManager = require('../utils/reminderManager');
