@@ -124,6 +124,7 @@ async function handleTicketCreate(interaction) {
     name: ticketName,
     type: ChannelType.GuildText,
     parent: categoryId,
+    topic: `Creator:${interaction.user.id}|Type:${ticketType}`,
     permissionOverwrites: overwrites
   });
 
@@ -170,14 +171,52 @@ async function handleTicketClose(interaction) {
     return;
   }
 
-  await interaction.reply({ content: '🔒 チケットを閉じています...', flags: 64 });
-  
-  // 3秒待ってからチャンネルを削除
-  setTimeout(async () => {
-    try {
-      await channel.delete('チケットクローズ');
-    } catch (err) {
-      console.error('[Ticket] delete error:', err);
+  // トピックから作成者IDを取得
+  const topic = channel.topic || '';
+  const creatorMatch = topic.match(/Creator:(\d+)/);
+  const creatorId = creatorMatch ? creatorMatch[1] : null;
+
+  if (!creatorId) {
+    await interaction.reply({ content: 'チケット作成者が特定できません。', flags: 64 });
+    return;
+  }
+
+  try {
+    // チケット作成者の閲覧権限を削除
+    await channel.permissionOverwrites.edit(creatorId, {
+      ViewChannel: false
+    });
+
+    // 閉じたことを通知
+    const closeEmbed = new EmbedBuilder()
+      .setDescription(`🔒 このチケットは ${interaction.user} によって閉じられました。`)
+      .setColor(0xED4245)
+      .setTimestamp();
+
+    await channel.send({ embeds: [closeEmbed] });
+
+    // ボタンを無効化するため、元のメッセージを編集
+    const messages = await channel.messages.fetch({ limit: 10 });
+    const welcomeMessage = messages.find(msg => 
+      msg.author.id === interaction.client.user.id && 
+      msg.components.length > 0
+    );
+
+    if (welcomeMessage) {
+      const disabledButton = new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+          .setCustomId('ticket_close')
+          .setLabel('チケットを閉じる')
+          .setStyle(ButtonStyle.Danger)
+          .setEmoji('🔒')
+          .setDisabled(true)
+      );
+      await welcomeMessage.edit({ components: [disabledButton] });
     }
-  }, 3000);
+
+    await interaction.reply({ content: '✅ チケットを閉じました。作成者から非表示になりました。', flags: 64 });
+  } catch (err) {
+    console.error('[Ticket] close error:', err);
+    await interaction.reply({ content: 'チケットを閉じる際にエラーが発生しました。', flags: 64 }).catch(() => {});
+  }
 }
