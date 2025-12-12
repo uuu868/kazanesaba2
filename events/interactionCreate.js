@@ -1,4 +1,4 @@
-const { Events, ChannelType, PermissionsBitField } = require('discord.js');
+const { Events, ChannelType, PermissionsBitField, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { allowedRoleIds } = require('../utils/roleGuard');
 const ticketCounter = require('../utils/ticketCounter');
 
@@ -29,6 +29,18 @@ module.exports = {
         setTimeout(() => {
           processingInteractions.delete(interaction.id);
         }, 5000);
+      }
+    }
+    
+    // チケット閉じるボタンの処理
+    if (interaction.isButton() && interaction.customId === 'ticket_close') {
+      try {
+        await handleTicketClose(interaction);
+      } catch (err) {
+        console.error('[Ticket] close error:', err);
+        if (!interaction.replied && !interaction.deferred) {
+          await interaction.reply({ content: 'チケットを閉じる際にエラーが発生しました。', flags: 64 }).catch(() => {});
+        }
       }
     }
   }
@@ -115,19 +127,57 @@ async function handleTicketCreate(interaction) {
     permissionOverwrites: overwrites
   });
 
+  const staffPing = allowedRoleIds.map(id => `<@&${id}>`).join(' ');
+  
+  // 閉じるボタンを作成
+  const closeButton = new ActionRowBuilder().addComponents(
+    new ButtonBuilder()
+      .setCustomId('ticket_close')
+      .setLabel('チケットを閉じる')
+      .setStyle(ButtonStyle.Danger)
+      .setEmoji('🔒')
+  );
+
+  // 埋め込みメッセージを作成
+  const embed = new EmbedBuilder()
+    .setDescription('相談内容をご記入の上、管理者の対応をお待ちください。\n誤って作成した場合や、問題が解決した場合を除きチケットを勝手に閉じないで下さい。')
+    .setColor(0x5865F2);
+
   // デバック用の場合は特別な処理
   if (ticketType === 'debug') {
     await channel.send({
-      content: `${interaction.user.toString()}\nデバックチャンネルです`
+      content: `${interaction.user.toString()}さん専用チャットです。\n他の方には表示されません。\n${staffPing}`,
+      embeds: [embed],
+      components: [closeButton]
     });
   } else {
-    const staffPing = allowedRoleIds.map(id => `<@&${id}>`).join(' ');
-    const mentions = [interaction.user.toString(), staffPing].filter(Boolean).join(' ');
-
     await channel.send({
-      content: `${mentions}\n📌 **用件:** ${typeNames[ticketType]}\nチケットが作成されました。ご用件を記載してください。`
+      content: `${interaction.user.toString()}さん専用チャットです。\n他の方には表示されません。\n${staffPing}\n📌 **用件:** ${typeNames[ticketType]}`,
+      embeds: [embed],
+      components: [closeButton]
     });
   }
 
   await interaction.editReply({ content: `✅ チャンネルを作成しました: ${channel}` });
+}
+
+async function handleTicketClose(interaction) {
+  const channel = interaction.channel;
+  
+  // チケットチャンネルかどうかを確認
+  if (!channel.name.startsWith('ticket-')) {
+    await interaction.reply({ content: 'このチャンネルはチケットではありません。', flags: 64 });
+    return;
+  }
+
+  await interaction.reply({ content: '🔒 チケットを閉じています...', flags: 64 });
+  
+  // 3秒待ってからチャンネルを削除
+  setTimeout(async () => {
+    try {
+      await channel.delete('チケットクローズ');
+    } catch (err) {
+      console.error('[Ticket] delete error:', err);
+    }
+  }, 3000);
 }
