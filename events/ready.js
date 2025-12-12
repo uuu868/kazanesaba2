@@ -1,4 +1,4 @@
-const { Events, ActivityType } = require('discord.js');
+const { Events } = require('discord.js');
 
 module.exports = {
 	name: Events.ClientReady,
@@ -8,9 +8,6 @@ module.exports = {
 	    console.log("----------参加サーバー----------")
 	    console.log(client.guilds.cache.map(guild => `${guild.name} || ${guild.memberCount}人`).join("\n"))
 	    console.log("------------------------------")
-
-	    // BOTのステータスを設定
-	    client.user.setActivity('テスト', { type: ActivityType.Playing });
 
 	    // 永続化されたリマインドをロードしてスケジュール
 	    try {
