@@ -48,6 +48,9 @@ module.exports = {
 
 async function handleTicketCreate(interaction) {
   // 最初に応答を遅延させて重複実行を防ぐ
+  if (interaction.deferred || interaction.replied) {
+    return;
+  }
   await interaction.deferReply({ flags: 64 });
 
   if (!interaction.guild) {
