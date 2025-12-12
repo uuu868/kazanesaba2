@@ -1,10 +1,10 @@
-const { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder } = require('discord.js');
+const { ensureAllowed } = require('../utils/roleGuard');
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('assign-voice')
     .setDescription('通話参加者を1500/2000/2500/3000登録後、グループに割り振ります。')
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .addIntegerOption(option =>
       option.setName('groups')
         .setDescription('グループ数（2～10）')
@@ -15,11 +15,8 @@ module.exports = {
 
   async execute(client, interaction) {
     try {
-      // 管理者権限チェック
-      if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
-        await interaction.reply({ content: 'このコマンドは管理者のみ使用できます。', flags: 64 });
-        return;
-      }
+      // ロールチェック
+      if (!(await ensureAllowed(interaction))) return;
 
       const groupCount = interaction.options.getInteger('groups');
 

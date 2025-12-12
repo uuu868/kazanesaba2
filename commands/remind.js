@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 const reminderManager = require('../utils/reminderManager');
 const reminderStore = require('../utils/reminderStore');
@@ -7,7 +7,6 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('remind')
     .setDescription('指定した時間後にリマインドを送信します')
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .addStringOption(option =>
       option.setName('content')
         .setDescription('リマインド内容（最大2000文字）')
@@ -52,18 +51,16 @@ module.exports = {
     // メンションするかどうか
     .addBooleanOption(option =>
       option.setName('mention')
-        .setDescription('リマインド時に作成者をメンションしますか？（デフォルト: true）')
+        .setDescription('リマインド時に作成者をメンションしますか？（デフォルト: false）')
         .setRequired(false)
     )
 ,
 
   async execute(client, interaction) {
     try {
-      // 管理者権限チェック
-      if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
-        await interaction.reply({ content: 'このコマンドは管理者のみ使用できます。', flags: 64 });
-        return;
-      }
+      // ロールチェック
+      const { ensureAllowed } = require('../utils/roleGuard');
+      if (!(await ensureAllowed(interaction))) return;
 
       await interaction.deferReply({ flags: 64 });
 

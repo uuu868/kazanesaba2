@@ -1,4 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { ensureAllowed } = require('../utils/roleGuard');
 
 // グローバル固定メッセージID管理（チャンネルID => メッセージID）
 const pinnedMessages = new Map();
@@ -7,7 +8,6 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('pin-message')
     .setDescription('固定メッセージをチャンネルに設定します。新規メッセージが来ても常に最新に保ちます。')
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .addSubcommand(subcommand =>
       subcommand.setName('set')
         .setDescription('固定メッセージを設定します')
@@ -25,16 +25,12 @@ module.exports = {
     .addSubcommand(subcommand =>
       subcommand.setName('remove')
         .setDescription('固定メッセージを削除します')
-    )
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+    ),
 
   async execute(client, interaction) {
     try {
-      // 管理者権限チェック
-      if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
-        await interaction.reply({ content: 'このコマンドは管理者のみ使用できます。', flags: 64 });
-        return;
-      }
+      // ロールチェック
+      if (!(await ensureAllowed(interaction))) return;
 
       const subcommand = interaction.options.getSubcommand();
       const channel = interaction.channel;
