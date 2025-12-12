@@ -8,14 +8,14 @@ module.exports = {
     .setName('remind')
     .setDescription('指定した時間後にリマインドを送信します')
     .addStringOption(option =>
-      option.setName('content')
-        .setDescription('リマインド内容（最大2000文字）')
-        .setRequired(true)
-    )
-    .addStringOption(option =>
       option.setName('title')
         .setDescription('リマインドのタイトル（オプション）')
         .setRequired(false)
+    )
+    .addStringOption(option =>
+      option.setName('content')
+        .setDescription('リマインド内容（最大2000文字）')
+        .setRequired(true)
     )
     .addStringOption(option =>
       option.setName('date')
