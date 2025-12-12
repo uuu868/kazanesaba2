@@ -64,10 +64,20 @@ module.exports = {
 
             // 既にコピー済みのマッピングがある場合は二重送信を防ぐ
             const existing = dataStore.getMapping(message.id);
-            if (existing && existing.copiedMessageId) {
+            if (existing && existing.copiedMessageIds && existing.copiedMessageIds.length > 0) {
               console.log(`[Image Copy] 元メッセージ ${message.id} は既にコピー済みです。送信をスキップします`);
               return;
             }
+
+            // 処理中フラグを保存（二重処理防止）
+            dataStore.saveMapping(message.id, {
+              guildId: message.guild.id,
+              originalChannelId: message.channel.id,
+              copiedChannelId: imageChannel.id,
+              copiedMessageId: 'processing',
+              attachmentCount: mediaAttachments.size,
+              createdAt: new Date().toISOString()
+            });
 
             console.log(`[Image Copy] チャンネル取得成功: ${imageChannel.name}`);
 
