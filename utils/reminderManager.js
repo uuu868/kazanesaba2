@@ -1,6 +1,5 @@
 const reminderStore = require('./reminderStore');
 const { EmbedBuilder } = require('discord.js');
-const { isDebugMode } = require('./debugMode');
 
 // in-memory timers
 const timers = new Map();
@@ -36,13 +35,13 @@ async function sendReminder(client, reminder) {
 
     // 作成者表示は行わない（非公開）
 
-    // デバッグモードOFFの場合のみメンションを送信
-    if (mentions.length > 0 && !isDebugMode()) {
+    // 先にメンションだけの通常メッセージを送る（存在する場合）
+    if (mentions.length > 0) {
       await channel.send({ content: mentions.join(' ') });
     }
 
     await channel.send({ embeds: [embed] });
-    console.log(`[ReminderManager] リマインド送信: ${reminder.id}${isDebugMode() ? ' (デバッグモード: メンション無効)' : ''}`);
+    console.log(`[ReminderManager] リマインド送信: ${reminder.id}`);
   } catch (err) {
     console.error('[ReminderManager] リマインド送信失敗:', err);
   }
