@@ -1,5 +1,6 @@
 const { Events, ChannelType, PermissionsBitField } = require('discord.js');
 const { allowedRoleIds } = require('../utils/roleGuard');
+const ticketCounter = require('../utils/ticketCounter');
 
 module.exports = {
   name: Events.InteractionCreate,
@@ -40,7 +41,11 @@ async function handleTicketCreate(interaction) {
   };
   const typeName = typeNames[ticketType] || 'ticket';
 
-  const ticketName = `ticket-${typeName}-${interaction.user.username}`.replace(/[^a-zA-Z0-9_-]/g, '').toLowerCase().slice(0, 90);
+  // チケット番号を取得
+  const ticketNumber = ticketCounter.getNextNumber();
+  const paddedNumber = String(ticketNumber).padStart(4, '0'); // 0000形式
+
+  const ticketName = `ticket-${paddedNumber}`.toLowerCase();
 
   const overwrites = [
     {
