@@ -18,7 +18,7 @@ module.exports = {
     }
 
     try {
-      client.user.setActivity(null);
+      client.user.setPresence({ activities: [] });
       
       await interaction.reply({
         content: '✅ ステータスをクリアしました。',
