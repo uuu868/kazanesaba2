@@ -1,6 +1,9 @@
 const { SlashCommandBuilder } = require('discord.js');
+const fs = require('fs');
+const path = require('path');
 
 const ALLOWED_USER_ID = '1088020702583603270';
+const RESTART_FILE = path.join(__dirname, '..', 'data', 'restart.json');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -21,6 +24,16 @@ module.exports = {
       content: '🔄 BOTを再起動します...',
       ephemeral: true
     });
+
+    // 再起動後に通知するチャンネルIDを保存
+    const dataDir = path.dirname(RESTART_FILE);
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+    fs.writeFileSync(RESTART_FILE, JSON.stringify({
+      channelId: interaction.channel.id,
+      timestamp: new Date().toISOString()
+    }), 'utf8');
 
     console.log(`[Restart] BOTを再起動します (実行者: ${interaction.user.tag})`);
 
