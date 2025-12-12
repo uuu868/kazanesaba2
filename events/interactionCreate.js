@@ -2,11 +2,21 @@ const { Events, ChannelType, PermissionsBitField } = require('discord.js');
 const { allowedRoleIds } = require('../utils/roleGuard');
 const ticketCounter = require('../utils/ticketCounter');
 
+// 処理中のインタラクションを追跡
+const processingInteractions = new Set();
+
 module.exports = {
   name: Events.InteractionCreate,
   once: false,
   async execute(interaction) {
     if (interaction.isStringSelectMenu() && interaction.customId === 'ticket_select') {
+      // 既に処理中の場合はスキップ
+      if (processingInteractions.has(interaction.id)) {
+        return;
+      }
+      
+      processingInteractions.add(interaction.id);
+      
       try {
         await handleTicketCreate(interaction);
       } catch (err) {
@@ -14,14 +24,22 @@ module.exports = {
         if (!interaction.replied && !interaction.deferred) {
           await interaction.reply({ content: 'チケット作成に失敗しました。', flags: 64 }).catch(() => {});
         }
+      } finally {
+        // 処理完了後、一定時間後にクリーンアップ
+        setTimeout(() => {
+          processingInteractions.delete(interaction.id);
+        }, 5000);
       }
     }
   }
 };
 
 async function handleTicketCreate(interaction) {
+  // 最初に応答を遅延させて重複実行を防ぐ
+  await interaction.deferReply({ flags: 64 });
+
   if (!interaction.guild) {
-    await interaction.reply({ content: 'サーバー内でのみ使用できます。', flags: 64 });
+    await interaction.editReply({ content: 'サーバー内でのみ使用できます。' });
     return;
   }
 
@@ -96,5 +114,5 @@ async function handleTicketCreate(interaction) {
     content: `${mentions}\n📌 **用件:** ${typeNames[ticketType]}\nチケットが作成されました。ご用件を記載してください。`
   });
 
-  await interaction.reply({ content: `✅ チャンネルを作成しました: ${channel}`, flags: 64 });
+  await interaction.editReply({ content: `✅ チャンネルを作成しました: ${channel}` });
 }
