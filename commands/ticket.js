@@ -66,6 +66,12 @@ module.exports = {
               emoji: '📝'
             },
             {
+              label: 'デバック用',
+              description: 'bot作成者のみ',
+              value: 'debug',
+              emoji: '🔧'
+            },
+            {
               label: 'その他',
               description: '上記以外のお問い合わせ',
               value: 'other',

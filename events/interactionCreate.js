@@ -55,6 +55,7 @@ async function handleTicketCreate(interaction) {
     'event': 'イベント',
     'report': '報告',
     'application': '申請',
+    'debug': 'デバック',
     'other': 'その他'
   };
   const typeName = typeNames[ticketType] || 'ticket';
