@@ -9,6 +9,41 @@ module.exports = {
   name: Events.InteractionCreate,
   once: false,
   async execute(interaction) {
+    // スラッシュコマンドの処理
+    if (interaction.isChatInputCommand()) {
+      const command = interaction.client.commands.get(interaction.commandName);
+
+      if (!command) {
+        console.error(`No command matching ${interaction.commandName} was found.`);
+        try {
+          await interaction.reply({ content: 'コマンドが見つかりません', flags: 64 }).catch(e => console.error(e));
+        } catch (e) {
+          console.error(e);
+        }
+        return;
+      }
+
+      try {
+        console.log(`[Command] ${interaction.commandName} を実行します`);
+        await command.execute(interaction.client, interaction);
+        console.log(`[Command] ${interaction.commandName} が完了しました`);
+      } catch (error) {
+        console.error(`[Command Error] ${interaction.commandName}:`, error);
+        try {
+          if (interaction.replied) {
+            await interaction.followUp({ content: 'コマンド実行中にエラーが発生しました', flags: 64 }).catch(e => console.error(e));
+          } else if (interaction.deferred) {
+            await interaction.editReply({ content: 'コマンド実行中にエラーが発生しました' }).catch(e => console.error(e));
+          } else {
+            await interaction.reply({ content: 'コマンド実行中にエラーが発生しました', flags: 64 }).catch(e => console.error(e));
+          }
+        } catch (replyError) {
+          console.error('[Reply Error]', replyError);
+        }
+      }
+      return;
+    }
+
     if (interaction.isStringSelectMenu() && interaction.customId === 'ticket_select') {
       // 既に処理中の場合はスキップ
       if (processingInteractions.has(interaction.id)) {

@@ -46,39 +46,4 @@ for (const file of eventsFiles) {
   console.log(`-> [Loaded Event] ${file.split('.')[0]}`);
 }
 
-client.on(Events.InteractionCreate, async interaction => {
-	if (!interaction.isChatInputCommand()) return;
-
-	const command = interaction.client.commands.get(interaction.commandName);
-
-	if (!command) {
-		console.error(`No command matching ${interaction.commandName} was found.`);
-		try {
-			await interaction.reply({ content: 'コマンドが見つかりません', flags: 64 }).catch(e => console.error(e));
-		} catch (e) {
-			console.error(e);
-		}
-		return;
-	}
-
-	try {
-		console.log(`[Command] ${interaction.commandName} を実行します`);
-		await command.execute(client, interaction);
-		console.log(`[Command] ${interaction.commandName} が完了しました`);
-	} catch (error) {
-		console.error(`[Command Error] ${interaction.commandName}:`, error);
-		try {
-			if (interaction.replied) {
-				await interaction.followUp({ content: 'コマンド実行中にエラーが発生しました', flags: 64 }).catch(e => console.error(e));
-			} else if (interaction.deferred) {
-				await interaction.editReply({ content: 'コマンド実行中にエラーが発生しました' }).catch(e => console.error(e));
-			} else {
-				await interaction.reply({ content: 'コマンド実行中にエラーが発生しました', flags: 64 }).catch(e => console.error(e));
-			}
-		} catch (replyError) {
-			console.error('[Reply Error]', replyError);
-		}
-	}
-});
-
 client.login(process.env.TOKEN);
