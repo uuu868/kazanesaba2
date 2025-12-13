@@ -18,7 +18,7 @@ module.exports = {
       if (message.channel.id === config.imageChannelId) {
         return;
       }
-      console.log(`[Pin Message] ユーザーメッセージ受信: ${message.author.username} (チャンネル: ${message.channel.name})`);
+      console.log(`[Pin Message] ユーザーメッセージ受信: ${message.author.username} (チャンネル: ${message.channel.name}, メッセージID: ${message.id})`);
 
       // チャンネルの固定メッセージ情報を取得
       const pinnedMessageId = await pinMessageCommand.getPinnedMessageInfo(message.channel);
@@ -41,7 +41,7 @@ module.exports = {
 
       // 画像と動画をコピーする機能
       if (message.attachments.size > 0) {
-        console.log(`[Image Copy] 添付ファイル検出: ${message.attachments.size}個`);
+        console.log(`[Image Copy] 添付ファイル検出: ${message.attachments.size}個 (メッセージID: ${message.id})`);
         
         const mediaAttachments = message.attachments.filter(attachment => 
           attachment.contentType && (
@@ -54,6 +54,20 @@ module.exports = {
 
         if (mediaAttachments.size > 0) {
           try {
+            // 添付ファイルのURLで重複チェック（フォローされたメッセージでも同じURLを使う）
+            const attachmentUrls = Array.from(mediaAttachments.values()).map(a => a.url).sort().join('|');
+            const existing = dataStore.getMapping(`url:${attachmentUrls}`);
+            if (existing && existing.copiedMessageId && existing.copiedMessageId !== 'processing') {
+              console.log(`[Image Copy] このメディアは既にコピー済みです（コピー先メッセージID: ${existing.copiedMessageId}）。スキップします`);
+              return;
+            }
+
+            // 処理中フラグを保存（URL based）
+            dataStore.saveMapping(`url:${attachmentUrls}`, {
+              copiedMessageId: 'processing',
+              createdAt: new Date().toISOString()
+            });
+
             console.log(`[Image Copy] チャンネルID: ${config.imageChannelId}`);
             const imageChannel = await message.guild.channels.fetch(config.imageChannelId);
             
@@ -61,23 +75,6 @@ module.exports = {
               console.log('[Image Copy] 指定されたチャンネルが見つかりません');
               return;
             }
-
-            // 既にコピー済みのマッピングがある場合は二重送信を防ぐ
-            const existing = dataStore.getMapping(message.id);
-            if (existing && existing.copiedMessageIds && existing.copiedMessageIds.length > 0) {
-              console.log(`[Image Copy] 元メッセージ ${message.id} は既にコピー済みです。送信をスキップします`);
-              return;
-            }
-
-            // 処理中フラグを保存（二重処理防止）
-            dataStore.saveMapping(message.id, {
-              guildId: message.guild.id,
-              originalChannelId: message.channel.id,
-              copiedChannelId: imageChannel.id,
-              copiedMessageId: 'processing',
-              attachmentCount: mediaAttachments.size,
-              createdAt: new Date().toISOString()
-            });
 
             console.log(`[Image Copy] チャンネル取得成功: ${imageChannel.name}`);
 
@@ -100,8 +97,19 @@ module.exports = {
               files: cappedFiles
             });
 
-            // マッピングを保存（元メッセージID -> コピー先メッセージ）
+            // マッピングを保存（URL based + message based）
             try {
+              const attachmentUrls = Array.from(mediaAttachments.values()).map(a => a.url).sort().join('|');
+              dataStore.saveMapping(`url:${attachmentUrls}`, {
+                guildId: message.guild.id,
+                originalChannelId: message.channel.id,
+                copiedChannelId: imageChannel.id,
+                copiedMessageId: sent.id,
+                attachmentCount: mediaAttachments.size,
+                createdAt: new Date().toISOString()
+              });
+              
+              // 元のメッセージIDでも保存（削除時のため）
               dataStore.saveMapping(message.id, {
                 guildId: message.guild.id,
                 originalChannelId: message.channel.id,
