@@ -552,6 +552,12 @@ async function handleTicketClose(interaction) {
   // モーダルから理由を取得
   const closeReason = interaction.fields.getTextInputValue('close_reason');
 
+  // 理由が空でないか確認
+  if (!closeReason || closeReason.trim().length === 0) {
+    await interaction.editReply({ content: '❌ チケットを閉じる理由を入力してください。' });
+    return;
+  }
+
   // トピックから作成者IDとチケットタイプを取得
   const topic = channel.topic || '';
   const creatorMatch = topic.match(/Creator:(\d+)/);
