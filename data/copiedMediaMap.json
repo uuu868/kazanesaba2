@@ -1276,5 +1276,10 @@
     "copiedMessageIds": [
       "1450634314260680858"
     ]
+  },
+  "ticket_notification:1450635865918275751": {
+    "channelId": "1450635865918275751",
+    "createdAt": "2025-12-16T23:49:08.064Z",
+    "copiedMessageIds": []
   }
 }

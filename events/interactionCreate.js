@@ -588,6 +588,15 @@ async function handleTicketClose(interaction) {
       ViewChannel: false
     });
 
+    // クローズ済みカテゴリに移動
+    const closedCategoryId = '1450637060695396414';
+    try {
+      await channel.setParent(closedCategoryId);
+      console.log(`[Ticket] チケットをクローズ済みカテゴリに移動: ${channel.name}`);
+    } catch (err) {
+      console.error('[Ticket] カテゴリ移動に失敗:', err);
+    }
+
     // 閉じたことを通知
     const closeEmbed = new EmbedBuilder()
       .setDescription(`🔒 このチケットは ${interaction.user} によって閉じられました。`)
