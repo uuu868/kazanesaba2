@@ -101,6 +101,30 @@ module.exports = {
       processingInteractions.add(interaction.id);
       
       try {
+        await showCloseTicketModal(interaction);
+      } catch (err) {
+        console.error('[Ticket] close modal error:', err);
+        if (!interaction.replied && !interaction.deferred) {
+          await interaction.reply({ content: 'チケットを閉じる際にエラーが発生しました。', flags: 64 }).catch(() => {});
+        }
+      } finally {
+        // 処理完了後、一定時間後にクリーンアップ
+        setTimeout(() => {
+          processingInteractions.delete(interaction.id);
+        }, 5000);
+      }
+    }
+
+    // チケット閉じるモーダル送信の処理
+    if (interaction.isModalSubmit() && interaction.customId === 'ticket_close_modal') {
+      // 既に処理中の場合はスキップ
+      if (processingInteractions.has(interaction.id)) {
+        return;
+      }
+      
+      processingInteractions.add(interaction.id);
+      
+      try {
         await handleTicketClose(interaction);
       } catch (err) {
         console.error('[Ticket] close error:', err);
@@ -322,6 +346,25 @@ async function showTicketModal(interaction) {
   await interaction.showModal(modal);
 }
 
+async function showCloseTicketModal(interaction) {
+  const modal = new ModalBuilder()
+    .setCustomId('ticket_close_modal')
+    .setTitle('チケットクローズ理由');
+
+  const reasonInput = new TextInputBuilder()
+    .setCustomId('close_reason')
+    .setLabel('チケットを閉じる理由')
+    .setStyle(TextInputStyle.Paragraph)
+    .setPlaceholder('例: 問題が解決したため、誤って作成したため、など')
+    .setRequired(true)
+    .setMaxLength(1000);
+
+  const row = new ActionRowBuilder().addComponents(reasonInput);
+  modal.addComponents(row);
+
+  await interaction.showModal(modal);
+}
+
 async function handleTicketCreate(interaction) {
   // 最初に応答を遅延させて重複実行を防ぐ
   if (interaction.deferred || interaction.replied) {
@@ -335,7 +378,7 @@ async function handleTicketCreate(interaction) {
   }
 
   const guild = interaction.guild;
-  const categoryId = interaction.channel?.parentId || null;
+  const categoryId = '1196664054031319052'; // チケット専用カテゴリ
   
   // モーダルのcustomIdからチケットタイプを取得
   const ticketType = interaction.customId.replace('ticket_modal_', '');
@@ -491,26 +534,33 @@ async function handleTicketCreate(interaction) {
 }
 
 async function handleTicketClose(interaction) {
-  // 既に応答済みの場合はスキップ
+  // 最初に応答を遅延させて重複実行を防ぐ
   if (interaction.deferred || interaction.replied) {
     return;
   }
+  await interaction.deferReply({ flags: 64 });
   
   const channel = interaction.channel;
+  const guild = interaction.guild;
   
   // チケットチャンネルかどうかを確認
   if (!channel.name.startsWith('ticket-')) {
-    await interaction.reply({ content: 'このチャンネルはチケットではありません。', flags: 64 });
+    await interaction.editReply({ content: 'このチャンネルはチケットではありません。' });
     return;
   }
 
-  // トピックから作成者IDを取得
+  // モーダルから理由を取得
+  const closeReason = interaction.fields.getTextInputValue('close_reason');
+
+  // トピックから作成者IDとチケットタイプを取得
   const topic = channel.topic || '';
   const creatorMatch = topic.match(/Creator:(\d+)/);
+  const typeMatch = topic.match(/Type:(\w+)/);
   const creatorId = creatorMatch ? creatorMatch[1] : null;
+  const ticketType = typeMatch ? typeMatch[1] : 'unknown';
 
   if (!creatorId) {
-    await interaction.reply({ content: 'チケット作成者が特定できません。', flags: 64 });
+    await interaction.editReply({ content: 'チケット作成者が特定できません。' });
     return;
   }
 
@@ -523,6 +573,7 @@ async function handleTicketClose(interaction) {
     // 閉じたことを通知
     const closeEmbed = new EmbedBuilder()
       .setDescription(`🔒 このチケットは ${interaction.user} によって閉じられました。`)
+      .addFields({ name: '理由', value: closeReason, inline: false })
       .setColor(0xED4245)
       .setTimestamp();
 
@@ -547,9 +598,47 @@ async function handleTicketClose(interaction) {
       await welcomeMessage.edit({ components: [disabledButton] });
     }
 
-    await interaction.reply({ content: '✅ チケットを閉じました。作成者から非表示になりました。', flags: 64 });
+    // 運営チャンネルに閉じた理由を送信
+    try {
+      const staffChannelId = '1450628056233545949';
+      const staffChannel = await guild.channels.fetch(staffChannelId);
+      
+      if (staffChannel) {
+        const creator = await guild.members.fetch(creatorId).catch(() => null);
+        const typeNames = {
+          'question': '質問',
+          'bug': '不具合',
+          'suggestion': '提案',
+          'event': 'イベント',
+          'report': '報告',
+          'application': '申請',
+          'other': 'その他'
+        };
+        
+        const staffNotifyEmbed = new EmbedBuilder()
+          .setTitle('🔒 チケットクローズ通知')
+          .setColor(0xED4245)
+          .addFields(
+            { name: '📌 チケットチャンネル', value: `${channel} ([ジャンプ](https://discord.com/channels/${guild.id}/${channel.id}))`, inline: false },
+            { name: '📋 チケット番号', value: channel.name, inline: true },
+            { name: '📌 用件', value: typeNames[ticketType] || ticketType, inline: true },
+            { name: '👤 チケット作成者', value: creator ? `${creator.user} (${creator.user.tag})` : `<@${creatorId}>`, inline: false },
+            { name: '🔐 閉じた人', value: `${interaction.user} (${interaction.user.tag})`, inline: false },
+            { name: '📝 閉じた理由', value: closeReason, inline: false }
+          )
+          .setTimestamp()
+          .setFooter({ text: `チケットID: ${channel.id}` });
+
+        await staffChannel.send({ embeds: [staffNotifyEmbed] });
+        console.log(`[Ticket] クローズ通知を運営チャンネルに送信: ${channel.name}`);
+      }
+    } catch (err) {
+      console.error('[Ticket] 運営チャンネルへのクローズ通知に失敗:', err);
+    }
+
+    await interaction.editReply({ content: '✅ チケットを閉じました。作成者から非表示になりました。' });
   } catch (err) {
     console.error('[Ticket] close error:', err);
-    await interaction.reply({ content: 'チケットを閉じる際にエラーが発生しました。', flags: 64 }).catch(() => {});
+    await interaction.editReply({ content: 'チケットを閉じる際にエラーが発生しました。' }).catch(() => {});
   }
 }
