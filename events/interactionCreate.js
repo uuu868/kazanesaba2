@@ -119,15 +119,10 @@ module.exports = {
 
 async function showTicketModal(interaction) {
   const ticketType = interaction.values[0];
-  
-  // デバック用は特定のユーザーのみ選択可能
-  const ALLOWED_DEBUG_USER_ID = '1088020702583603270';
-  if (ticketType === 'debug' && interaction.user.id !== ALLOWED_DEBUG_USER_ID) {
-    await interaction.reply({ content: '❌ デバック用チケットはbot作成者のみ選択できます。', flags: 64 });
-    return;
-  }
 
   const modal = new ModalBuilder()
+    .setCustomId(`ticket_modal_${ticketType}`)
+    .setTitle('チケット内容を入力してください');
     .setCustomId(`ticket_modal_${ticketType}`)
     .setTitle('チケット内容を入力してください');
 
@@ -287,32 +282,6 @@ async function showTicketModal(interaction) {
         .setLabel('詳細説明・補足情報')
         .setStyle(TextInputStyle.Paragraph)
         .setPlaceholder('詳細や補足情報を記述してください')
-        .setRequired(true)
-        .setMaxLength(4000);
-      break;
-
-    case 'debug': // デバック
-      input1 = new TextInputBuilder()
-        .setCustomId('field1')
-        .setLabel('デバック内容')
-        .setStyle(TextInputStyle.Short)
-        .setPlaceholder('デバックの目的や対象')
-        .setRequired(true)
-        .setMaxLength(200);
-      
-      input2 = new TextInputBuilder()
-        .setCustomId('field2')
-        .setLabel('発生状況')
-        .setStyle(TextInputStyle.Paragraph)
-        .setPlaceholder('問題の発生状況や再現方法')
-        .setRequired(false)
-        .setMaxLength(1000);
-      
-      input3 = new TextInputBuilder()
-        .setCustomId('field3')
-        .setLabel('詳細説明')
-        .setStyle(TextInputStyle.Paragraph)
-        .setPlaceholder('詳細な説明を記述してください')
         .setRequired(true)
         .setMaxLength(4000);
       break;
@@ -483,20 +452,12 @@ async function handleTicketCreate(interaction) {
     .setDescription('管理者の対応をお待ちください。\n誤って作成した場合や、問題が解決した場合を除きチケットを勝手に閉じないで下さい。')
     .setColor(0x5865F2);
 
-  // デバック用の場合は特別な処理
-  if (ticketType === 'debug') {
-    await channel.send({
-      content: `${interaction.user.toString()}さん専用チャットです。\n他の方には表示されません。\n${staffPing}`,
-      embeds: [embed, instructionEmbed],
-      components: [closeButton]
-    });
-  } else {
-    await channel.send({
-      content: `${interaction.user.toString()}さん専用チャットです。\n他の方には表示されません。\n${staffPing}`,
-      embeds: [embed, instructionEmbed],
-      components: [closeButton]
-    });
-  }
+  // チケットメッセージを送信
+  await channel.send({
+    content: `${interaction.user.toString()}さん専用チャットです。\n他の方には表示されません。\n${staffPing}`,
+    embeds: [embed, instructionEmbed],
+    components: [closeButton]
+  });
 
   await interaction.editReply({ content: `✅ チャンネルを作成しました: ${channel}` });
 }
