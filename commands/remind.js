@@ -99,8 +99,9 @@ module.exports = {
           second = tParts[2] || 0;
         }
 
-        // Date オブジェクトをローカルタイムで作成
-        scheduledTime = new Date(year, month - 1, day, hour, minute, second, 0);
+        // 日本時間(JST, UTC+9)として入力された時刻をUTCに変換
+        const jstOffset = 9 * 60 * 60 * 1000; // 9時間をミリ秒に
+        scheduledTime = new Date(Date.UTC(year, month - 1, day, hour, minute, second, 0) - jstOffset);
         totalMs = scheduledTime.getTime() - Date.now();
 
         if (isNaN(scheduledTime.getTime())) {
