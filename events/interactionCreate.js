@@ -123,8 +123,6 @@ async function showTicketModal(interaction) {
   const modal = new ModalBuilder()
     .setCustomId(`ticket_modal_${ticketType}`)
     .setTitle('チケット内容を入力してください');
-    .setCustomId(`ticket_modal_${ticketType}`)
-    .setTitle('チケット内容を入力してください');
 
   let input1, input2, input3;
 
@@ -458,6 +456,36 @@ async function handleTicketCreate(interaction) {
     embeds: [embed, instructionEmbed],
     components: [closeButton]
   });
+
+  // 運営専用チャンネルにフォーム内容を送信
+  try {
+    const staffChannelId = '1450628056233545949';
+    const staffChannel = await guild.channels.fetch(staffChannelId);
+    
+    if (staffChannel) {
+      const staffEmbed = new EmbedBuilder()
+        .setTitle('🎫 新規チケット作成通知')
+        .setColor(0xFF5722)
+        .addFields(
+          { name: '📌 チケットチャンネル', value: `${channel} ([ジャンプ](https://discord.com/channels/${guild.id}/${channel.id}))`, inline: false },
+          { name: '📋 チケット番号', value: ticketName, inline: true },
+          { name: '📌 用件', value: typeName, inline: true },
+          { name: '👤 作成者', value: `${interaction.user} (${interaction.user.tag})`, inline: false },
+          { name: labels[0], value: field1, inline: false },
+          { name: labels[1], value: field2, inline: false },
+          { name: labels[2], value: field3.length > 1024 ? field3.substring(0, 1021) + '...' : field3, inline: false }
+        )
+        .setTimestamp()
+        .setFooter({ text: `チケットID: ${channel.id}` });
+
+      await staffChannel.send({ embeds: [staffEmbed] });
+      console.log(`[Ticket] 運営チャンネルに通知送信: ${ticketName}`);
+    } else {
+      console.error('[Ticket] 運営チャンネルが見つかりません');
+    }
+  } catch (err) {
+    console.error('[Ticket] 運営チャンネルへの通知に失敗:', err);
+  }
 
   await interaction.editReply({ content: `✅ チャンネルを作成しました: ${channel}` });
 }
