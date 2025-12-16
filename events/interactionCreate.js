@@ -127,42 +127,228 @@ async function showTicketModal(interaction) {
     return;
   }
 
-  // モーダルを作成
   const modal = new ModalBuilder()
     .setCustomId(`ticket_modal_${ticketType}`)
     .setTitle('チケット内容を入力してください');
 
-  // 証拠URL入力欄
-  const evidenceInput = new TextInputBuilder()
-    .setCustomId('evidence')
-    .setLabel('証拠となるクリップのURLや時刻')
-    .setStyle(TextInputStyle.Short)
-    .setPlaceholder('URLや該当時刻を記述（荒らし・チート被害時は省略可）')
-    .setRequired(false)
-    .setMaxLength(200);
+  let input1, input2, input3;
 
-  // ルール違反項目入力欄
-  const ruleInput = new TextInputBuilder()
-    .setCustomId('rule')
-    .setLabel('ルール違反となる項目')
-    .setStyle(TextInputStyle.Short)
-    .setPlaceholder('〜という行為が〜の違反に該当する')
-    .setRequired(false)
-    .setMaxLength(200);
+  // チケットタイプに応じてフォーム項目を変更
+  switch (ticketType) {
+    case 'question': // 質問
+      input1 = new TextInputBuilder()
+        .setCustomId('field1')
+        .setLabel('質問内容')
+        .setStyle(TextInputStyle.Short)
+        .setPlaceholder('質問のタイトルや要点を記述してください')
+        .setRequired(true)
+        .setMaxLength(200);
+      
+      input2 = new TextInputBuilder()
+        .setCustomId('field2')
+        .setLabel('関連情報')
+        .setStyle(TextInputStyle.Short)
+        .setPlaceholder('参考URLやファイル名など（任意）')
+        .setRequired(false)
+        .setMaxLength(200);
+      
+      input3 = new TextInputBuilder()
+        .setCustomId('field3')
+        .setLabel('詳細説明')
+        .setStyle(TextInputStyle.Paragraph)
+        .setPlaceholder('質問の詳細を記述してください')
+        .setRequired(true)
+        .setMaxLength(4000);
+      break;
 
-  // 詳細説明入力欄
-  const detailsInput = new TextInputBuilder()
-    .setCustomId('details')
-    .setLabel('時刻や状況などの詳しい説明')
-    .setStyle(TextInputStyle.Paragraph)
-    .setPlaceholder('詳細な説明を記述してください')
-    .setRequired(true)
-    .setMaxLength(4000);
+    case 'bug': // 不具合
+      input1 = new TextInputBuilder()
+        .setCustomId('field1')
+        .setLabel('発生した不具合の概要')
+        .setStyle(TextInputStyle.Short)
+        .setPlaceholder('どのような不具合が発生しましたか')
+        .setRequired(true)
+        .setMaxLength(200);
+      
+      input2 = new TextInputBuilder()
+        .setCustomId('field2')
+        .setLabel('再現手順')
+        .setStyle(TextInputStyle.Paragraph)
+        .setPlaceholder('不具合を再現する手順を記述してください')
+        .setRequired(false)
+        .setMaxLength(1000);
+      
+      input3 = new TextInputBuilder()
+        .setCustomId('field3')
+        .setLabel('詳細・エラーメッセージなど')
+        .setStyle(TextInputStyle.Paragraph)
+        .setPlaceholder('詳しい状況やエラーメッセージを記述してください')
+        .setRequired(true)
+        .setMaxLength(4000);
+      break;
+
+    case 'suggestion': // 提案
+      input1 = new TextInputBuilder()
+        .setCustomId('field1')
+        .setLabel('提案内容')
+        .setStyle(TextInputStyle.Short)
+        .setPlaceholder('提案のタイトルや要点')
+        .setRequired(true)
+        .setMaxLength(200);
+      
+      input2 = new TextInputBuilder()
+        .setCustomId('field2')
+        .setLabel('提案理由・メリット')
+        .setStyle(TextInputStyle.Paragraph)
+        .setPlaceholder('なぜこの提案をするのか、どんな効果があるか')
+        .setRequired(false)
+        .setMaxLength(1000);
+      
+      input3 = new TextInputBuilder()
+        .setCustomId('field3')
+        .setLabel('詳細説明')
+        .setStyle(TextInputStyle.Paragraph)
+        .setPlaceholder('提案の詳細を記述してください')
+        .setRequired(true)
+        .setMaxLength(4000);
+      break;
+
+    case 'event': // イベント
+      input1 = new TextInputBuilder()
+        .setCustomId('field1')
+        .setLabel('イベント名')
+        .setStyle(TextInputStyle.Short)
+        .setPlaceholder('イベントの名称')
+        .setRequired(true)
+        .setMaxLength(200);
+      
+      input2 = new TextInputBuilder()
+        .setCustomId('field2')
+        .setLabel('開催予定日時')
+        .setStyle(TextInputStyle.Short)
+        .setPlaceholder('例: 2025-12-20 19:00')
+        .setRequired(false)
+        .setMaxLength(200);
+      
+      input3 = new TextInputBuilder()
+        .setCustomId('field3')
+        .setLabel('イベント内容・詳細')
+        .setStyle(TextInputStyle.Paragraph)
+        .setPlaceholder('イベントの内容や詳細を記述してください')
+        .setRequired(true)
+        .setMaxLength(4000);
+      break;
+
+    case 'report': // 報告
+      input1 = new TextInputBuilder()
+        .setCustomId('field1')
+        .setLabel('証拠となるクリップのURLや時刻')
+        .setStyle(TextInputStyle.Short)
+        .setPlaceholder('URLや該当時刻を記述（荒らし・チート被害時は省略可）')
+        .setRequired(false)
+        .setMaxLength(200);
+      
+      input2 = new TextInputBuilder()
+        .setCustomId('field2')
+        .setLabel('ルール違反となる項目')
+        .setStyle(TextInputStyle.Short)
+        .setPlaceholder('〜という行為が〜の違反に該当する')
+        .setRequired(false)
+        .setMaxLength(200);
+      
+      input3 = new TextInputBuilder()
+        .setCustomId('field3')
+        .setLabel('時刻や状況などの詳しい説明')
+        .setStyle(TextInputStyle.Paragraph)
+        .setPlaceholder('詳細な説明を記述してください')
+        .setRequired(true)
+        .setMaxLength(4000);
+      break;
+
+    case 'application': // 申請
+      input1 = new TextInputBuilder()
+        .setCustomId('field1')
+        .setLabel('申請内容')
+        .setStyle(TextInputStyle.Short)
+        .setPlaceholder('何を申請しますか')
+        .setRequired(true)
+        .setMaxLength(200);
+      
+      input2 = new TextInputBuilder()
+        .setCustomId('field2')
+        .setLabel('申請理由')
+        .setStyle(TextInputStyle.Paragraph)
+        .setPlaceholder('申請する理由を記述してください')
+        .setRequired(false)
+        .setMaxLength(1000);
+      
+      input3 = new TextInputBuilder()
+        .setCustomId('field3')
+        .setLabel('詳細説明・補足情報')
+        .setStyle(TextInputStyle.Paragraph)
+        .setPlaceholder('詳細や補足情報を記述してください')
+        .setRequired(true)
+        .setMaxLength(4000);
+      break;
+
+    case 'debug': // デバック
+      input1 = new TextInputBuilder()
+        .setCustomId('field1')
+        .setLabel('デバック内容')
+        .setStyle(TextInputStyle.Short)
+        .setPlaceholder('デバックの目的や対象')
+        .setRequired(true)
+        .setMaxLength(200);
+      
+      input2 = new TextInputBuilder()
+        .setCustomId('field2')
+        .setLabel('発生状況')
+        .setStyle(TextInputStyle.Paragraph)
+        .setPlaceholder('問題の発生状況や再現方法')
+        .setRequired(false)
+        .setMaxLength(1000);
+      
+      input3 = new TextInputBuilder()
+        .setCustomId('field3')
+        .setLabel('詳細説明')
+        .setStyle(TextInputStyle.Paragraph)
+        .setPlaceholder('詳細な説明を記述してください')
+        .setRequired(true)
+        .setMaxLength(4000);
+      break;
+
+    case 'other': // その他
+    default:
+      input1 = new TextInputBuilder()
+        .setCustomId('field1')
+        .setLabel('件名')
+        .setStyle(TextInputStyle.Short)
+        .setPlaceholder('お問い合わせの件名')
+        .setRequired(true)
+        .setMaxLength(200);
+      
+      input2 = new TextInputBuilder()
+        .setCustomId('field2')
+        .setLabel('関連情報')
+        .setStyle(TextInputStyle.Short)
+        .setPlaceholder('参考URLやファイル名など（任意）')
+        .setRequired(false)
+        .setMaxLength(200);
+      
+      input3 = new TextInputBuilder()
+        .setCustomId('field3')
+        .setLabel('詳細説明')
+        .setStyle(TextInputStyle.Paragraph)
+        .setPlaceholder('詳細な説明を記述してください')
+        .setRequired(true)
+        .setMaxLength(4000);
+      break;
+  }
 
   // ActionRowに追加
-  const row1 = new ActionRowBuilder().addComponents(evidenceInput);
-  const row2 = new ActionRowBuilder().addComponents(ruleInput);
-  const row3 = new ActionRowBuilder().addComponents(detailsInput);
+  const row1 = new ActionRowBuilder().addComponents(input1);
+  const row2 = new ActionRowBuilder().addComponents(input2);
+  const row3 = new ActionRowBuilder().addComponents(input3);
 
   modal.addComponents(row1, row2, row3);
 
@@ -187,10 +373,24 @@ async function handleTicketCreate(interaction) {
   // モーダルのcustomIdからチケットタイプを取得
   const ticketType = interaction.customId.replace('ticket_modal_', '');
   
-  // モーダルの入力内容を取得
-  const evidence = interaction.fields.getTextInputValue('evidence') || 'なし';
-  const rule = interaction.fields.getTextInputValue('rule') || 'なし';
-  const details = interaction.fields.getTextInputValue('details');
+  // モーダルの入力内容を取得（共通フィールド名を使用）
+  const field1 = interaction.fields.getTextInputValue('field1') || 'なし';
+  const field2 = interaction.fields.getTextInputValue('field2') || 'なし';
+  const field3 = interaction.fields.getTextInputValue('field3');
+
+  // チケットタイプごとのフィールド名を定義
+  const fieldLabels = {
+    'question': ['質問内容', '関連情報', '詳細説明'],
+    'bug': ['不具合の概要', '再現手順', '詳細・エラーメッセージ'],
+    'suggestion': ['提案内容', '提案理由・メリット', '詳細説明'],
+    'event': ['イベント名', '開催予定日時', 'イベント内容・詳細'],
+    'report': ['証拠URL・時刻', 'ルール違反項目', '詳細説明'],
+    'application': ['申請内容', '申請理由', '詳細説明・補足情報'],
+    'debug': ['デバック内容', '発生状況', '詳細説明'],
+    'other': ['件名', '関連情報', '詳細説明']
+  };
+
+  const labels = fieldLabels[ticketType] || ['項目1', '項目2', '詳細'];
 
   // 用件タイプの日本語名を取得
   const typeNames = {
@@ -272,9 +472,9 @@ async function handleTicketCreate(interaction) {
     .addFields(
       { name: '📌 用件', value: typeName, inline: true },
       { name: '👤 作成者', value: `${interaction.user}`, inline: true },
-      { name: '🔗 証拠URL・時刻', value: evidence, inline: false },
-      { name: '⚠️ ルール違反項目', value: rule, inline: false },
-      { name: '📝 詳細説明', value: details, inline: false }
+      { name: labels[0], value: field1, inline: false },
+      { name: labels[1], value: field2, inline: false },
+      { name: labels[2], value: field3.length > 1024 ? field3.substring(0, 1021) + '...' : field3, inline: false }
     )
     .setTimestamp();
 
