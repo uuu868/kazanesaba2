@@ -1250,5 +1250,12 @@
     "copiedMessageIds": [
       "processing"
     ]
+  },
+  "ticket_roles": {
+    "roleIds": [
+      "1425781220419309699"
+    ],
+    "updatedAt": "2025-12-16T23:11:46.557Z",
+    "copiedMessageIds": []
   }
 }
