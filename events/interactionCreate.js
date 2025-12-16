@@ -450,10 +450,10 @@ async function handleTicketCreate(interaction) {
     .setDescription('管理者の対応をお待ちください。\n誤って作成した場合や、問題が解決した場合を除きチケットを勝手に閉じないで下さい。')
     .setColor(0x5865F2);
 
-  // チケットメッセージを送信
+  // チケットメッセージを送信（フォーム内容は含めない）
   await channel.send({
     content: `${interaction.user.toString()}さん専用チャットです。\n他の方には表示されません。\n${staffPing}`,
-    embeds: [embed, instructionEmbed],
+    embeds: [instructionEmbed],
     components: [closeButton]
   });
 
