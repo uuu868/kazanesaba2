@@ -57,8 +57,9 @@ module.exports = {
             // 添付ファイルのURLで重複チェック（フォローされたメッセージでも同じURLを使う）
             const attachmentUrls = Array.from(mediaAttachments.values()).map(a => a.url).sort().join('|');
             const existing = dataStore.getMapping(`url:${attachmentUrls}`);
-            if (existing && existing.copiedMessageId && existing.copiedMessageId !== 'processing') {
-              console.log(`[Image Copy] このメディアは既にコピー済みです（コピー先メッセージID: ${existing.copiedMessageId}）。スキップします`);
+            if (existing && existing.copiedMessageId) {
+              // 既にコピー済み、または処理中の場合はスキップ
+              console.log(`[Image Copy] このメディアは既にコピー済みまたは処理中です（状態: ${existing.copiedMessageId}）。スキップします`);
               return;
             }
 

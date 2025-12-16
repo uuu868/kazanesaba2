@@ -500,34 +500,46 @@ async function handleTicketCreate(interaction) {
     components: [closeButton]
   });
 
-  // 運営専用チャンネルにフォーム内容を送信
-  try {
-    const staffChannelId = '1450628056233545949';
-    const staffChannel = await guild.channels.fetch(staffChannelId);
+  // 運営専用チャンネルにフォーム内容を送信（重複防止）
+  const notificationKey = `ticket_notification:${channel.id}`;
+  const existingNotification = require('../utils/dataStore').getMapping(notificationKey);
+  
+  if (!existingNotification) {
+    require('../utils/dataStore').saveMapping(notificationKey, {
+      channelId: channel.id,
+      createdAt: new Date().toISOString()
+    });
     
-    if (staffChannel) {
-      const staffEmbed = new EmbedBuilder()
-        .setTitle('🎫 新規チケット作成通知')
-        .setColor(0xFF5722)
-        .addFields(
-          { name: '📌 チケットチャンネル', value: `${channel} ([ジャンプ](https://discord.com/channels/${guild.id}/${channel.id}))`, inline: false },
-          { name: '📋 チケット番号', value: ticketName, inline: true },
-          { name: '📌 用件', value: typeName, inline: true },
-          { name: '👤 作成者', value: `${interaction.user} (${interaction.user.tag})`, inline: false },
-          { name: labels[0], value: field1, inline: false },
-          { name: labels[1], value: field2, inline: false },
-          { name: labels[2], value: field3.length > 1024 ? field3.substring(0, 1021) + '...' : field3, inline: false }
-        )
-        .setTimestamp()
-        .setFooter({ text: `チケットID: ${channel.id}` });
+    try {
+      const staffChannelId = '1450628056233545949';
+      const staffChannel = await guild.channels.fetch(staffChannelId);
+      
+      if (staffChannel) {
+        const staffEmbed = new EmbedBuilder()
+          .setTitle('🎫 新規チケット作成通知')
+          .setColor(0xFF5722)
+          .addFields(
+            { name: '📌 チケットチャンネル', value: `${channel} ([ジャンプ](https://discord.com/channels/${guild.id}/${channel.id}))`, inline: false },
+            { name: '📋 チケット番号', value: ticketName, inline: true },
+            { name: '📌 用件', value: typeName, inline: true },
+            { name: '👤 作成者', value: `${interaction.user} (${interaction.user.tag})`, inline: false },
+            { name: labels[0], value: field1, inline: false },
+            { name: labels[1], value: field2, inline: false },
+            { name: labels[2], value: field3.length > 1024 ? field3.substring(0, 1021) + '...' : field3, inline: false }
+          )
+          .setTimestamp()
+          .setFooter({ text: `チケットID: ${channel.id}` });
 
-      await staffChannel.send({ embeds: [staffEmbed] });
-      console.log(`[Ticket] 運営チャンネルに通知送信: ${ticketName}`);
-    } else {
-      console.error('[Ticket] 運営チャンネルが見つかりません');
+        await staffChannel.send({ embeds: [staffEmbed] });
+        console.log(`[Ticket] 運営チャンネルに通知送信: ${ticketName}`);
+      } else {
+        console.error('[Ticket] 運営チャンネルが見つかりません');
+      }
+    } catch (err) {
+      console.error('[Ticket] 運営チャンネルへの通知に失敗:', err);
     }
-  } catch (err) {
-    console.error('[Ticket] 運営チャンネルへの通知に失敗:', err);
+  } else {
+    console.log(`[Ticket] チケット通知は既に送信済みです: ${channel.id}`);
   }
 
   await interaction.editReply({ content: `✅ チャンネルを作成しました: ${channel}` });
