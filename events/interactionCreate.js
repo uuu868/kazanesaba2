@@ -1,5 +1,5 @@
 const { Events, ChannelType, PermissionsBitField, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
-const { allowedRoleIds } = require('../utils/roleGuard');
+const { getAllowedRoleIds } = require('../utils/roleGuard');
 const ticketCounter = require('../utils/ticketCounter');
 
 // 処理中のインタラクションを追跡
@@ -432,7 +432,8 @@ async function handleTicketCreate(interaction) {
     }
   ];
 
-  // スタッフロールを追加
+  // スタッフロールを追加（動的に取得）
+  const allowedRoleIds = getAllowedRoleIds();
   for (const roleId of allowedRoleIds) {
     overwrites.push({
       id: roleId,
@@ -454,7 +455,7 @@ async function handleTicketCreate(interaction) {
     permissionOverwrites: overwrites
   });
 
-  const staffPing = allowedRoleIds.map(id => `<@&${id}>`).join(' ');
+  const staffPing = getAllowedRoleIds().map(id => `<@&${id}>`).join(' ');
   
   // 閉じるボタンを作成
   const closeButton = new ActionRowBuilder().addComponents(
