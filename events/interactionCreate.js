@@ -537,28 +537,30 @@ async function handleTicketCreate(interaction) {
         setTimeout(async () => {
           try {
             const recentMessages = await staffChannel.messages.fetch({ limit: 20 });
-            const duplicates = [];
+            const sameTicketMessages = [];
             const ticketId = channel.id;
             
             // 同じチケットIDのフッターを持つメッセージを検索
-            let firstFound = null;
             for (const [msgId, msg] of recentMessages) {
               if (msg.embeds.length > 0 && msg.embeds[0].footer && msg.embeds[0].footer.text.includes(`チケットID: ${ticketId}`)) {
-                if (!firstFound) {
-                  firstFound = msgId;
-                } else if (msgId !== firstFound) {
-                  duplicates.push(msg);
-                }
+                sameTicketMessages.push(msg);
               }
             }
             
-            // 重複がある場合、古い方を削除
-            if (duplicates.length > 0) {
-              console.log(`[Ticket] 重複通知を検出: ${duplicates.length}件`);
-              for (const duplicate of duplicates) {
+            // 2つ以上ある場合、最も古いもの1つを残して他を削除
+            if (sameTicketMessages.length > 1) {
+              console.log(`[Ticket] 重複通知を検出: ${sameTicketMessages.length}件`);
+              
+              // タイムスタンプでソート（古い順）
+              sameTicketMessages.sort((a, b) => a.createdTimestamp - b.createdTimestamp);
+              
+              // 最初の1つを残して、残りを削除
+              const toDelete = sameTicketMessages.slice(1);
+              for (const duplicate of toDelete) {
                 await duplicate.delete();
                 console.log(`[Ticket] 重複通知を削除: ${duplicate.id}`);
               }
+              console.log(`[Ticket] 最初の通知を保持: ${sameTicketMessages[0].id}`);
             }
           } catch (err) {
             console.error('[Ticket] 重複チェックに失敗:', err);
@@ -696,31 +698,33 @@ async function handleTicketClose(interaction) {
         setTimeout(async () => {
           try {
             const recentMessages = await staffChannel.messages.fetch({ limit: 20 });
-            const duplicates = [];
+            const sameTicketMessages = [];
             const ticketId = channel.id;
             
             // 同じチケットIDのクローズ通知を検索
-            let firstFound = null;
             for (const [msgId, msg] of recentMessages) {
               if (msg.embeds.length > 0 && 
                   msg.embeds[0].title === '🔒 チケットクローズ通知' &&
                   msg.embeds[0].footer && 
                   msg.embeds[0].footer.text.includes(`チケットID: ${ticketId}`)) {
-                if (!firstFound) {
-                  firstFound = msgId;
-                } else if (msgId !== firstFound) {
-                  duplicates.push(msg);
-                }
+                sameTicketMessages.push(msg);
               }
             }
             
-            // 重複がある場合、古い方を削除
-            if (duplicates.length > 0) {
-              console.log(`[Ticket] 重複クローズ通知を検出: ${duplicates.length}件`);
-              for (const duplicate of duplicates) {
+            // 2つ以上ある場合、最も古いもの1つを残して他を削除
+            if (sameTicketMessages.length > 1) {
+              console.log(`[Ticket] 重複クローズ通知を検出: ${sameTicketMessages.length}件`);
+              
+              // タイムスタンプでソート（古い順）
+              sameTicketMessages.sort((a, b) => a.createdTimestamp - b.createdTimestamp);
+              
+              // 最初の1つを残して、残りを削除
+              const toDelete = sameTicketMessages.slice(1);
+              for (const duplicate of toDelete) {
                 await duplicate.delete();
                 console.log(`[Ticket] 重複クローズ通知を削除: ${duplicate.id}`);
               }
+              console.log(`[Ticket] 最初のクローズ通知を保持: ${sameTicketMessages[0].id}`);
             }
           } catch (err) {
             console.error('[Ticket] クローズ通知の重複チェックに失敗:', err);

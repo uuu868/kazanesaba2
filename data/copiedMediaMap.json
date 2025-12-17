@@ -1420,14 +1420,127 @@
       "1450654788411850754"
     ]
   },
-  "x_monitors": {
-    "0": {
+  "x_monitors": [
+    {
       "username": "SplatoonJP",
       "channelId": "1446124371297959966",
       "lastTweetId": null,
       "addedAt": "2025-12-17T01:04:19.903Z",
       "addedBy": "1088020702583603270"
-    },
-    "copiedMessageIds": []
+    }
+  ],
+  "url:https://cdn.discordapp.com/attachments/1380016485421940787/1450657437077082163/PXL_20251217_011414043.jpg?ex=69435584&is=69420404&hm=56e8ac4a866ebab1648ff6f14a6a5895c7244702b5c79eda3a718abbd3fd5010&": {
+    "createdAt": "2025-12-17T01:14:45.347Z",
+    "copiedMessageIds": [
+      "processing",
+      "1450657443771056281"
+    ],
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1
+  },
+  "1450657436942995579": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1380016485421940787",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-17T01:14:46.873Z",
+    "copiedMessageIds": [
+      "1450657443771056281"
+    ]
+  },
+  "url:https://cdn.discordapp.com/attachments/1446124371297959966/1450657756288647269/IMG_9652.jpg?ex=694355d1&is=69420451&hm=e311b453b0c493267968dba5caf5bc2f93986f2f72863192b9ac80fe08b0202e&": {
+    "createdAt": "2025-12-17T01:16:01.387Z",
+    "copiedMessageIds": [
+      "processing",
+      "1450657762261336085"
+    ],
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1
+  },
+  "1450657756502560879": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1446124371297959966",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-17T01:16:02.714Z",
+    "copiedMessageIds": [
+      "1450657762261336085"
+    ]
+  },
+  "url:https://cdn.discordapp.com/attachments/1380016485421940787/1450658157666897970/af704be7e0eb2c083680838bf4ffb50b_600.jpg?ex=69435630&is=694204b0&hm=99a02a63a9ab8c84c89c875c6be9bd308c62c11db114cfa249b92483ce483984&": {
+    "createdAt": "2025-12-17T01:17:37.405Z",
+    "copiedMessageIds": [
+      "processing",
+      "1450658164767850678"
+    ],
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1
+  },
+  "1450658157838729297": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1380016485421940787",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-17T01:17:38.909Z",
+    "copiedMessageIds": [
+      "1450658164767850678"
+    ]
+  },
+  "url:https://cdn.discordapp.com/attachments/1380016485421940787/1450659027406033117/IMG_5486.jpg?ex=69435700&is=69420580&hm=ba83a7c43d1771322d97c38c3aa6eb7c4d8c3c2539ad368411f3fb7cfcac5b44&": {
+    "createdAt": "2025-12-17T01:21:04.454Z",
+    "copiedMessageIds": [
+      "processing",
+      "1450659033982701646"
+    ],
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1
+  },
+  "1450659027611816130": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1380016485421940787",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-17T01:21:06.192Z",
+    "copiedMessageIds": [
+      "1450659033982701646"
+    ]
+  },
+  "url:https://cdn.discordapp.com/attachments/1314835098662731837/1450659638063140895/IMG_5397.jpg?ex=69435791&is=69420611&hm=ab6dd4ed6730489448046ad0e0e6afc9e800cd73d51e4d9ba4233b644186be7d&": {
+    "createdAt": "2025-12-17T01:23:30.119Z",
+    "copiedMessageIds": [
+      "processing",
+      "1450659644723826832"
+    ],
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1
+  },
+  "1450659638289629287": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1314835098662731837",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-17T01:23:31.823Z",
+    "copiedMessageIds": [
+      "1450659644723826832"
+    ]
+  },
+  "url:https://cdn.discordapp.com/attachments/1446124371297959966/1450660345881428151/IMG_9652.jpg?ex=6943583a&is=694206ba&hm=7adac7ff4ed189739f1707c5f2d88ecf0bd84ab99fec2dec41ae53765ea44012&": {
+    "createdAt": "2025-12-17T01:26:18.773Z",
+    "copiedMessageIds": [
+      "processing",
+      "1450660349689856152"
+    ],
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1
+  },
+  "1450660346137149481": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1446124371297959966",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-17T01:26:19.633Z",
+    "copiedMessageIds": [
+      "1450660349689856152"
+    ]
   }
 }

@@ -129,22 +129,29 @@ module.exports = {
             setTimeout(async () => {
               try {
                 const recentMessages = await imageChannel.messages.fetch({ limit: 10 });
-                const duplicates = [];
+                const sameUrlMessages = [];
                 
                 // 同じ元メッセージURLを持つメッセージを検索
                 for (const [msgId, msg] of recentMessages) {
-                  if (msg.content.includes(message.url) && msg.id !== sent.id) {
-                    duplicates.push(msg);
+                  if (msg.content.includes(message.url)) {
+                    sameUrlMessages.push(msg);
                   }
                 }
                 
-                // 重複がある場合、新しい方を削除
-                if (duplicates.length > 0) {
-                  console.log(`[Image Copy] 重複送信を検出: ${duplicates.length}件`);
-                  for (const duplicate of duplicates) {
+                // 2つ以上ある場合、最も古いもの1つを残して他を削除
+                if (sameUrlMessages.length > 1) {
+                  console.log(`[Image Copy] 重複送信を検出: ${sameUrlMessages.length}件`);
+                  
+                  // タイムスタンプでソート（古い順）
+                  sameUrlMessages.sort((a, b) => a.createdTimestamp - b.createdTimestamp);
+                  
+                  // 最初の1つを残して、残りを削除
+                  const toDelete = sameUrlMessages.slice(1);
+                  for (const duplicate of toDelete) {
                     await duplicate.delete();
                     console.log(`[Image Copy] 重複メッセージを削除: ${duplicate.id}`);
                   }
+                  console.log(`[Image Copy] 最初のメッセージを保持: ${sameUrlMessages[0].id}`);
                 }
               } catch (err) {
                 console.error('[Image Copy] 重複チェックに失敗:', err);
