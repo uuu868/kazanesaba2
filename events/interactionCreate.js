@@ -532,6 +532,39 @@ async function handleTicketCreate(interaction) {
 
         await staffChannel.send({ embeds: [staffEmbed] });
         console.log(`[Ticket] 運営チャンネルに通知送信: ${ticketName}`);
+        
+        // 重複送信チェック: 少し待ってから最近のメッセージを確認
+        setTimeout(async () => {
+          try {
+            const recentMessages = await staffChannel.messages.fetch({ limit: 20 });
+            const duplicates = [];
+            const ticketId = channel.id;
+            
+            // 同じチケットIDのフッターを持つメッセージを検索
+            let firstFound = null;
+            for (const [msgId, msg] of recentMessages) {
+              if (msg.embeds.length > 0 && msg.embeds[0].footer && msg.embeds[0].footer.text.includes(`チケットID: ${ticketId}`)) {
+                if (!firstFound) {
+                  firstFound = msgId;
+                } else if (msgId !== firstFound) {
+                  duplicates.push(msg);
+                }
+              }
+            }
+            
+            // 重複がある場合、古い方を削除
+            if (duplicates.length > 0) {
+              console.log(`[Ticket] 重複通知を検出: ${duplicates.length}件`);
+              for (const duplicate of duplicates) {
+                await duplicate.delete();
+                console.log(`[Ticket] 重複通知を削除: ${duplicate.id}`);
+              }
+            }
+          } catch (err) {
+            console.error('[Ticket] 重複チェックに失敗:', err);
+          }
+        }, 2000);
+        
       } else {
         console.error('[Ticket] 運営チャンネルが見つかりません');
       }
@@ -658,6 +691,41 @@ async function handleTicketClose(interaction) {
 
         await staffChannel.send({ embeds: [staffNotifyEmbed] });
         console.log(`[Ticket] クローズ通知を運営チャンネルに送信: ${channel.name}`);
+        
+        // 重複送信チェック: 少し待ってから最近のメッセージを確認
+        setTimeout(async () => {
+          try {
+            const recentMessages = await staffChannel.messages.fetch({ limit: 20 });
+            const duplicates = [];
+            const ticketId = channel.id;
+            
+            // 同じチケットIDのクローズ通知を検索
+            let firstFound = null;
+            for (const [msgId, msg] of recentMessages) {
+              if (msg.embeds.length > 0 && 
+                  msg.embeds[0].title === '🔒 チケットクローズ通知' &&
+                  msg.embeds[0].footer && 
+                  msg.embeds[0].footer.text.includes(`チケットID: ${ticketId}`)) {
+                if (!firstFound) {
+                  firstFound = msgId;
+                } else if (msgId !== firstFound) {
+                  duplicates.push(msg);
+                }
+              }
+            }
+            
+            // 重複がある場合、古い方を削除
+            if (duplicates.length > 0) {
+              console.log(`[Ticket] 重複クローズ通知を検出: ${duplicates.length}件`);
+              for (const duplicate of duplicates) {
+                await duplicate.delete();
+                console.log(`[Ticket] 重複クローズ通知を削除: ${duplicate.id}`);
+              }
+            }
+          } catch (err) {
+            console.error('[Ticket] クローズ通知の重複チェックに失敗:', err);
+          }
+        }, 2000);
       }
     } catch (err) {
       console.error('[Ticket] 運営チャンネルへのクローズ通知に失敗:', err);

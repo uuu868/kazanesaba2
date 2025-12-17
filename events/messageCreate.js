@@ -125,6 +125,32 @@ module.exports = {
 
             console.log(`[Image Copy] メディアをコピーしました (チャンネル: ${imageChannel.name}, 枚数: ${mediaAttachments.size})`);
             
+            // 重複送信チェック: 少し待ってから最近のメッセージを確認
+            setTimeout(async () => {
+              try {
+                const recentMessages = await imageChannel.messages.fetch({ limit: 10 });
+                const duplicates = [];
+                
+                // 同じ元メッセージURLを持つメッセージを検索
+                for (const [msgId, msg] of recentMessages) {
+                  if (msg.content.includes(message.url) && msg.id !== sent.id) {
+                    duplicates.push(msg);
+                  }
+                }
+                
+                // 重複がある場合、新しい方を削除
+                if (duplicates.length > 0) {
+                  console.log(`[Image Copy] 重複送信を検出: ${duplicates.length}件`);
+                  for (const duplicate of duplicates) {
+                    await duplicate.delete();
+                    console.log(`[Image Copy] 重複メッセージを削除: ${duplicate.id}`);
+                  }
+                }
+              } catch (err) {
+                console.error('[Image Copy] 重複チェックに失敗:', err);
+              }
+            }, 2000);
+            
           } catch (error) {
             console.error('[Image Copy] メディアのコピーに失敗しました:', error);
           }

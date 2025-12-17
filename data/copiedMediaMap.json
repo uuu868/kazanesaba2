@@ -1281,5 +1281,10 @@
     "channelId": "1450635865918275751",
     "createdAt": "2025-12-16T23:49:08.064Z",
     "copiedMessageIds": []
+  },
+  "ticket_notification:1450637851594199193": {
+    "channelId": "1450637851594199193",
+    "createdAt": "2025-12-16T23:57:02.523Z",
+    "copiedMessageIds": []
   }
 }
