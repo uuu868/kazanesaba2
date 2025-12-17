@@ -1400,5 +1400,34 @@
     "copiedMessageIds": [
       "1450644376119283744"
     ]
+  },
+  "url:https://cdn.discordapp.com/attachments/1380016485421940787/1450654779549421568/image-2.png?ex=6943530b&is=6942018b&hm=6f448eb31e55e97b7c1b92b045a841c66172c027cd0b0bff97fa6f30604f6538&": {
+    "createdAt": "2025-12-17T01:04:11.821Z",
+    "copiedMessageIds": [
+      "processing",
+      "1450654788411850754"
+    ],
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1
+  },
+  "1450654779842891777": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1380016485421940787",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-17T01:04:15.532Z",
+    "copiedMessageIds": [
+      "1450654788411850754"
+    ]
+  },
+  "x_monitors": {
+    "0": {
+      "username": "SplatoonJP",
+      "channelId": "1446124371297959966",
+      "lastTweetId": null,
+      "addedAt": "2025-12-17T01:04:19.903Z",
+      "addedBy": "1088020702583603270"
+    },
+    "copiedMessageIds": []
   }
 }

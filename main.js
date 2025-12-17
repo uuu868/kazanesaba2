@@ -47,12 +47,13 @@ for (const file of eventsFiles) {
 }
 
 // X(Twitter)監視機能を初期化
-const XMonitor = require('./utils/xMonitor');
-const xMonitor = new XMonitor(client);
+const TwitterMonitor = require('./utils/twitterMonitor');
+let twitterMonitor = null;
 
 client.once(Events.ClientReady, () => {
-  // Bot起動後にX監視を開始
-  xMonitor.start();
+  // Bot起動後にTwitter監視を開始
+  twitterMonitor = new TwitterMonitor(client);
+  twitterMonitor.start();
 });
 
 client.login(process.env.TOKEN);
