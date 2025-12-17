@@ -125,47 +125,6 @@ module.exports = {
 
             console.log(`[Image Copy] メディアをコピーしました (チャンネル: ${imageChannel.name}, 枚数: ${mediaAttachments.size})`);
             
-            // 重複送信チェック: 少し待ってから最近のメッセージを確認
-            setTimeout(async () => {
-              try {
-                const recentMessages = await imageChannel.messages.fetch({ limit: 10 });
-                const sameUrlMessages = [];
-                
-                // 同じ元メッセージURLを持つメッセージを検索
-                for (const [msgId, msg] of recentMessages) {
-                  if (msg.content.includes(message.url)) {
-                    sameUrlMessages.push(msg);
-                  }
-                }
-                
-                console.log(`[Image Copy] 同じURLのメッセージ数: ${sameUrlMessages.length}`);
-                
-                // 2つ以上ある場合のみ処理
-                if (sameUrlMessages.length >= 2) {
-                  console.log(`[Image Copy] 重複送信を検出: ${sameUrlMessages.length}件`);
-                  
-                  // タイムスタンプでソート（古い順）
-                  sameUrlMessages.sort((a, b) => a.createdTimestamp - b.createdTimestamp);
-                  
-                  // 最初のメッセージIDを記録
-                  const keepMessageId = sameUrlMessages[0].id;
-                  console.log(`[Image Copy] 保持するメッセージID: ${keepMessageId}`);
-                  
-                  // 2番目以降のメッセージのみを削除（最初のものは絶対に削除しない）
-                  for (let i = 1; i < sameUrlMessages.length; i++) {
-                    const duplicate = sameUrlMessages[i];
-                    if (duplicate.id !== keepMessageId) {
-                      await duplicate.delete();
-                      console.log(`[Image Copy] 重複メッセージを削除: ${duplicate.id}`);
-                    }
-                  }
-                  console.log(`[Image Copy] 最初のメッセージを保持しました: ${keepMessageId}`);
-                }
-              } catch (err) {
-                console.error('[Image Copy] 重複チェックに失敗:', err);
-              }
-            }, 2000);
-            
           } catch (error) {
             console.error('[Image Copy] メディアのコピーに失敗しました:', error);
           }
