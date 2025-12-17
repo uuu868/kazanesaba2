@@ -1,6 +1,11 @@
 {
     "clientId": "1446558075027853393",
     "guildId": "1129344788387348594",
-    "imageChannelId": "1448399304266875112"
+    "imageChannelId": "1448399304266875112",
+    "xTwitter": {
+      "bearerToken": "",
+      "checkIntervalMinutes": 5,
+      "accounts": []
+    }
   }
   

@@ -46,4 +46,13 @@ for (const file of eventsFiles) {
   console.log(`-> [Loaded Event] ${file.split('.')[0]}`);
 }
 
+// X(Twitter)監視機能を初期化
+const XMonitor = require('./utils/xMonitor');
+const xMonitor = new XMonitor(client);
+
+client.once(Events.ClientReady, () => {
+  // Bot起動後にX監視を開始
+  xMonitor.start();
+});
+
 client.login(process.env.TOKEN);
