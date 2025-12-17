@@ -52,9 +52,9 @@ module.exports = {
 
   async execute(client, interaction) {
     try {
-      // ロールチェック
-      const { ensureAllowed } = require('../utils/roleGuard');
-      if (!(await ensureAllowed(interaction))) return;
+      // ロールチェック（リマインド専用）
+      const { ensureReminderAllowed } = require('../utils/roleGuard');
+      if (!(await ensureReminderAllowed(interaction))) return;
 
       await interaction.deferReply({ flags: 64 });
 
