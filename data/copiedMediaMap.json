@@ -1427,6 +1427,13 @@
       "lastTweetId": null,
       "addedAt": "2025-12-17T01:04:19.903Z",
       "addedBy": "1088020702583603270"
+    },
+    {
+      "username": "1awata",
+      "channelId": "1446124371297959966",
+      "lastTweetId": null,
+      "addedAt": "2025-12-17T01:30:00.000Z",
+      "addedBy": "1088020702583603270"
     }
   ],
   "url:https://cdn.discordapp.com/attachments/1380016485421940787/1450657437077082163/PXL_20251217_011414043.jpg?ex=69435584&is=69420404&hm=56e8ac4a866ebab1648ff6f14a6a5895c7244702b5c79eda3a718abbd3fd5010&": {
@@ -1617,6 +1624,25 @@
     "createdAt": "2025-12-17T01:30:22.444Z",
     "copiedMessageIds": [
       "1450661368087838924"
+    ]
+  },
+  "url:https://cdn.discordapp.com/attachments/1380016485421940787/1450662610029645971/IMG_4431.jpg?ex=69435a56&is=694208d6&hm=e1d69e26d8f783bf1246bd5ff4e76aa72fbfc824c7ee92b7ab2cb721bebbe4ce&": {
+    "createdAt": "2025-12-17T01:35:18.730Z",
+    "copiedMessageIds": [
+      "processing",
+      "1450662623254286557"
+    ],
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1
+  },
+  "1450662610281168976": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1380016485421940787",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-17T01:35:22.143Z",
+    "copiedMessageIds": [
+      "1450662623254286557"
     ]
   }
 }
