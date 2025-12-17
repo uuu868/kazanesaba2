@@ -49,7 +49,10 @@ module.exports = {
       const channel = interaction.options.getChannel('channel');
 
       // 既存の監視リストを取得
-      const monitors = dataStore.getMapping('x_monitors') || [];
+      let monitors = dataStore.getMapping('x_monitors');
+      if (!Array.isArray(monitors)) {
+        monitors = [];
+      }
 
       // 重複チェック
       const existing = monitors.find(m => m.username.toLowerCase() === username.toLowerCase());
@@ -81,7 +84,10 @@ module.exports = {
       const username = interaction.options.getString('username').replace('@', '');
 
       // 既存の監視リストを取得
-      const monitors = dataStore.getMapping('x_monitors') || [];
+      let monitors = dataStore.getMapping('x_monitors');
+      if (!Array.isArray(monitors)) {
+        monitors = [];
+      }
 
       // 削除対象を検索
       const index = monitors.findIndex(m => m.username.toLowerCase() === username.toLowerCase());
@@ -103,7 +109,12 @@ module.exports = {
       });
 
     } else if (subcommand === 'list') {
-      const monitors = dataStore.getMapping('x_monitors') || [];
+      let monitors = dataStore.getMapping('x_monitors');
+      
+      // monitorsが配列でない場合は空配列にする
+      if (!Array.isArray(monitors)) {
+        monitors = [];
+      }
 
       if (monitors.length === 0) {
         await interaction.reply({
