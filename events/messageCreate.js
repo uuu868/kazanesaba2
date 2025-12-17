@@ -138,20 +138,28 @@ module.exports = {
                   }
                 }
                 
-                // 2つ以上ある場合、最も古いもの1つを残して他を削除
-                if (sameUrlMessages.length > 1) {
+                console.log(`[Image Copy] 同じURLのメッセージ数: ${sameUrlMessages.length}`);
+                
+                // 2つ以上ある場合のみ処理
+                if (sameUrlMessages.length >= 2) {
                   console.log(`[Image Copy] 重複送信を検出: ${sameUrlMessages.length}件`);
                   
                   // タイムスタンプでソート（古い順）
                   sameUrlMessages.sort((a, b) => a.createdTimestamp - b.createdTimestamp);
                   
-                  // 最初の1つを残して、残りを削除
-                  const toDelete = sameUrlMessages.slice(1);
-                  for (const duplicate of toDelete) {
-                    await duplicate.delete();
-                    console.log(`[Image Copy] 重複メッセージを削除: ${duplicate.id}`);
+                  // 最初のメッセージIDを記録
+                  const keepMessageId = sameUrlMessages[0].id;
+                  console.log(`[Image Copy] 保持するメッセージID: ${keepMessageId}`);
+                  
+                  // 2番目以降のメッセージのみを削除（最初のものは絶対に削除しない）
+                  for (let i = 1; i < sameUrlMessages.length; i++) {
+                    const duplicate = sameUrlMessages[i];
+                    if (duplicate.id !== keepMessageId) {
+                      await duplicate.delete();
+                      console.log(`[Image Copy] 重複メッセージを削除: ${duplicate.id}`);
+                    }
                   }
-                  console.log(`[Image Copy] 最初のメッセージを保持: ${sameUrlMessages[0].id}`);
+                  console.log(`[Image Copy] 最初のメッセージを保持しました: ${keepMessageId}`);
                 }
               } catch (err) {
                 console.error('[Image Copy] 重複チェックに失敗:', err);
