@@ -238,7 +238,8 @@
           "end": 1766162796286,
           "duration": 4668
         }
-      ]
+      ],
+      "currentSessionStart": 1766173714264
     },
     "722943204172759513": {
       "username": "leic4ma",
@@ -380,7 +381,8 @@
           "end": 1766171896666,
           "duration": 7380
         }
-      ]
+      ],
+      "currentSessionStart": 1766173818958
     },
     "891309729895305276": {
       "username": "ruria_yi",
@@ -460,7 +462,8 @@
           "end": 1766173085332,
           "duration": 102
         }
-      ]
+      ],
+      "currentSessionStart": 1766173915046
     }
   }
 }
