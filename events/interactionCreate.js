@@ -415,8 +415,8 @@ async function handleTicketCreate(interaction) {
   };
   const typeName = typeNames[ticketType] || 'ticket';
 
-  // チケット番号を取得
-  const ticketNumber = ticketCounter.getNextNumber();
+  // チケット番号を取得（guild を渡す）
+  const ticketNumber = await ticketCounter.getNextNumber(guild);
   const paddedNumber = String(ticketNumber).padStart(4, '0'); // 0000形式
 
   const ticketName = `ticket-${paddedNumber}`.toLowerCase();
