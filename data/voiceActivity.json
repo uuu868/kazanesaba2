@@ -223,9 +223,14 @@
     },
     "924289862440480778": {
       "username": "siinii_botoru",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766159277985
+      "totalTime": 1660,
+      "sessions": [
+        {
+          "start": 1766159277985,
+          "end": 1766160938074,
+          "duration": 1660
+        }
+      ]
     },
     "1160761097599582219": {
       "username": "renntankoshozu",
@@ -240,9 +245,31 @@
     },
     "1217991094244085839": {
       "username": "saken0rni",
+      "totalTime": 24,
+      "sessions": [
+        {
+          "start": 1766160915842,
+          "end": 1766160939929,
+          "duration": 24
+        }
+      ]
+    },
+    "832874898799460364": {
+      "username": "koppepan.0824",
+      "totalTime": 52,
+      "sessions": [
+        {
+          "start": 1766161011748,
+          "end": 1766161063845,
+          "duration": 52
+        }
+      ]
+    },
+    "1308566953492873266": {
+      "username": "pipipi03987",
       "totalTime": 0,
       "sessions": [],
-      "currentSessionStart": 1766160915842
+      "currentSessionStart": 1766161064248
     }
   }
 }
