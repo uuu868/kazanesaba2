@@ -206,7 +206,8 @@
           "end": 1766168104186,
           "duration": 634
         }
-      ]
+      ],
+      "currentSessionStart": 1766168409342
     },
     "1108367889393786920": {
       "username": "cure.lovelin",
@@ -384,9 +385,14 @@
     },
     "1367804072253460563": {
       "username": "natuki_5656",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766168065288
+      "totalTime": 85,
+      "sessions": [
+        {
+          "start": 1766168065288,
+          "end": 1766168150688,
+          "duration": 85
+        }
+      ]
     }
   }
 }

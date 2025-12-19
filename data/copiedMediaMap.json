@@ -3546,5 +3546,24 @@
     "copiedMessageIds": [
       "1451638624637550864"
     ]
+  },
+  "url:https://cdn.discordapp.com/attachments/1380016756164132904/1451639217259024445/IMG_8311.jpg?ex=6946e7df&is=6945965f&hm=86a1879a592d37ec6c1d2360dfe3a8d1a4a66732002df6ba1106b2e29db10924&|https://cdn.discordapp.com/attachments/1380016756164132904/1451639218182029598/IMG_8315.jpg?ex=6946e7df&is=6945965f&hm=069ade90141120a1e584473d0db5f263f0b63a7ef6f4647303999ef901cb7fda&": {
+    "createdAt": "2025-12-19T18:16:00.964Z",
+    "copiedMessageIds": [
+      "processing",
+      "1451639245474103403"
+    ],
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 2
+  },
+  "1451639218420846754": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1380016756164132904",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 2,
+    "createdAt": "2025-12-19T18:16:07.337Z",
+    "copiedMessageIds": [
+      "1451639245474103403"
+    ]
   }
 }
