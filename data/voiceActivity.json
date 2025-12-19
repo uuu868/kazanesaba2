@@ -408,9 +408,14 @@
     },
     "711184289630257202": {
       "username": "bishopp2458",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766167415692
+      "totalTime": 5310,
+      "sessions": [
+        {
+          "start": 1766167415692,
+          "end": 1766172726510,
+          "duration": 5310
+        }
+      ]
     },
     "1367804072253460563": {
       "username": "natuki_5656",
