@@ -64,27 +64,41 @@
     },
     "1233611419744731186": {
       "username": "daizunoomame.",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766156387698
+      "totalTime": 3654,
+      "sessions": [
+        {
+          "start": 1766156387698,
+          "end": 1766160042550,
+          "duration": 3654
+        }
+      ]
     },
     "675553992553529344": {
       "username": "fnyapochitaro",
-      "totalTime": 700,
+      "totalTime": 3635,
       "sessions": [
         {
           "start": 1766156404396,
           "end": 1766157104746,
           "duration": 700
+        },
+        {
+          "start": 1766157106942,
+          "end": 1766160042617,
+          "duration": 2935
         }
-      ],
-      "currentSessionStart": 1766157106942
+      ]
     },
     "1376161840173945012": {
       "username": "take04139",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766156457190
+      "totalTime": 3584,
+      "sessions": [
+        {
+          "start": 1766156457190,
+          "end": 1766160041820,
+          "duration": 3584
+        }
+      ]
     },
     "1005315844424876033": {
       "username": "lisaca",
@@ -154,9 +168,14 @@
     },
     "524203573253373963": {
       "username": "gorila.8745",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766157924566
+      "totalTime": 2118,
+      "sessions": [
+        {
+          "start": 1766157924566,
+          "end": 1766160042595,
+          "duration": 2118
+        }
+      ]
     },
     "1381195796682375178": {
       "username": "runa861007",
@@ -192,6 +211,12 @@
       "totalTime": 0,
       "sessions": [],
       "currentSessionStart": 1766159277985
+    },
+    "1160761097599582219": {
+      "username": "renntankoshozu",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766160316294
     }
   }
 }
