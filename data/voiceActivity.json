@@ -451,9 +451,14 @@
     },
     "953583278491836426": {
       "username": "nem3170.",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766168645781
+      "totalTime": 10414,
+      "sessions": [
+        {
+          "start": 1766168645781,
+          "end": 1766179059843,
+          "duration": 10414
+        }
+      ]
     },
     "1376783362852655104": {
       "username": "cotton.candy._u",
