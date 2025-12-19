@@ -62,6 +62,23 @@
       "totalTime": 0,
       "sessions": [],
       "currentSessionStart": 1766156404396
+    },
+    "1376161840173945012": {
+      "username": "take04139",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766156457190
+    },
+    "1005315844424876033": {
+      "username": "lisaca",
+      "totalTime": 28,
+      "sessions": [
+        {
+          "start": 1766156695758,
+          "end": 1766156724203,
+          "duration": 28
+        }
+      ]
     }
   }
 }
