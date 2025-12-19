@@ -3356,5 +3356,43 @@
     "copiedMessageIds": [
       "1451636236698517674"
     ]
+  },
+  "url:https://cdn.discordapp.com/attachments/1380016756164132904/1451637570365689927/IMG_9356.jpg?ex=6946e656&is=694594d6&hm=7eade999fc4da8071f2d22ef5d872882eca18ab4abf4a5028eebe614fd4cea41&|https://cdn.discordapp.com/attachments/1380016756164132904/1451637571418325106/IMG_9357.jpg?ex=6946e657&is=694594d7&hm=c8c858faaa6c5315db48548d17e10709390053b5c7e186a24dc0827b8a13d155&": {
+    "createdAt": "2025-12-19T18:09:28.483Z",
+    "copiedMessageIds": [
+      "processing",
+      "1451637584898818139"
+    ],
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 2
+  },
+  "1451637571745484992": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1380016756164132904",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 2,
+    "createdAt": "2025-12-19T18:09:31.693Z",
+    "copiedMessageIds": [
+      "1451637584898818139"
+    ]
+  },
+  "url:https://cdn.discordapp.com/attachments/1380016756164132904/1451637753774342305/IMG_2916.jpg?ex=6946e682&is=69459502&hm=d3bc01f751a4192438d908702df8cadcdc3ba1a8379f7eeea429d21853134d57&": {
+    "createdAt": "2025-12-19T18:10:11.320Z",
+    "copiedMessageIds": [
+      "processing",
+      "1451637758241017939"
+    ],
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1
+  },
+  "1451637753979736145": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1380016756164132904",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-19T18:10:12.408Z",
+    "copiedMessageIds": [
+      "1451637758241017939"
+    ]
   }
 }
