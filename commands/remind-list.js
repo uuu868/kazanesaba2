@@ -38,62 +38,86 @@ module.exports = {
         return timeA - timeB;
       });
 
-      // Embedを作成
-      const embed = new EmbedBuilder()
-        .setTitle('📋 リマインド一覧')
-        .setColor(0x2196f3)
-        .setDescription(`合計 **${reminders.length}** 件のリマインドが設定されています`)
-        .setTimestamp();
+      // 25件ごとにEmbedを分割
+      const itemsPerPage = 25;
+      const totalPages = Math.ceil(reminders.length / itemsPerPage);
 
-      // 最大25件まで表示（Embedのフィールド制限）
-      const displayReminders = reminders.slice(0, 25);
-      
-      for (let i = 0; i < displayReminders.length; i++) {
-        const reminder = displayReminders[i];
-        const scheduledTime = new Date(reminder.scheduledTime);
-        const timeStr = `<t:${Math.floor(scheduledTime.getTime() / 1000)}:F>`;
-        const relativeTimeStr = `<t:${Math.floor(scheduledTime.getTime() / 1000)}:R>`;
-        
-        // チャンネル情報を取得
-        let channelMention = `ID: ${reminder.channelId}`;
-        try {
-          const channel = await client.channels.fetch(reminder.channelId);
-          if (channel) {
-            channelMention = `<#${reminder.channelId}>`;
-          }
-        } catch (e) {
-          // チャンネル取得失敗時はIDのみ表示
+      // 最初のメッセージを送信
+      await interaction.editReply({ 
+        content: `📋 **リマインド一覧** - 合計 **${reminders.length}** 件 ${totalPages > 1 ? `(${totalPages}ページ)` : ''}` 
+      });
+
+      // ページごとにEmbedを作成して送信
+      for (let page = 0; page < totalPages; page++) {
+        const startIndex = page * itemsPerPage;
+        const endIndex = Math.min(startIndex + itemsPerPage, reminders.length);
+        const pageReminders = reminders.slice(startIndex, endIndex);
+
+        const embed = new EmbedBuilder()
+          .setColor(0x2196f3)
+          .setTimestamp();
+
+        if (totalPages > 1) {
+          embed.setTitle(`📋 リマインド一覧 (${page + 1}/${totalPages}ページ目)`);
+        } else {
+          embed.setTitle('📋 リマインド一覧');
         }
 
-        // ユーザー情報
-        const userMention = `<@${reminder.userId}>`;
+        for (let i = 0; i < pageReminders.length; i++) {
+          const reminder = pageReminders[i];
+          const globalIndex = startIndex + i + 1;
+          const scheduledTime = new Date(reminder.scheduledTime);
+          const timeStr = `<t:${Math.floor(scheduledTime.getTime() / 1000)}:F>`;
+          const relativeTimeStr = `<t:${Math.floor(scheduledTime.getTime() / 1000)}:R>`;
+          
+          // チャンネル情報を取得
+          let channelMention = `ID: ${reminder.channelId}`;
+          try {
+            const channel = await client.channels.fetch(reminder.channelId);
+            if (channel) {
+              channelMention = `<#${reminder.channelId}>`;
+            }
+          } catch (e) {
+            // チャンネル取得失敗時はIDのみ表示
+          }
 
-        // 内容を短縮（最大100文字）
-        const contentPreview = reminder.content.length > 100 
-          ? reminder.content.substring(0, 100) + '...' 
-          : reminder.content;
+          // ユーザー情報
+          const userMention = `<@${reminder.userId}>`;
 
-        embed.addFields({
-          name: `${i + 1}. ${reminder.title}`,
-          value: [
-            `⏰ **実行予定**: ${timeStr} (${relativeTimeStr})`,
-            `👤 **作成者**: ${userMention}`,
-            `📍 **送信先**: ${channelMention}`,
-            `📝 **内容**: ${contentPreview}`,
-            `🆔 **ID**: \`${reminder.id}\``
-          ].join('\n'),
-          inline: false
-        });
-      }
+          // 内容を短縮（最大100文字）
+          const contentPreview = reminder.content.length > 100 
+            ? reminder.content.substring(0, 100) + '...' 
+            : reminder.content;
 
-      // 25件を超える場合は注記
-      if (reminders.length > 25) {
+          embed.addFields({
+            name: `${globalIndex}. ${reminder.title}`,
+            value: [
+              `⏰ **実行予定**: ${timeStr} (${relativeTimeStr})`,
+              `👤 **作成者**: ${userMention}`,
+              `📍 **送信先**: ${channelMention}`,
+              `📝 **内容**: ${contentPreview}`,
+              `🆔 **ID**: \`${reminder.id}\``
+            ].join('\n'),
+            inline: false
+          });
+        }
+
         embed.setFooter({ 
-          text: `表示: ${displayReminders.length}件 / 全体: ${reminders.length}件（最初の25件のみ表示）` 
+          text: `表示: ${startIndex + 1}-${endIndex}件 / 全体: ${reminders.length}件` 
         });
-      }
 
-      await interaction.editReply({ embeds: [embed] });
+        // 最初のページはeditReply、それ以降はfollowUp
+        if (page === 0) {
+          await interaction.editReply({ embeds: [embed] });
+        } else {
+          await interaction.followUp({ embeds: [embed], flags: 64 });
+        }
+
+        // 次のページがある場合は少し待機（レート制限対策）
+        if (page < totalPages - 1) {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+      }
 
     } catch (err) {
       console.error('[Remind List] error:', err);
