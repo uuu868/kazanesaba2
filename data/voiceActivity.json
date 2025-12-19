@@ -252,7 +252,8 @@
           "end": 1766160939929,
           "duration": 24
         }
-      ]
+      ],
+      "currentSessionStart": 1766161520250
     },
     "832874898799460364": {
       "username": "koppepan.0824",
@@ -270,6 +271,24 @@
       "totalTime": 0,
       "sessions": [],
       "currentSessionStart": 1766161064248
+    },
+    "1348149516955553833": {
+      "username": "a1425849",
+      "totalTime": 38,
+      "sessions": [
+        {
+          "start": 1766161229070,
+          "end": 1766161267693,
+          "duration": 38
+        }
+      ],
+      "currentSessionStart": 1766161408985
+    },
+    "525882467891150869": {
+      "username": "xc____cx",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766161277453
     }
   }
 }
