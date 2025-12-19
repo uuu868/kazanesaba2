@@ -48,7 +48,8 @@
           "end": 1766168785986,
           "duration": 338
         }
-      ]
+      ],
+      "currentSessionStart": 1766169180397
     },
     "1022082288445566987": {
       "username": "aa9440",
@@ -221,7 +222,8 @@
           "end": 1766168946745,
           "duration": 10
         }
-      ]
+      ],
+      "currentSessionStart": 1766169166935
     },
     "1108367889393786920": {
       "username": "cure.lovelin",
@@ -417,6 +419,17 @@
       "totalTime": 0,
       "sessions": [],
       "currentSessionStart": 1766168645781
+    },
+    "1376783362852655104": {
+      "username": "cotton.candy._u",
+      "totalTime": 19,
+      "sessions": [
+        {
+          "start": 1766169208312,
+          "end": 1766169227974,
+          "duration": 19
+        }
+      ]
     }
   }
 }
