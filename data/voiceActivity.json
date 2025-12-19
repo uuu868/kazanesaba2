@@ -13,9 +13,15 @@
     },
     "881933082142343169": {
       "username": "maripe_mk",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766155871377
+      "totalTime": 2549,
+      "sessions": [
+        {
+          "start": 1766155871377,
+          "end": 1766158420715,
+          "duration": 2549
+        }
+      ],
+      "currentSessionStart": 1766158430007
     },
     "574885917693575178": {
       "username": "makitarou0",
