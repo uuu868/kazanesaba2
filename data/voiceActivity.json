@@ -59,9 +59,15 @@
     },
     "675553992553529344": {
       "username": "fnyapochitaro",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766156404396
+      "totalTime": 700,
+      "sessions": [
+        {
+          "start": 1766156404396,
+          "end": 1766157104746,
+          "duration": 700
+        }
+      ],
+      "currentSessionStart": 1766157106942
     },
     "1376161840173945012": {
       "username": "take04139",
@@ -79,6 +85,24 @@
           "duration": 28
         }
       ]
+    },
+    "935057834729697302": {
+      "username": "05ullxv_",
+      "totalTime": 9,
+      "sessions": [
+        {
+          "start": 1766157279697,
+          "end": 1766157289597,
+          "duration": 9
+        }
+      ],
+      "currentSessionStart": 1766157291276
+    },
+    "1113039866725400649": {
+      "username": "80.70",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766157281742
     }
   }
 }
