@@ -25,7 +25,8 @@
           "end": 1766162806669,
           "duration": 4376
         }
-      ]
+      ],
+      "currentSessionStart": 1766168071510
     },
     "574885917693575178": {
       "username": "makitarou0",
@@ -193,15 +194,19 @@
     },
     "1381195796682375178": {
       "username": "runa861007",
-      "totalTime": 77,
+      "totalTime": 711,
       "sessions": [
         {
           "start": 1766157952254,
           "end": 1766158029716,
           "duration": 77
+        },
+        {
+          "start": 1766167469554,
+          "end": 1766168104186,
+          "duration": 634
         }
-      ],
-      "currentSessionStart": 1766167469554
+      ]
     },
     "1108367889393786920": {
       "username": "cure.lovelin",
@@ -376,6 +381,12 @@
       "totalTime": 0,
       "sessions": [],
       "currentSessionStart": 1766167415692
+    },
+    "1367804072253460563": {
+      "username": "natuki_5656",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766168065288
     }
   }
 }
