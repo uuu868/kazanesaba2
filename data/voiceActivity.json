@@ -373,9 +373,14 @@
     },
     "883943615250985001": {
       "username": "rimu_96",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766164516359
+      "totalTime": 7380,
+      "sessions": [
+        {
+          "start": 1766164516359,
+          "end": 1766171896666,
+          "duration": 7380
+        }
+      ]
     },
     "891309729895305276": {
       "username": "ruria_yi",
