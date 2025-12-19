@@ -140,15 +140,25 @@
     },
     "1227278738283040909": {
       "username": "matsu03112",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766157357200
+      "totalTime": 3151,
+      "sessions": [
+        {
+          "start": 1766157357200,
+          "end": 1766160508933,
+          "duration": 3151
+        }
+      ]
     },
     "723778911259066400": {
       "username": "appshiyake",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766157630024
+      "totalTime": 2881,
+      "sessions": [
+        {
+          "start": 1766157630024,
+          "end": 1766160511591,
+          "duration": 2881
+        }
+      ]
     },
     "1084697079194058863": {
       "username": "pan.888",
@@ -202,9 +212,14 @@
     },
     "1057641462755500124": {
       "username": "mattsundao_pudding",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766158704944
+      "totalTime": 1804,
+      "sessions": [
+        {
+          "start": 1766158704944,
+          "end": 1766160509907,
+          "duration": 1804
+        }
+      ]
     },
     "924289862440480778": {
       "username": "siinii_botoru",
