@@ -492,6 +492,17 @@
           "duration": 378
         }
       ]
+    },
+    "1437797058160623819": {
+      "username": "non_scale17",
+      "totalTime": 40,
+      "sessions": [
+        {
+          "start": 1766179257900,
+          "end": 1766179298651,
+          "duration": 40
+        }
+      ]
     }
   }
 }
