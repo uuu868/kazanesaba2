@@ -118,15 +118,38 @@
     },
     "1084697079194058863": {
       "username": "pan.888",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766157828662
+      "totalTime": 240,
+      "sessions": [
+        {
+          "start": 1766157828662,
+          "end": 1766158069010,
+          "duration": 240
+        }
+      ],
+      "currentSessionStart": 1766158075529
     },
     "524203573253373963": {
       "username": "gorila.8745",
       "totalTime": 0,
       "sessions": [],
       "currentSessionStart": 1766157924566
+    },
+    "1381195796682375178": {
+      "username": "runa861007",
+      "totalTime": 77,
+      "sessions": [
+        {
+          "start": 1766157952254,
+          "end": 1766158029716,
+          "duration": 77
+        }
+      ]
+    },
+    "1108367889393786920": {
+      "username": "cure.lovelin",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766158127914
     }
   }
 }
