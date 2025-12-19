@@ -3888,5 +3888,24 @@
     "copiedMessageIds": [
       "1451644891665924232"
     ]
+  },
+  "url:https://cdn.discordapp.com/attachments/1323240838138171432/1451645667188412467/2025-12-20_033725.png?ex=6946ede1&is=69459c61&hm=045d7072a8c4a32f7692a15590a1ee6a952d4bd4e193b50f5fe7eeb341e8db7f&|https://cdn.discordapp.com/attachments/1323240838138171432/1451645667960426506/2025-12-20_033731.png?ex=6946ede1&is=69459c61&hm=4721a46637b7f99bff2171f3be66f6be960ccd60dd532089fcd90c81ed82138a&|https://cdn.discordapp.com/attachments/1323240838138171432/1451645669273239643/2025-12-20_034100.png?ex=6946ede1&is=69459c61&hm=b6c8d0fab56b4f373841849b73da8ec89837f8a1aaa0eb0249c6d73e1211a652&": {
+    "createdAt": "2025-12-19T18:41:38.870Z",
+    "copiedMessageIds": [
+      "processing",
+      "1451645681981849751"
+    ],
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 3
+  },
+  "1451645669763711049": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1323240838138171432",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 3,
+    "createdAt": "2025-12-19T18:41:41.899Z",
+    "copiedMessageIds": [
+      "1451645681981849751"
+    ]
   }
 }
