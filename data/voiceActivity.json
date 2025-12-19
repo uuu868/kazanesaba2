@@ -243,15 +243,19 @@
     },
     "722943204172759513": {
       "username": "leic4ma",
-      "totalTime": 8672,
+      "totalTime": 16118,
       "sessions": [
         {
           "start": 1766158647053,
           "end": 1766167319914,
           "duration": 8672
+        },
+        {
+          "start": 1766167324817,
+          "end": 1766174771233,
+          "duration": 7446
         }
-      ],
-      "currentSessionStart": 1766167324817
+      ]
     },
     "1057641462755500124": {
       "username": "mattsundao_pudding",
