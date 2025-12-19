@@ -3911,5 +3911,20 @@
     "channelId": "1451653067559931935",
     "createdAt": "2025-12-19T19:11:03.262Z",
     "copiedMessageIds": []
+  },
+  "ticket_notification:1451653827089535168": {
+    "channelId": "1451653827089535168",
+    "createdAt": "2025-12-19T19:14:04.307Z",
+    "copiedMessageIds": []
+  },
+  "ticket_notification:1451653893347082495": {
+    "channelId": "1451653893347082495",
+    "createdAt": "2025-12-19T19:14:20.046Z",
+    "copiedMessageIds": []
+  },
+  "ticket_notification:1451653920190496818": {
+    "channelId": "1451653920190496818",
+    "createdAt": "2025-12-19T19:14:26.202Z",
+    "copiedMessageIds": []
   }
 }
