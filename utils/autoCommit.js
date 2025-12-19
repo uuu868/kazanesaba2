@@ -81,9 +81,45 @@ async function generateCommitMessage() {
 }
 
 /**
+ * リモートリポジトリへプッシュ
+ */
+async function pushChanges() {
+  try {
+    // リモートの存在を確認
+    const { stdout: remotes } = await execPromise('git remote');
+    if (!remotes.trim()) {
+      console.log('[AutoPush] リモートリポジトリが設定されていません');
+      return false;
+    }
+
+    // 現在のブランチを取得
+    const { stdout: branch } = await execPromise('git branch --show-current');
+    const currentBranch = branch.trim();
+    
+    if (!currentBranch) {
+      console.log('[AutoPush] ブランチが取得できませんでした');
+      return false;
+    }
+
+    // プッシュ実行
+    await execPromise(`git push origin ${currentBranch}`);
+    console.log(`[AutoPush] ✓ プッシュ完了: origin/${currentBranch}`);
+    return true;
+    
+  } catch (error) {
+    // プッシュするものがない場合はエラーではない
+    if (error.message.includes('Everything up-to-date')) {
+      return false;
+    }
+    console.error('[AutoPush] プッシュエラー:', error.message);
+    return false;
+  }
+}
+
+/**
  * Gitコミットを実行
  */
-async function commitChanges() {
+async function commitChanges(autoPush = true) {
   try {
     // 変更があるかチェック
     const hasChanges = await checkGitStatus();
@@ -102,6 +138,12 @@ async function commitChanges() {
     await execPromise(`git commit -m "${message}" -m "自動コミット時刻: ${timestamp}"`);
     
     console.log(`[AutoCommit] ✓ コミット完了: ${message}`);
+    
+    // 自動プッシュが有効な場合
+    if (autoPush) {
+      await pushChanges();
+    }
+    
     return true;
     
   } catch (error) {
@@ -115,26 +157,27 @@ async function commitChanges() {
 }
 
 /**
- * 自動コミットを開始
+ * 自動コミット&プッシュを開始
  */
 function startAutoCommit() {
-  console.log(`[AutoCommit] 自動コミット機能を開始しました（間隔: ${AUTO_COMMIT_INTERVAL / 60000}分）`);
+  console.log(`[AutoCommit] 自動コミット&プッシュ機能を開始しました（間隔: ${AUTO_COMMIT_INTERVAL / 60000}分）`);
   
-  // 定期的にコミットをチェック
+  // 定期的にコミット&プッシュをチェック
   setInterval(async () => {
-    await commitChanges();
+    await commitChanges(true); // 自動プッシュ有効
   }, AUTO_COMMIT_INTERVAL);
   
-  // 初回実行（起動時の変更をコミット）
+  // 初回実行（起動時の変更をコミット&プッシュ）
   setTimeout(async () => {
-    const committed = await commitChanges();
+    const committed = await commitChanges(true);
     if (committed) {
-      console.log('[AutoCommit] 起動時の変更をコミットしました');
+      console.log('[AutoCommit] 起動時の変更をコミット&プッシュしました');
     }
   }, 10000); // 10秒後に実行（起動処理が完了してから）
 }
 
 module.exports = {
   startAutoCommit,
-  commitChanges
+  commitChanges,
+  pushChanges
 };

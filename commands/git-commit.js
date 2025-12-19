@@ -5,7 +5,13 @@ const { commitChanges } = require('../utils/autoCommit');
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('git-commit')
-    .setDescription('現在の変更を手動でコミットします（管理者のみ）'),
+    .setDescription('現在の変更を手動でコミット&プッシュします（管理者のみ）')
+    .addBooleanOption(option =>
+      option
+        .setName('push')
+        .setDescription('コミット後にプッシュするか（デフォルト: true）')
+        .setRequired(false)
+    ),
 
   async execute(client, interaction) {
     // 管理者権限チェック
@@ -20,11 +26,15 @@ module.exports = {
     await interaction.deferReply({ ephemeral: true });
 
     try {
-      const committed = await commitChanges();
+      const autoPush = interaction.options.getBoolean('push') ?? true;
+      const committed = await commitChanges(autoPush);
       
       if (committed) {
+        const message = autoPush 
+          ? '✅ 変更を正常にコミット&プッシュしました。'
+          : '✅ 変更を正常にコミットしました。';
         await interaction.editReply({
-          content: '✅ 変更を正常にコミットしました。'
+          content: message
         });
       } else {
         await interaction.editReply({
