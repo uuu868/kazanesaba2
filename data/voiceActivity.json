@@ -273,9 +273,14 @@
     },
     "1308566953492873266": {
       "username": "pipipi03987",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766161064248
+      "totalTime": 949,
+      "sessions": [
+        {
+          "start": 1766161064248,
+          "end": 1766162013821,
+          "duration": 949
+        }
+      ]
     },
     "1348149516955553833": {
       "username": "a1425849",
