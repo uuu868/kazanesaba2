@@ -200,7 +200,8 @@
           "end": 1766158029716,
           "duration": 77
         }
-      ]
+      ],
+      "currentSessionStart": 1766167469554
     },
     "1108367889393786920": {
       "username": "cure.lovelin",
@@ -215,9 +216,15 @@
     },
     "722943204172759513": {
       "username": "leic4ma",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766158647053
+      "totalTime": 8672,
+      "sessions": [
+        {
+          "start": 1766158647053,
+          "end": 1766167319914,
+          "duration": 8672
+        }
+      ],
+      "currentSessionStart": 1766167324817
     },
     "1057641462755500124": {
       "username": "mattsundao_pudding",
@@ -351,6 +358,24 @@
       "totalTime": 0,
       "sessions": [],
       "currentSessionStart": 1766164842246
+    },
+    "296612806139052032": {
+      "username": "xxx_1304",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766167323229
+    },
+    "789468629154005022": {
+      "username": "8qulea_",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766167356077
+    },
+    "711184289630257202": {
+      "username": "bishopp2458",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766167415692
     }
   }
 }
