@@ -257,12 +257,17 @@
     },
     "832874898799460364": {
       "username": "koppepan.0824",
-      "totalTime": 52,
+      "totalTime": 72,
       "sessions": [
         {
           "start": 1766161011748,
           "end": 1766161063845,
           "duration": 52
+        },
+        {
+          "start": 1766161586570,
+          "end": 1766161607362,
+          "duration": 20
         }
       ]
     },
