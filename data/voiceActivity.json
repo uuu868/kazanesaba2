@@ -43,7 +43,8 @@
           "end": 1766156035076,
           "duration": 5
         }
-      ]
+      ],
+      "currentSessionStart": 1766168447010
     },
     "1022082288445566987": {
       "username": "aa9440",
@@ -393,6 +394,12 @@
           "duration": 85
         }
       ]
+    },
+    "953583278491836426": {
+      "username": "nem3170.",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766168645781
     }
   }
 }
