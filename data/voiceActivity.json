@@ -455,15 +455,19 @@
     },
     "1350346834664489041": {
       "username": "rone_0402",
-      "totalTime": 102,
+      "totalTime": 480,
       "sessions": [
         {
           "start": 1766172982862,
           "end": 1766173085332,
           "duration": 102
+        },
+        {
+          "start": 1766173915046,
+          "end": 1766174293399,
+          "duration": 378
         }
-      ],
-      "currentSessionStart": 1766173915046
+      ]
     }
   }
 }
