@@ -100,11 +100,8 @@ module.exports = {
         }
 
         // 日本時間(JST, UTC+9)として入力された時刻をUTCに変換
-        // ユーザーが入力した日時をJSTとして解釈し、UTC時刻に変換
-        const jstDate = new Date(year, month - 1, day, hour, minute, second, 0);
-        // 日本のタイムゾーンオフセットを考慮（通常UTC+9）
-        const jstOffsetMinutes = -9 * 60; // JSTはUTC+9なので、-540分
-        scheduledTime = new Date(jstDate.getTime() - (jstOffsetMinutes * 60 * 1000));
+        // Date.UTC()を使ってUTC時刻として作成し、JST(-9時間)を引く
+        scheduledTime = new Date(Date.UTC(year, month - 1, day, hour, minute, second, 0) - (9 * 60 * 60 * 1000));
         totalMs = scheduledTime.getTime() - Date.now();
 
         if (isNaN(scheduledTime.getTime())) {
