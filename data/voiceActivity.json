@@ -236,15 +236,19 @@
     },
     "1108367889393786920": {
       "username": "cure.lovelin",
-      "totalTime": 4668,
+      "totalTime": 11450,
       "sessions": [
         {
           "start": 1766158127914,
           "end": 1766162796286,
           "duration": 4668
+        },
+        {
+          "start": 1766173714264,
+          "end": 1766180497203,
+          "duration": 6782
         }
-      ],
-      "currentSessionStart": 1766173714264
+      ]
     },
     "722943204172759513": {
       "username": "leic4ma",
