@@ -115,9 +115,14 @@
     },
     "1113039866725400649": {
       "username": "80.70",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766157281742
+      "totalTime": 2083,
+      "sessions": [
+        {
+          "start": 1766157281742,
+          "end": 1766159365671,
+          "duration": 2083
+        }
+      ]
     },
     "1227278738283040909": {
       "username": "matsu03112",
@@ -177,6 +182,12 @@
       "totalTime": 0,
       "sessions": [],
       "currentSessionStart": 1766158704944
+    },
+    "924289862440480778": {
+      "username": "siinii_botoru",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766159277985
     }
   }
 }
