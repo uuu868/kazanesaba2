@@ -221,15 +221,19 @@
     },
     "1057641462755500124": {
       "username": "mattsundao_pudding",
-      "totalTime": 1804,
+      "totalTime": 3687,
       "sessions": [
         {
           "start": 1766158704944,
           "end": 1766160509907,
           "duration": 1804
+        },
+        {
+          "start": 1766165159788,
+          "end": 1766167043457,
+          "duration": 1883
         }
-      ],
-      "currentSessionStart": 1766165159788
+      ]
     },
     "924289862440480778": {
       "username": "siinii_botoru",
