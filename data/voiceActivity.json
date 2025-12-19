@@ -402,9 +402,14 @@
     },
     "296612806139052032": {
       "username": "xxx_1304",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766167323229
+      "totalTime": 8523,
+      "sessions": [
+        {
+          "start": 1766167323229,
+          "end": 1766175847157,
+          "duration": 8523
+        }
+      ]
     },
     "789468629154005022": {
       "username": "8qulea_",
