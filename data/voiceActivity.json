@@ -294,15 +294,20 @@
     },
     "1348149516955553833": {
       "username": "a1425849",
-      "totalTime": 38,
+      "totalTime": 4587,
       "sessions": [
         {
           "start": 1766161229070,
           "end": 1766161267693,
           "duration": 38
+        },
+        {
+          "start": 1766161408985,
+          "end": 1766165958413,
+          "duration": 4549
         }
       ],
-      "currentSessionStart": 1766161408985
+      "currentSessionStart": 1766165965079
     },
     "525882467891150869": {
       "username": "xc____cx",
