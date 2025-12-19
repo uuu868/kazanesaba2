@@ -1,15 +1,15 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { ensureAllowed } = require('../utils/roleGuard');
-const activityManager = require('../utils/activityManager');
+const voiceActivityManager = require('../utils/voiceActivityManager');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('activity')
-    .setDescription('サーバーのアクティビティランキングを表示します')
+    .setName('voice-activity')
+    .setDescription('ボイスチャットのアクティビティランキングを表示します')
     .addSubcommand(subcommand =>
       subcommand
         .setName('ranking')
-        .setDescription('アクティブなユーザーのランキングを表示')
+        .setDescription('ボイスチャット参加時間のランキングを表示')
         .addIntegerOption(option =>
           option
             .setName('limit')
@@ -22,7 +22,7 @@ module.exports = {
     .addSubcommand(subcommand =>
       subcommand
         .setName('user')
-        .setDescription('特定ユーザーのアクティビティを表示')
+        .setDescription('特定ユーザーのボイスアクティビティを表示')
         .addUserOption(option =>
           option
             .setName('target')
@@ -33,7 +33,7 @@ module.exports = {
     .addSubcommand(subcommand =>
       subcommand
         .setName('reset')
-        .setDescription('このサーバーのアクティビティデータをリセットします（管理者のみ）')
+        .setDescription('このサーバーのボイスアクティビティデータをリセットします（管理者のみ）')
     ),
 
   async execute(client, interaction) {
@@ -57,11 +57,11 @@ module.exports = {
  */
 async function handleRanking(interaction) {
   const limit = interaction.options.getInteger('limit') || 10;
-  const ranking = activityManager.getActivityRanking(interaction.guild.id, limit);
+  const ranking = voiceActivityManager.getVoiceActivityRanking(interaction.guild.id, limit);
 
   if (ranking.length === 0) {
     await interaction.reply({
-      content: 'まだアクティビティデータがありません。',
+      content: 'まだボイスアクティビティデータがありません。',
       ephemeral: true
     });
     return;
@@ -69,8 +69,8 @@ async function handleRanking(interaction) {
 
   // ランキング用のEmbed作成
   const embed = new EmbedBuilder()
-    .setColor('#FFD700')
-    .setTitle('📊 メッセージアクティビティランキング')
+    .setColor('#9B59B6')
+    .setTitle('🎤 ボイスアクティビティランキング')
     .setTimestamp();
 
   // ランクごとにメダルを表示
@@ -80,9 +80,10 @@ async function handleRanking(interaction) {
   for (let i = 0; i < ranking.length; i++) {
     const user = ranking[i];
     const medal = i < 3 ? medals[i] : `**${i + 1}位**`;
+    const duration = voiceActivityManager.formatDuration(user.totalTime);
     
     description += `${medal} <@${user.userId}>\n`;
-    description += `└ メッセージ数: **${user.messageCount}**\n\n`;
+    description += `└ 通話時間: **${duration}** (${user.sessionCount}回)\n\n`;
   }
 
   embed.setDescription(description);
@@ -91,37 +92,35 @@ async function handleRanking(interaction) {
 }
 
 /**
- * 個別ユーザーのアクティビティ表示処理
+ * 個別ユーザーのボイスアクティビティ表示処理
  */
 async function handleUser(interaction) {
   const targetUser = interaction.options.getUser('target') || interaction.user;
-  const activity = activityManager.getUserActivity(interaction.guild.id, targetUser.id);
+  const activity = voiceActivityManager.getUserVoiceActivity(interaction.guild.id, targetUser.id);
 
   if (!activity) {
     await interaction.reply({
-      content: `${targetUser.username} のアクティビティデータがまだありません。`,
+      content: `${targetUser.username} のボイスアクティビティデータがまだありません。`,
       ephemeral: true
     });
     return;
   }
 
   // 全体のランキングを取得して順位を計算
-  const allRanking = activityManager.getActivityRanking(interaction.guild.id, 1000);
+  const allRanking = voiceActivityManager.getVoiceActivityRanking(interaction.guild.id, 1000);
   const rank = allRanking.findIndex(u => u.userId === targetUser.id) + 1;
 
+  const duration = voiceActivityManager.formatDuration(activity.totalTime);
+  const status = activity.isInVoice ? '🔴 通話中' : '⚪ オフライン';
+
   const embed = new EmbedBuilder()
-    .setColor('#5865F2')
-    .setTitle(`📈 ${activity.username} のアクティビティ`)
+    .setColor('#9B59B6')
+    .setTitle(`🎤 ${activity.username} のボイスアクティビティ`)
     .addFields(
-      { name: 'メッセージ数', value: `${activity.messageCount} 件`, inline: true },
+      { name: '通話時間', value: duration, inline: true },
       { name: 'サーバー内順位', value: `${rank} 位`, inline: true },
-      { 
-        name: '最終メッセージ', 
-        value: activity.lastMessageAt 
-          ? `<t:${Math.floor(new Date(activity.lastMessageAt).getTime() / 1000)}:R>` 
-          : '不明',
-        inline: true 
-      }
+      { name: 'セッション回数', value: `${activity.sessionCount} 回`, inline: true },
+      { name: 'ステータス', value: status, inline: true }
     )
     .setThumbnail(targetUser.displayAvatarURL())
     .setTimestamp();
@@ -130,7 +129,7 @@ async function handleUser(interaction) {
 }
 
 /**
- * アクティビティデータリセット処理（管理者のみ）
+ * ボイスアクティビティデータリセット処理（管理者のみ）
  */
 async function handleReset(interaction) {
   // 管理者権限チェック
@@ -142,11 +141,11 @@ async function handleReset(interaction) {
     return;
   }
 
-  const success = activityManager.resetActivity(interaction.guild.id);
+  const success = voiceActivityManager.resetVoiceActivity(interaction.guild.id);
 
   if (success) {
     await interaction.reply({
-      content: '✅ このサーバーのアクティビティデータをリセットしました。',
+      content: '✅ このサーバーのボイスアクティビティデータをリセットしました。',
       ephemeral: true
     });
   } else {
