@@ -138,15 +138,19 @@
     },
     "1084697079194058863": {
       "username": "pan.888",
-      "totalTime": 240,
+      "totalTime": 1622,
       "sessions": [
         {
           "start": 1766157828662,
           "end": 1766158069010,
           "duration": 240
+        },
+        {
+          "start": 1766158075529,
+          "end": 1766159457642,
+          "duration": 1382
         }
-      ],
-      "currentSessionStart": 1766158075529
+      ]
     },
     "524203573253373963": {
       "username": "gorila.8745",
