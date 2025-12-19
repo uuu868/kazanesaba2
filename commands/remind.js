@@ -100,8 +100,8 @@ module.exports = {
         }
 
         // 日本時間(JST, UTC+9)として入力された時刻をUTCに変換
-        // Date.UTC()を使ってUTC時刻として作成し、JST(-9時間)を引く
-        scheduledTime = new Date(Date.UTC(year, month - 1, day, hour, minute, second, 0) - (9 * 60 * 60 * 1000));
+        // ユーザーが入力した時刻はJST(UTC+9)なので、UTC時刻に変換するため9時間引く
+        scheduledTime = new Date(Date.UTC(year, month - 1, day, hour - 9, minute, second, 0));
         totalMs = scheduledTime.getTime() - Date.now();
 
         if (isNaN(scheduledTime.getTime())) {
@@ -143,11 +143,18 @@ module.exports = {
         // mention 設定は不要
       };
 
+      // 表示用ラベル
+      const displayDuration = dateStr ? '指定日時' : formatTime(hours, minutes, seconds);
+
       // 永続化してスケジュール
       reminderManager.addReminder(client, reminder);
 
-      // 表示用ラベル
-      const displayDuration = dateStr ? '指定日時' : formatTime(hours, minutes, seconds);
+      console.log(`[Remind] リマインド設定: ${reminderId}`);
+      console.log(`  - タイトル: ${title}`);
+      console.log(`  - 設定時刻: ${displayDuration}`);
+      console.log(`  - 実行予定(UTC): ${scheduledTime.toISOString()}`);
+      console.log(`  - 実行予定(JST): ${scheduledTime.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })}`);
+      console.log(`  - 現在時刻(JST): ${new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })}`);
 
       const responseEmbed = new EmbedBuilder()
         .setTitle('✅ リマインドを設定しました')
@@ -163,8 +170,6 @@ module.exports = {
       await interaction.editReply({
         embeds: [responseEmbed]
       });
-
-      console.log(`[Remind] リマインド設定: ${reminderId} - ${displayDuration} - ${content.substring(0, 50)}`);
 
     } catch (err) {
       console.error('[Remind] error:', err);

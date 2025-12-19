@@ -18,6 +18,10 @@ function extractMentions(text) {
 
 async function sendReminder(client, reminder) {
   try {
+    console.log(`[ReminderManager] リマインド送信開始: ${reminder.id}`);
+    console.log(`  - タイトル: ${reminder.title}`);
+    console.log(`  - 送信時刻: ${new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })} (JST)`);
+    
     const channel = await client.channels.fetch(reminder.channelId).catch(() => null);
     if (!channel) {
       console.error('[ReminderManager] チャンネルが見つかりません:', reminder.channelId);
@@ -41,7 +45,7 @@ async function sendReminder(client, reminder) {
     }
 
     await channel.send({ embeds: [embed] });
-    console.log(`[ReminderManager] リマインド送信: ${reminder.id}`);
+    console.log(`[ReminderManager] リマインド送信完了: ${reminder.id}`);
   } catch (err) {
     console.error('[ReminderManager] リマインド送信失敗:', err);
   }
@@ -49,7 +53,14 @@ async function sendReminder(client, reminder) {
 
 function scheduleReminder(client, reminder) {
   const remaining = msUntil(reminder.scheduledTime);
+  
+  console.log(`[ReminderManager] スケジュール: ${reminder.id}`);
+  console.log(`  - 予定時刻: ${new Date(reminder.scheduledTime).toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })} (JST)`);
+  console.log(`  - 残り時間: ${Math.floor(remaining / 1000)}秒 (${Math.floor(remaining / 60000)}分)`);
+  console.log(`  - 現在時刻: ${new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })} (JST)`);
+  
   if (remaining <= 0) {
+    console.log(`[ReminderManager] 過去の時刻なので即座に送信: ${reminder.id}`);
     // overdue -> send immediately (but asynchronously)
     sendReminder(client, reminder).then(() => {
       reminderStore.deleteReminder(reminder.id);
@@ -59,6 +70,7 @@ function scheduleReminder(client, reminder) {
 
   const timeoutId = setTimeout(async () => {
     try {
+      console.log(`[ReminderManager] タイマー実行: ${reminder.id} at ${new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })}`);
       await sendReminder(client, reminder);
     } finally {
       // cleanup
@@ -68,6 +80,7 @@ function scheduleReminder(client, reminder) {
   }, remaining);
 
   timers.set(reminder.id, timeoutId);
+  console.log(`[ReminderManager] タイマー設定完了: ${reminder.id}`);
 }
 
 function addReminder(client, reminder) {
