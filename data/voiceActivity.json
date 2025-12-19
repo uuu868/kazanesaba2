@@ -296,9 +296,20 @@
     },
     "525882467891150869": {
       "username": "xc____cx",
+      "totalTime": 856,
+      "sessions": [
+        {
+          "start": 1766161277453,
+          "end": 1766162133720,
+          "duration": 856
+        }
+      ]
+    },
+    "1031486705301200937": {
+      "username": "tapioika",
       "totalTime": 0,
       "sessions": [],
-      "currentSessionStart": 1766161277453
+      "currentSessionStart": 1766162153297
     }
   }
 }
