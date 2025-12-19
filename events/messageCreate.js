@@ -135,6 +135,49 @@ module.exports = {
 
             console.log(`[Image Copy] メディアをコピーしました (チャンネル: ${imageChannel.name}, 枚数: ${mediaAttachments.size})`);
             
+            // 重複チェック: 10秒後に同じ画像リンクがないか確認
+            setTimeout(async () => {
+              try {
+                // 画像チャンネルの最近のメッセージを取得（送信から10秒後）
+                const recentMessages = await imageChannel.messages.fetch({ limit: 20 });
+                const sameUrlMessages = [];
+                
+                // 同じ元メッセージURLを持つメッセージを検索
+                for (const [msgId, msg] of recentMessages) {
+                  if (msg.content.includes(message.url)) {
+                    sameUrlMessages.push(msg);
+                  }
+                }
+                
+                // 2つ以上ある場合のみ重複削除処理
+                if (sameUrlMessages.length >= 2) {
+                  console.log(`[Image Copy] 重複検出: ${sameUrlMessages.length}件 (元URL: ${message.url})`);
+                  
+                  // タイムスタンプでソート（古い順）
+                  sameUrlMessages.sort((a, b) => a.createdTimestamp - b.createdTimestamp);
+                  
+                  // 最初のメッセージIDを記録
+                  const keepMessageId = sameUrlMessages[0].id;
+                  console.log(`[Image Copy] 保持: ${keepMessageId}`);
+                  
+                  // 2番目以降を削除
+                  for (let i = 1; i < sameUrlMessages.length; i++) {
+                    const duplicate = sameUrlMessages[i];
+                    try {
+                      await duplicate.delete();
+                      console.log(`[Image Copy] 削除: ${duplicate.id}`);
+                    } catch (delErr) {
+                      console.error(`[Image Copy] 削除失敗 ${duplicate.id}:`, delErr.message);
+                    }
+                  }
+                  
+                  console.log(`[Image Copy] 重複削除完了: ${keepMessageId}を保持`);
+                }
+              } catch (err) {
+                console.error('[Image Copy] 重複チェックエラー:', err.message);
+              }
+            }, 10000); // 10秒待機
+            
           } catch (error) {
             console.error('[Image Copy] メディアのコピーに失敗しました:', error);
           }
