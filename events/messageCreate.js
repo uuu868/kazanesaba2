@@ -2,6 +2,7 @@ const { Events } = require('discord.js');
 const pinMessageCommand = require('../commands/pin-message.js');
 const config = require('../config.json');
 const dataStore = require('../utils/dataStore');
+const activityManager = require('../utils/activityManager');
 
 module.exports = {
   name: Events.MessageCreate,
@@ -11,6 +12,15 @@ module.exports = {
     if (message.author.bot) {
       console.log('[Pin Message] ボットメッセージを無視します');
       return;
+    }
+
+    // ユーザーのアクティビティを記録
+    if (message.guild) {
+      activityManager.recordMessage(
+        message.guild.id,
+        message.author.id,
+        message.author.username
+      );
     }
 
     try {
