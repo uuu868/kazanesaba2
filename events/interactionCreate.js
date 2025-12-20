@@ -479,14 +479,14 @@ async function handleTicketCreate(interaction) {
   // 1つの埋め込みメッセージを作成
   const embed = new EmbedBuilder()
     .setTitle('📋 チケット内容')
-    .setDescription('管理者の対応をお待ちください。\n誤って作成した場合や、問題が解決した場合を除きチケットを勝手に閉じないで下さい。')
     .setColor(0x5865F2)
     .addFields(
       { name: '📌 用件', value: typeName, inline: true },
       { name: '👤 作成者', value: `${interaction.user}`, inline: true },
       { name: labels[0], value: field1, inline: false },
       { name: labels[1], value: field2, inline: false },
-      { name: labels[2], value: field3.length > 1024 ? field3.substring(0, 1021) + '...' : field3, inline: false }
+      { name: labels[2], value: field3.length > 1024 ? field3.substring(0, 1021) + '...' : field3, inline: false },
+      { name: '\u200B', value: '上記内容で問い合わせ内容受領しました。\n\n管理者からの返信をお待ち下さい。\n\n誤って作成した場合や、問題が解決した場合を除きチケットを勝手に閉じないで下さい。', inline: false }
     )
     .setTimestamp();
 
