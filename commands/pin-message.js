@@ -202,6 +202,57 @@ module.exports.bringPinnedToTop = async function(channel, pinnedMessageId) {
     pinnedMessages.set(channel.id, newMsg.id);
     console.log(`[Pin Message] グローバル管理を更新: ${newMsg.id}`);
     
+    // 重複削除チェック: 2秒後に同じembedを持つメッセージがないか確認
+    setTimeout(async () => {
+      try {
+        const recentMessages = await channel.messages.fetch({ limit: 20 });
+        const samePinnedMessages = [];
+        
+        // 同じタイトルのembedを持つメッセージを検索
+        const embedTitle = embeds.length > 0 && embeds[0].title ? embeds[0].title : null;
+        
+        for (const [msgId, msg] of recentMessages) {
+          // ボットメッセージのみチェック
+          if (msg.author.id === newMsg.author.id) {
+            if (embedTitle && msg.embeds.length > 0 && msg.embeds[0].title === embedTitle) {
+              samePinnedMessages.push(msg);
+            } else if (!embedTitle && msg.content === content) {
+              samePinnedMessages.push(msg);
+            }
+          }
+        }
+        
+        console.log(`[Pin Message] 同じ固定メッセージ数: ${samePinnedMessages.length}`);
+        
+        // 2つ以上ある場合のみ処理
+        if (samePinnedMessages.length >= 2) {
+          console.log(`[Pin Message] 重複固定メッセージを検出: ${samePinnedMessages.length}件`);
+          
+          // タイムスタンプでソート（古い順）
+          samePinnedMessages.sort((a, b) => a.createdTimestamp - b.createdTimestamp);
+          
+          // 最初のメッセージIDを記録
+          const keepMessageId = samePinnedMessages[0].id;
+          console.log(`[Pin Message] 保持する固定メッセージID: ${keepMessageId}`);
+          
+          // グローバル管理を最初のメッセージに更新
+          pinnedMessages.set(channel.id, keepMessageId);
+          
+          // 2番目以降のメッセージのみを削除
+          for (let i = 1; i < samePinnedMessages.length; i++) {
+            const duplicate = samePinnedMessages[i];
+            if (duplicate.id !== keepMessageId) {
+              await duplicate.delete();
+              console.log(`[Pin Message] 重複固定メッセージを削除: ${duplicate.id}`);
+            }
+          }
+          console.log(`[Pin Message] 最初の固定メッセージを保持しました: ${keepMessageId}`);
+        }
+      } catch (err) {
+        console.error('[Pin Message] 重複チェックに失敗:', err);
+      }
+    }, 2000);
+    
     return newMsg.id;
   } catch (err) {
     console.error('[Pin Message] bringPinnedToTop error:', err.message);
