@@ -517,6 +517,17 @@
       "totalTime": 0,
       "sessions": [],
       "currentSessionStart": 1766252274447
+    },
+    "1360965128152940545": {
+      "username": "re_i06",
+      "totalTime": 65,
+      "sessions": [
+        {
+          "start": 1766253515877,
+          "end": 1766253580961,
+          "duration": 65
+        }
+      ]
     }
   }
 }
