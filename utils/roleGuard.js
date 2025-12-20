@@ -18,6 +18,11 @@ const defaultReminderRoleIds = [
   '1432590712662130729'
 ];
 
+// 許可されたユーザーID
+const allowedUserIds = [
+  '959816319568576582'
+];
+
 /**
  * 現在の許可ロールIDを取得（チケット用・動的に読み込み）
  */
@@ -57,12 +62,22 @@ const allowedRoleIds = new Proxy([], {
 
 function hasAllowedRole(member) {
   if (!member || !member.roles) return false;
+  
+  // ユーザーIDで許可されているかチェック
+  if (allowedUserIds.includes(member.user.id)) return true;
+  
+  // ロールで許可されているかチェック
   const currentIds = getAllowedRoleIds();
   return currentIds.some(id => member.roles.cache.has(id));
 }
 
 function hasReminderRole(member) {
   if (!member || !member.roles) return false;
+  
+  // ユーザーIDで許可されているかチェック
+  if (allowedUserIds.includes(member.user.id)) return true;
+  
+  // ロールで許可されているかチェック
   const currentIds = getReminderRoleIds();
   return currentIds.some(id => member.roles.cache.has(id));
 }

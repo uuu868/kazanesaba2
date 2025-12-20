@@ -194,7 +194,8 @@
           "end": 1766159457642,
           "duration": 1382
         }
-      ]
+      ],
+      "currentSessionStart": 1766253957550
     },
     "524203573253373963": {
       "username": "gorila.8745",
@@ -264,7 +265,8 @@
           "end": 1766174771233,
           "duration": 7446
         }
-      ]
+      ],
+      "currentSessionStart": 1766254025468
     },
     "1057641462755500124": {
       "username": "mattsundao_pudding",
@@ -444,7 +446,8 @@
           "end": 1766172726510,
           "duration": 5310
         }
-      ]
+      ],
+      "currentSessionStart": 1766253874948
     },
     "1367804072253460563": {
       "username": "natuki_5656",
@@ -528,6 +531,18 @@
           "duration": 65
         }
       ]
+    },
+    "713484822097690716": {
+      "username": "nekocho.",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766253932147
+    },
+    "1332668851535482927": {
+      "username": "nagisa0616.",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766253934608
     }
   }
 }
