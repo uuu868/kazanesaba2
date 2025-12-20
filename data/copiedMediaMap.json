@@ -4180,5 +4180,10 @@
     "copiedMessageIds": [
       "1451997966180159528"
     ]
+  },
+  "ticket_notification:1451998389750202429": {
+    "channelId": "1451998389750202429",
+    "createdAt": "2025-12-20T18:03:15.015Z",
+    "copiedMessageIds": []
   }
 }
