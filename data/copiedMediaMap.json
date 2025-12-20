@@ -4022,5 +4022,58 @@
     "copiedMessageIds": [
       "1451995049465483517"
     ]
+  },
+  "ticket_notification:1451996524987940905": {
+    "channelId": "1451996524987940905",
+    "createdAt": "2025-12-20T17:55:50.443Z",
+    "copiedMessageIds": []
+  },
+  "url:https://cdn.discordapp.com/attachments/1451916539686031511/1451996612996894844/IMG_1227.jpg?ex=694834b9&is=6946e339&hm=f31679d718df55c924009e5dd3d5eafa6c32807ed25c2d121ec287906de03ee0&": {
+    "createdAt": "2025-12-20T17:56:11.336Z",
+    "copiedMessageIds": [
+      "processing",
+      "1451996621649739806"
+    ],
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1
+  },
+  "1451996613496143893": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1451916539686031511",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-20T17:56:13.072Z",
+    "copiedMessageIds": [
+      "1451996621649739806"
+    ],
+    "deleted": true,
+    "deletedAt": "2025-12-20T17:56:26.992Z"
+  },
+  "url:https://cdn.discordapp.com/attachments/1451916539686031511/1451996717825134663/IMG_1289.jpg?ex=694834d2&is=6946e352&hm=56ef75ac28eb144db3d02435fd1bbd5d497c0dcf281a77a70df90b577c9a0830&": {
+    "createdAt": "2025-12-20T17:56:36.355Z",
+    "copiedMessageIds": [
+      "processing",
+      "1451996727983996949"
+    ],
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1
+  },
+  "1451996718022525060": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1451916539686031511",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-20T17:56:38.506Z",
+    "copiedMessageIds": [
+      "1451996727983996949"
+    ],
+    "deleted": true,
+    "deletedAt": "2025-12-20T17:57:02.712Z"
+  },
+  "url:https://cdn.discordapp.com/attachments/1451916539686031511/1451996871181471969/IMG_5612.jpg?ex=694834f6&is=6946e376&hm=9549869464c92bdcbd628e3d0ba85a5ccd74fe7e576deb19fba77acb8e7a0c1f&|https://cdn.discordapp.com/attachments/1451916539686031511/1451996871743770877/IMG_5613.jpg?ex=694834f7&is=6946e377&hm=4632311ab0747630b4cd1acc2be86337c439f19c88c6b00892b2923f54696ec9&": {
+    "createdAt": "2025-12-20T17:57:12.920Z",
+    "copiedMessageIds": [
+      "processing"
+    ]
   }
 }
