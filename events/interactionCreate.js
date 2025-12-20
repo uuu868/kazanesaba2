@@ -486,7 +486,7 @@ async function handleTicketCreate(interaction) {
       { name: labels[0], value: field1, inline: false },
       { name: labels[1], value: field2, inline: false },
       { name: labels[2], value: field3.length > 1024 ? field3.substring(0, 1021) + '...' : field3, inline: false },
-      { name: '\u200B', value: '\n\n上記内容で問い合わせ内容受領しました。\n管理者からの返信をお待ち下さい。\n\n\n誤って作成した場合や、問題が解決した場合を除きチケットを勝手に閉じないで下さい。', inline: false }
+      { name: '\u200B', value: '\n\n上記内容で問い合わせ内容受領しました。\n管理者からの返信をお待ち下さい。\n\n～～～～～～～～～～～～～～～～～～～～～～～～～～～～\n\n誤って作成した場合や、問題が解決した場合を除きチケットを勝手に閉じないで下さい。', inline: false }
     )
     .setTimestamp();
 
