@@ -476,9 +476,10 @@ async function handleTicketCreate(interaction) {
       .setEmoji('🔒')
   );
 
-  // 基本の埋め込みメッセージを作成
+  // 1つの埋め込みメッセージを作成
   const embed = new EmbedBuilder()
     .setTitle('📋 チケット内容')
+    .setDescription('管理者の対応をお待ちください。\n誤って作成した場合や、問題が解決した場合を除きチケットを勝手に閉じないで下さい。')
     .setColor(0x5865F2)
     .addFields(
       { name: '📌 用件', value: typeName, inline: true },
@@ -489,20 +490,11 @@ async function handleTicketCreate(interaction) {
     )
     .setTimestamp();
 
-  const instructionEmbed = new EmbedBuilder()
-    .setDescription('管理者の対応をお待ちください。\n誤って作成した場合や、問題が解決した場合を除きチケットを勝手に閉じないで下さい。')
-    .setColor(0x5865F2);
-
   // チケットメッセージを送信
   await channel.send({
     content: `${interaction.user.toString()}さん専用チャットです。\n他の方には表示されません。\n${staffPing}`,
-    embeds: [instructionEmbed],
+    embeds: [embed],
     components: [closeButton]
-  });
-
-  // チケットチャンネルにフォーム内容を送信
-  await channel.send({
-    embeds: [embed]
   });
 
   // 運営専用チャンネルにフォーム内容を送信（重複防止）
