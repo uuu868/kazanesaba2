@@ -18,7 +18,7 @@ const player = new Player(client);
 client.player = player;
 
 // extractorを登録
-player.extractors.loadDefault().catch(err => {
+player.extractors.loadMulti(DefaultExtractors).catch(err => {
   console.error('Extractor読み込みエラー:', err);
 });
 
