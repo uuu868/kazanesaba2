@@ -3,7 +3,6 @@ const pinMessageCommand = require('../commands/pin-message.js');
 const config = require('../config.json');
 const dataStore = require('../utils/dataStore');
 const activityManager = require('../utils/activityManager');
-const shiritoriManager = require('../utils/shiritoriManager');
 
 module.exports = {
   name: Events.MessageCreate,
@@ -25,12 +24,6 @@ module.exports = {
         message.author.id,
         message.author.username
       );
-    }
-
-    // しりとり機能の処理
-    if (message.channel.id === shiritoriManager.SHIRITORI_CHANNEL_ID) {
-      await shiritoriManager.processShiritoriMessage(message);
-      return; // しりとりチャンネルでは他の処理をスキップ
     }
 
     try {
