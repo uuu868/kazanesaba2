@@ -3,7 +3,6 @@ const pinMessageCommand = require('../commands/pin-message.js');
 const config = require('../config.json');
 const dataStore = require('../utils/dataStore');
 const activityManager = require('../utils/activityManager');
-const musicManager = require('../utils/musicManager');
 
 module.exports = {
   name: Events.MessageCreate,
@@ -25,33 +24,6 @@ module.exports = {
         message.author.id,
         message.author.username
       );
-    }
-
-    // YouTube URLの自動検出と再生
-    if (message.guild && message.member.voice.channel) {
-      const urlMatch = message.content.match(/(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/[^\s]+/);
-      if (urlMatch) {
-        const url = urlMatch[0];
-        // httpまたはhttpsで始まっていない場合は追加
-        const fullUrl = url.startsWith('http') ? url : `https://${url}`;
-        
-        try {
-          const result = await musicManager.playFromUrl(
-            message.guild,
-            message.member.voice.channel,
-            fullUrl,
-            message.channel,
-            message.author
-          );
-          
-          if (result.success) {
-            await message.reply(result.message);
-          }
-        } catch (error) {
-          console.error('[Music Auto-play] エラー:', error);
-        }
-        return; // YouTube URLが検出された場合は他の処理をスキップ
-      }
     }
 
     try {
