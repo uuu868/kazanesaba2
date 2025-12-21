@@ -6,7 +6,7 @@ module.exports = {
     .setName('skip')
     .setDescription('現在の曲をスキップします'),
 
-  async execute(client, interaction) {
+  async execute(interaction) {
     const queue = useQueue(interaction.guild.id);
 
     if (!queue || !queue.currentTrack) {

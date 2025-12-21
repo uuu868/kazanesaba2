@@ -6,7 +6,7 @@ module.exports = {
     .setName('stop')
     .setDescription('再生を停止してボイスチャンネルから退出します'),
 
-  async execute(client, interaction) {
+  async execute(interaction) {
     const queue = useQueue(interaction.guild.id);
 
     if (!queue) {

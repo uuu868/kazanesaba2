@@ -6,7 +6,7 @@ module.exports = {
     .setName('queue')
     .setDescription('再生キューを表示します'),
 
-  async execute(client, interaction) {
+  async execute(interaction) {
     const queue = useQueue(interaction.guild.id);
 
     if (!queue || !queue.currentTrack) {

@@ -25,7 +25,7 @@ module.exports = {
 
       try {
         console.log(`[Command] ${interaction.commandName} を実行します`);
-        await command.execute(interaction.client, interaction);
+        await command.execute(interaction);
         console.log(`[Command] ${interaction.commandName} が完了しました`);
       } catch (error) {
         console.error(`[Command Error] ${interaction.commandName}:`, error);

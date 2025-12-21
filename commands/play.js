@@ -12,22 +12,22 @@ module.exports = {
         .setRequired(true)
     ),
 
-  async execute(client, interaction) {
+  async execute(interaction) {
+    // 即座にdeferReplyを呼び出してタイムアウトを防ぐ
+    await interaction.deferReply();
+
     const query = interaction.options.getString('query');
     const member = interaction.member;
 
     // ボイスチャンネルにいるかチェック
     if (!member.voice.channel) {
-      return await interaction.reply({
-        content: '❌ ボイスチャンネルに接続してください。',
-        ephemeral: true
+      return await interaction.editReply({
+        content: '❌ ボイスチャンネルに接続してください。'
       });
     }
 
-    await interaction.deferReply();
-
     try {
-      const { track } = await client.player.play(member.voice.channel, query, {
+      const { track } = await interaction.client.player.play(member.voice.channel, query, {
         nodeOptions: {
           metadata: {
             channel: interaction.channel,
