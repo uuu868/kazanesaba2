@@ -11,6 +11,10 @@ const client = new Client({
 });
 
 require('dotenv').config();
+
+// ログフック機能を初期化（Clientが作成された直後に実行）
+const { initLogHook } = require('./utils/logHook');
+initLogHook(client);
 const fs = require('node:fs');
 const path = require('node:path');
 
