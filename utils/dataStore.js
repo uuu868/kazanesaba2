@@ -63,8 +63,42 @@ function markDeleted(originalMessageId) {
   }
 }
 
+/**
+ * 汎用データ読み込み関数
+ */
+function loadData(filename, defaultValue = {}) {
+  const filePath = path.join(dataDir, `${filename}.json`);
+  try {
+    if (!fs.existsSync(filePath)) {
+      return defaultValue;
+    }
+    const raw = fs.readFileSync(filePath, 'utf8');
+    return JSON.parse(raw || JSON.stringify(defaultValue));
+  } catch (e) {
+    console.error(`[dataStore] loadData error for ${filename}:`, e);
+    return defaultValue;
+  }
+}
+
+/**
+ * 汎用データ保存関数
+ */
+function saveData(filename, data) {
+  const filePath = path.join(dataDir, `${filename}.json`);
+  try {
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
+  } catch (e) {
+    console.error(`[dataStore] saveData error for ${filename}:`, e);
+  }
+}
+
 module.exports = {
   saveMapping,
   getMapping,
-  markDeleted
+  markDeleted,
+  loadData,
+  saveData
 };
