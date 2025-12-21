@@ -6,7 +6,6 @@ const {
   VoiceConnectionStatus,
   entersState
 } = require('@discordjs/voice');
-const googleTTS = require('google-tts-api');
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
@@ -20,6 +19,9 @@ const connections = new Map();
 const players = new Map();
 // 各サーバーの読み上げキューを管理
 const queues = new Map();
+
+// VOICEVOX設定
+const VOICEVOX_HOST = 'http://localhost:50021';
 
 // 一時ファイルディレクトリ
 const tempDir = path.join(__dirname, '..', 'temp');
@@ -55,7 +57,7 @@ function getSettings(guildId) {
       channelId: null,
       voiceChannelId: null,
       maxLength: 200,
-      language: 'ja'
+      speaker: 1  // デフォルト話者ID（四国めたん ノーマル）
     });
   }
   return guildSettings.get(guildId);
@@ -205,25 +207,38 @@ async function playNext(guildId) {
   const settings = getSettings(guildId);
   
   try {
-    // Google TTS APIでURLを取得
-    const url = googleTTS.getAudioUrl(text, {
-      lang: settings.language,
-      slow: false,
-      host: 'https://translate.google.com',
-    });
+    // VOICEVOX APIで音声合成
+    // 1. audio_queryを作成
+    const queryResponse = await axios.post(
+      `${VOICEVOX_HOST}/audio_query`,
+      null,
+      {
+        params: {
+          text: text,
+          speaker: settings.speaker
+        }
+      }
+    );
     
-    // 音声データをダウンロード
-    const response = await axios({
-      method: 'get',
-      url: url,
-      responseType: 'arraybuffer'
-    });
+    const audioQuery = queryResponse.data;
     
-    // 一時ファイルに保存
-    const tempFile = path.join(tempDir, `tts_${guildId}_${Date.now()}.mp3`);
-    fs.writeFileSync(tempFile, response.data);
+    // 2. 音声を合成
+    const synthesisResponse = await axios.post(
+      `${VOICEVOX_HOST}/synthesis`,
+      audioQuery,
+      {
+        params: {
+          speaker: settings.speaker
+        },
+        responseType: 'arraybuffer'
+      }
+    );
     
-    // 音声リソースを作成して再生
+    // 3. 一時ファイルに保存
+    const tempFile = path.join(tempDir, `tts_${guildId}_${Date.now()}.wav`);
+    fs.writeFileSync(tempFile, Buffer.from(synthesisResponse.data));
+    
+    // 4. 音声リソースを作成して再生
     const resource = createAudioResource(tempFile);
     player.play(resource);
     
@@ -235,7 +250,10 @@ async function playNext(guildId) {
     }, 10000);
     
   } catch (error) {
-    console.error('[TTS] 再生エラー:', error);
+    console.error('[TTS] 再生エラー:', error.message);
+    if (error.code === 'ECONNREFUSED') {
+      console.error('[TTS] VOICEVOXが起動していない可能性があります');
+    }
     // エラーが発生しても次の音声を再生
     playNext(guildId);
   }

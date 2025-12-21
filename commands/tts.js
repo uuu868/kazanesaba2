@@ -42,16 +42,24 @@ module.exports = {
             .setRequired(false)
             .setMinValue(50)
             .setMaxValue(500))
-        .addStringOption(option =>
+        .addIntegerOption(option =>
           option
-            .setName('language')
-            .setDescription('読み上げ言語（デフォルト: ja）')
+            .setName('speaker')
+            .setDescription('VOICEVOX話者ID（デフォルト: 1）')
             .setRequired(false)
             .addChoices(
-              { name: '日本語', value: 'ja' },
-              { name: '英語', value: 'en' },
-              { name: '韓国語', value: 'ko' },
-              { name: '中国語', value: 'zh' }
+              { name: '四国めたん(ノーマル)', value: 2 },
+              { name: '四国めたん(あまあま)', value: 0 },
+              { name: '四国めたん(ツンツン)', value: 6 },
+              { name: 'ずんだもん(ノーマル)', value: 3 },
+              { name: 'ずんだもん(あまあま)', value: 1 },
+              { name: 'ずんだもん(ツンツン)', value: 7 },
+              { name: '春日部つむぎ', value: 8 },
+              { name: '雨晴はう', value: 10 },
+              { name: '波音リツ', value: 9 },
+              { name: '玄野武宏', value: 11 },
+              { name: '白上虎太郎', value: 12 },
+              { name: '青山龍星', value: 13 }
             ))
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
@@ -177,7 +185,7 @@ async function handleStatus(interaction) {
 📝 対象チャンネル: ${textChannel || '不明'}
 🔊 ボイスチャンネル: ${voiceChannel ? voiceChannel.name : '不明'}
 📏 最大文字数: ${settings.maxLength}文字
-🌐 言語: ${settings.language}`;
+� 話者ID: ${settings.speaker}`;
 
   await interaction.reply({
     content: statusText,
@@ -187,9 +195,9 @@ async function handleStatus(interaction) {
 
 async function handleConfig(interaction) {
   const maxLength = interaction.options.getInteger('max-length');
-  const language = interaction.options.getString('language');
+  const speaker = interaction.options.getInteger('speaker');
 
-  if (!maxLength && !language) {
+  if (!maxLength && !speaker) {
     return await interaction.reply({
       content: '変更する設定を指定してください。',
       ephemeral: true
@@ -198,13 +206,13 @@ async function handleConfig(interaction) {
 
   const updates = {};
   if (maxLength) updates.maxLength = maxLength;
-  if (language) updates.language = language;
+  if (speaker !== null) updates.speaker = speaker;
 
   ttsManager.updateSettings(interaction.guild.id, updates);
 
   let message = '✅ 設定を更新しました\n';
   if (maxLength) message += `📏 最大文字数: ${maxLength}文字\n`;
-  if (language) message += `🌐 言語: ${language}\n`;
+  if (speaker !== null) message += `🎤 話者ID: ${speaker}\n`;
 
   await interaction.reply({
     content: message,
