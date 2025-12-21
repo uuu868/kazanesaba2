@@ -35,6 +35,8 @@ class MusicQueue {
         channelId: voiceChannel.id,
         guildId: this.guildId,
         adapterCreator: voiceChannel.guild.voiceAdapterCreator,
+        selfDeaf: true,
+        selfMute: false,
       });
 
       await entersState(this.connection, VoiceConnectionStatus.Ready, 30_000);
