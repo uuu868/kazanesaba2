@@ -50,18 +50,10 @@ for (const file of eventsFiles) {
   console.log(`-> [Loaded Event] ${file.split('.')[0]}`);
 }
 
-// X(Twitter)監視機能を初期化
-const TwitterMonitor = require('./utils/twitterMonitor');
-let twitterMonitor = null;
-
 // Git自動コミット機能を初期化
 const { startAutoCommit } = require('./utils/autoCommit');
 
 client.once(Events.ClientReady, () => {
-  // Bot起動後にTwitter監視を開始
-  twitterMonitor = new TwitterMonitor(client);
-  twitterMonitor.start();
-  
   // Git自動コミットを開始
   startAutoCommit();
 });
