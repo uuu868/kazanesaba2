@@ -1,5 +1,4 @@
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
-const { Player } = require('discord-player');
 
 const client = new Client({
   intents: [
@@ -11,10 +10,6 @@ const client = new Client({
     GatewayIntentBits.GuildVoiceStates,
   ],
 });
-
-// discord-playerを初期化
-const player = new Player(client);
-client.player = player;
 
 require('dotenv').config();
 

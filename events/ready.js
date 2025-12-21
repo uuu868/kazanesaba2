@@ -1,5 +1,4 @@
 const { Events } = require('discord.js');
-const { DefaultExtractors } = require('@discord-player/extractor');
 
 module.exports = {
 	name: Events.ClientReady,
@@ -9,14 +8,6 @@ module.exports = {
 	    console.log("----------参加サーバー----------")
 	    console.log(client.guilds.cache.map(guild => `${guild.name} || ${guild.memberCount}人`).join("\n"))
 	    console.log("------------------------------")
-
-	    // discord-player extractorをロード
-	    try {
-	      await client.player.extractors.loadMulti(DefaultExtractors);
-	      console.log('[Ready] Discord Player extractorをロードしました');
-	    } catch (e) {
-	      console.error('[Ready] Extractor読み込みエラー:', e);
-	    }
 
 	    // ステータスをクリア
 	    client.user.setPresence({ activities: [], status: 'online' });
