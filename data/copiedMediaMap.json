@@ -4185,5 +4185,24 @@
     "channelId": "1451998389750202429",
     "createdAt": "2025-12-20T18:03:15.015Z",
     "copiedMessageIds": []
+  },
+  "url:https://cdn.discordapp.com/attachments/1452361094495731784/1452365985888862341/bd9cfce81597a6df5b7f12f132e6af81.jpg?ex=69498cba&is=69483b3a&hm=537ff4d3b09eb0efebcdf4643a98d953e28b335d26b9ac4cc47d40f176e733b7&": {
+    "createdAt": "2025-12-21T18:23:57.912Z",
+    "copiedMessageIds": [
+      "processing",
+      "1452365992842756317"
+    ],
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1
+  },
+  "1452365986161229966": {
+    "guildId": "1129344788387348594",
+    "originalChannelId": "1452361094495731784",
+    "copiedChannelId": "1448399304266875112",
+    "attachmentCount": 1,
+    "createdAt": "2025-12-21T18:23:59.249Z",
+    "copiedMessageIds": [
+      "1452365992842756317"
+    ]
   }
 }
