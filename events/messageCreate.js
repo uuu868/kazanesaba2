@@ -10,7 +10,10 @@ module.exports = {
   async execute(message) {
     // ボットのメッセージは無視
     if (message.author.bot) {
-      console.log('[Pin Message] ボットメッセージを無視します');
+      // ログチャンネル以外でのみログを出力
+      if (message.channel.id !== config.logChannelId) {
+        console.log('[Pin Message] ボットメッセージを無視します');
+      }
       return;
     }
 
