@@ -57,11 +57,18 @@ module.exports = {
       }
     } catch (error) {
       console.error('[Music Command] エラー:', error);
-      const replyMethod = interaction.deferred ? 'editReply' : 'reply';
-      await interaction[replyMethod]({ 
-        content: `エラーが発生しました: ${error.message}`, 
-        ephemeral: true 
-      });
+      
+      // インタラクションがまだ応答していない場合のみ応答
+      if (!interaction.replied && !interaction.deferred) {
+        await interaction.reply({ 
+          content: `エラーが発生しました: ${error.message}`, 
+          ephemeral: true 
+        });
+      } else if (interaction.deferred) {
+        await interaction.editReply({ 
+          content: `エラーが発生しました: ${error.message}`
+        });
+      }
     }
   },
 };
@@ -80,18 +87,23 @@ async function handlePlay(interaction) {
 
   await interaction.deferReply();
 
-  const result = await musicManager.playFromUrl(
-    interaction.guild,
-    member.voice.channel,
-    url,
-    interaction.channel,
-    interaction.user
-  );
+  try {
+    const result = await musicManager.playFromUrl(
+      interaction.guild,
+      member.voice.channel,
+      url,
+      interaction.channel,
+      interaction.user
+    );
 
-  if (result.success) {
-    await interaction.editReply({ content: result.message });
-  } else {
-    await interaction.editReply({ content: `❌ ${result.message}`, ephemeral: true });
+    if (result.success) {
+      await interaction.editReply({ content: result.message });
+    } else {
+      await interaction.editReply({ content: `❌ ${result.message}` });
+    }
+  } catch (error) {
+    console.error('[Music Play] エラー:', error);
+    await interaction.editReply({ content: `❌ エラーが発生しました: ${error.message}` });
   }
 }
 
