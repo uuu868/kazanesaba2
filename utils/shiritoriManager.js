@@ -30,6 +30,7 @@ function getGuildData(guildId) {
       usedWords: [],
       lastWord: null,
       lastChar: null,
+      lastUserId: null,
       gameActive: true
     };
   }
@@ -149,6 +150,12 @@ async function processShiritoriMessage(message) {
   const guildData = getGuildData(message.guild.id);
   const word = message.content.trim();
 
+  // 連続投稿チェック
+  if (guildData.lastUserId === message.author.id) {
+    await message.reply('❌ 同じ人が連続で投稿することはできません！\n他の人の番を待ってください。');
+    return;
+  }
+
   // ひらがな・カタカナのみかチェック
   if (!isKana(word)) {
     await message.reply('❌ ひらがなかカタカナで入力してください！');
@@ -182,6 +189,7 @@ async function processShiritoriMessage(message) {
     
     guildData.lastWord = word;
     guildData.lastChar = lastChar;
+    guildData.lastUserId = message.author.id;
     guildData.usedWords.push(word);
     saveShiritoriData();
     
@@ -209,6 +217,7 @@ async function processShiritoriMessage(message) {
     guildData.usedWords = [];
     guildData.lastWord = null;
     guildData.lastChar = null;
+    guildData.lastUserId = null;
     saveShiritoriData();
     return;
   }
@@ -216,6 +225,7 @@ async function processShiritoriMessage(message) {
   // 成功
   guildData.lastWord = word;
   guildData.lastChar = lastChar;
+  guildData.lastUserId = message.author.id;
   guildData.usedWords.push(word);
   saveShiritoriData();
 
@@ -231,6 +241,7 @@ function resetShiritori(guildId) {
       usedWords: [],
       lastWord: null,
       lastChar: null,
+      lastUserId: null,
       gameActive: true
     };
     saveShiritoriData();
