@@ -3,6 +3,7 @@ const pinMessageCommand = require('../commands/pin-message.js');
 const config = require('../config.json');
 const dataStore = require('../utils/dataStore');
 const activityManager = require('../utils/activityManager');
+const ttsManager = require('../utils/ttsManager');
 
 module.exports = {
   name: Events.MessageCreate,
@@ -15,6 +16,13 @@ module.exports = {
         console.log('[Pin Message] ボットメッセージを無視します');
       }
       return;
+    }
+
+    // 読み上げ機能の処理
+    if (message.guild && ttsManager.isEnabled(message.guild.id)) {
+      if (ttsManager.isTargetChannel(message.guild.id, message.channel.id)) {
+        await ttsManager.addToQueue(message.guild.id, message.content);
+      }
     }
 
     // ユーザーのアクティビティを記録
