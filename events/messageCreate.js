@@ -26,6 +26,32 @@ module.exports = {
       );
     }
 
+    // YouTube URLの自動検出と再生
+    if (message.guild && message.member.voice.channel) {
+      const urlMatch = message.content.match(/(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be|soundcloud\.com|spotify\.com)\/[^\s]+/);
+      if (urlMatch) {
+        const url = urlMatch[0];
+        const fullUrl = url.startsWith('http') ? url : `https://${url}`;
+        
+        try {
+          const client = message.client;
+          const { track } = await client.player.play(message.member.voice.channel, fullUrl, {
+            nodeOptions: {
+              metadata: {
+                channel: message.channel,
+                requestedBy: message.author
+              }
+            }
+          });
+          
+          await message.reply(`🎵 再生開始: **${track.title}**`);
+          return;
+        } catch (error) {
+          console.error('[Music Auto-play] エラー:', error);
+        }
+      }
+    }
+
     try {
       // コピー先チャンネルに投稿された内容を再コピーしない
       if (message.channel.id === config.imageChannelId) {
