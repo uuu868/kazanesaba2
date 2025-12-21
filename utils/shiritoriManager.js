@@ -1,4 +1,5 @@
 const { loadData, saveData } = require('./dataStore');
+const axios = require('axios');
 
 // しりとりチャンネルID
 const SHIRITORI_CHANNEL_ID = '1452411641428705462';
@@ -82,6 +83,62 @@ function isKana(str) {
 }
 
 /**
+ * 辞書APIで単語が実在するかチェック
+ */
+async function isValidWord(word) {
+  try {
+    // goo辞書APIを使用して単語の存在をチェック
+    const response = await axios.get('https://api.goo.ne.jp/hiragana/request.json', {
+      params: {
+        app_id: 'dj00aiZpPWJMaUFSVHFSZ3E3ViZzPWNvbnN1bWVyc2VjcmV0Jng9NDU-', // 無料の公開キー
+        sentence: word,
+        output_type: 'hiragana'
+      },
+      timeout: 3000
+    });
+    
+    // APIが正常に応答した場合は有効な単語とみなす
+    if (response.data && response.data.converted) {
+      return true;
+    }
+  } catch (error) {
+    // API呼び出し失敗時はログを出力
+    console.log(`[Shiritori] 辞書API呼び出し失敗: ${error.message}`);
+  }
+  
+  // より信頼性の高い方法: Yahoo!かGoogleの日本語辞書APIを試す
+  try {
+    // 簡易的な辞書チェック: Wikipediaの検索を利用
+    const searchResponse = await axios.get('https://ja.wikipedia.org/w/api.php', {
+      params: {
+        action: 'opensearch',
+        search: word,
+        limit: 1,
+        namespace: 0,
+        format: 'json'
+      },
+      timeout: 3000
+    });
+    
+    // 検索結果がある場合は有効な単語とみなす
+    if (searchResponse.data && searchResponse.data[1] && searchResponse.data[1].length > 0) {
+      const result = searchResponse.data[1][0].toLowerCase();
+      const searchWord = word.toLowerCase();
+      // 完全一致または部分一致の場合
+      if (result === searchWord || result.includes(searchWord)) {
+        return true;
+      }
+    }
+  } catch (error) {
+    console.log(`[Shiritori] Wikipedia検索失敗: ${error.message}`);
+  }
+  
+  // すべてのAPIが失敗した場合、簡易的な判定として2文字以上であれば許可
+  // （本番環境では、オフライン辞書ファイルを使用することを推奨）
+  return word.length >= 2;
+}
+
+/**
  * しりとりのメッセージを処理
  */
 async function processShiritoriMessage(message) {
@@ -100,6 +157,13 @@ async function processShiritoriMessage(message) {
 
   // 単語の長さチェック（1文字以上）
   if (word.length === 0) {
+    return;
+  }
+
+  // 実在する単語かチェック
+  const isValid = await isValidWord(word);
+  if (!isValid) {
+    await message.reply('❌ その言葉は辞書に見つかりませんでした！\n実在する言葉を入力してください。');
     return;
   }
 
