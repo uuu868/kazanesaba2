@@ -5,9 +5,16 @@ const {
   AudioPlayerStatus,
   VoiceConnectionStatus,
   entersState,
-  NoSubscriberBehavior
+  NoSubscriberBehavior,
+  StreamType
 } = require('@discordjs/voice');
 const play = require('play-dl');
+const ffmpegPath = require('ffmpeg-static');
+
+// FFmpegのパスを設定
+if (ffmpegPath) {
+  process.env.FFMPEG_PATH = ffmpegPath;
+}
 
 // 各サーバーのキューを管理
 const queues = new Map();
@@ -40,7 +47,12 @@ class MusicQueue {
 
       this.connection.subscribe(this.player);
 
+      this.player.on(AudioPlayerStatus.Playing, () => {
+        console.log('[Music] プレイヤー状態: Playing');
+      });
+
       this.player.on(AudioPlayerStatus.Idle, () => {
+        console.log('[Music] プレイヤー状態: Idle - 次の曲へ');
         this.playNext();
       });
 
@@ -70,13 +82,24 @@ class MusicQueue {
 
   async addSong(url, requestedBy) {
     try {
+      console.log(`[Music] 動画情報取得中: ${url}`);
+      
+      // play-dlを使って動画情報を取得
       const info = await play.video_info(url);
+      
+      if (!info || !info.video_details) {
+        throw new Error('動画情報を取得できませんでした');
+      }
+
+      console.log(`[Music] 動画情報取得成功: ${info.video_details.title}`);
       
       const song = {
         title: info.video_details.title,
         url: info.video_details.url,
         duration: info.video_details.durationInSec,
-        thumbnail: info.video_details.thumbnails[0].url,
+        thumbnail: info.video_details.thumbnails && info.video_details.thumbnails.length > 0 
+          ? info.video_details.thumbnails[0].url 
+          : null,
         requestedBy: requestedBy,
       };
 
@@ -97,9 +120,13 @@ class MusicQueue {
     this.isPlaying = true;
 
     try {
+      console.log(`[Music] 再生準備中: ${this.currentSong.url}`);
       const stream = await play.stream(this.currentSong.url);
+      
+      console.log(`[Music] ストリーム取得成功, type: ${stream.type}`);
       const resource = createAudioResource(stream.stream, {
         inputType: stream.type,
+        inlineVolume: true
       });
 
       this.player.play(resource);
