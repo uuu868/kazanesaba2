@@ -62,7 +62,7 @@ client.once(Events.ClientReady, () => {
   startAutoCommit();
   
   // スケジュール再起動を設定
-  setupScheduledRestart();
+  setupScheduledRestart(client);
 });
 
 client.login(process.env.TOKEN);
