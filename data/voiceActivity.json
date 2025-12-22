@@ -524,9 +524,14 @@
     },
     "1122797027395387464": {
       "username": "mito.kua",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766252274447
+      "totalTime": 139454,
+      "sessions": [
+        {
+          "start": 1766252274447,
+          "end": 1766391728625,
+          "duration": 139454
+        }
+      ]
     },
     "1360965128152940545": {
       "username": "re_i06",
@@ -556,6 +561,18 @@
       "totalTime": 0,
       "sessions": [],
       "currentSessionStart": 1766254120876
+    },
+    "847837146768605234": {
+      "username": "enma.kuromata",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766391600012
+    },
+    "1271256234091221033": {
+      "username": "0w0_hachi",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766391696007
     }
   }
 }
