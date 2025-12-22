@@ -1,7 +1,8 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { ensureAllowed } = require('../utils/roleGuard');
+const pinnedMessageStore = require('../utils/pinnedMessageStore');
 
-// グローバル固定メッセージID管理（チャンネルID => メッセージID）
+// メモリキャッシュ（パフォーマンス向上のため）
 const pinnedMessages = new Map();
 
 module.exports = {
@@ -58,8 +59,14 @@ async function setPinnedMessage(channel, title, content, client, interaction) {
     // まず最初にインタラクションに応答
     await interaction.deferReply({ flags: 64 }).catch(err => console.error('defer error:', err));
 
-    // グローバル管理から既存の固定メッセージIDを取得
-    let pinnedMessageId = pinnedMessages.get(channel.id);
+    // ストアから既存の固定メッセージIDを取得
+    const storedData = pinnedMessageStore.getPinnedMessage(channel.id);
+    let pinnedMessageId = storedData ? storedData.messageId : null;
+    
+    // キャッシュも更新
+    if (pinnedMessageId) {
+      pinnedMessages.set(channel.id, pinnedMessageId);
+    }
 
     if (pinnedMessageId) {
       try {
@@ -77,12 +84,17 @@ async function setPinnedMessage(channel, title, content, client, interaction) {
             throw err;
           });
           
+          // ストアとキャッシュを更新
+          pinnedMessageStore.savePinnedMessage(channel.id, pinnedMessageId, title, content);
+          pinnedMessages.set(channel.id, pinnedMessageId);
+          
           await interaction.editReply({ content: '✅ 固定メッセージを更新しました。' }).catch(err => console.error(err));
           return;
         }
       } catch (err) {
         console.log('既存メッセージが見つかりません。新規作成します。');
         pinnedMessages.delete(channel.id);
+        pinnedMessageStore.deletePinnedMessage(channel.id);
       }
     }
 
@@ -95,9 +107,10 @@ async function setPinnedMessage(channel, title, content, client, interaction) {
     
     const pinnedMsg = await channel.send({ embeds: [embed] });
     
-    // グローバル管理に保存
+    // ストアとキャッシュに保存
+    pinnedMessageStore.savePinnedMessage(channel.id, pinnedMsg.id, title, content);
     pinnedMessages.set(channel.id, pinnedMsg.id);
-    console.log(`[Pin Message] グローバル管理に保存: チャンネル ${channel.id} => メッセージ ${pinnedMsg.id}`);
+    console.log(`[Pin Message] 固定メッセージを保存: チャンネル ${channel.id} => メッセージ ${pinnedMsg.id}`);
 
     await interaction.editReply({ content: '✅ 固定メッセージを設定しました。' }).catch(err => console.error(err));
 
@@ -113,7 +126,9 @@ async function removePinnedMessage(channel, client, interaction) {
     // まず最初にインタラクションに応答
     await interaction.deferReply({ flags: 64 }).catch(err => console.error('defer error:', err));
 
-    const pinnedMessageId = pinnedMessages.get(channel.id);
+    // ストアから取得
+    const storedData = pinnedMessageStore.getPinnedMessage(channel.id);
+    const pinnedMessageId = storedData ? storedData.messageId : null;
 
     if (!pinnedMessageId) {
       await interaction.editReply({ content: 'このチャンネルに固定メッセージはありません。' }).catch(err => console.error(err));
@@ -129,7 +144,8 @@ async function removePinnedMessage(channel, client, interaction) {
       console.log('固定メッセージの削除に失敗（既に削除済みの可能性）');
     }
 
-    // グローバル管理から削除
+    // ストアとキャッシュから削除
+    pinnedMessageStore.deletePinnedMessage(channel.id);
     pinnedMessages.delete(channel.id);
 
     await interaction.editReply({ content: '✅ 固定メッセージを削除しました。' }).catch(err => console.error(err));
@@ -143,10 +159,20 @@ async function removePinnedMessage(channel, client, interaction) {
 // ======== ヘルパー関数 ========
 module.exports.getPinnedMessageInfo = async function(channel) {
   try {
-    // グローバル管理から取得
-    const msgId = pinnedMessages.get(channel.id);
+    // キャッシュから取得を試行
+    let msgId = pinnedMessages.get(channel.id);
     if (msgId) {
-      console.log(`[Pin Message] グローバル管理から取得: ${msgId}`);
+      console.log(`[Pin Message] キャッシュから取得: ${msgId}`);
+      return msgId;
+    }
+    
+    // キャッシュになければストアから取得
+    const storedData = pinnedMessageStore.getPinnedMessage(channel.id);
+    if (storedData && storedData.messageId) {
+      msgId = storedData.messageId;
+      // キャッシュを更新
+      pinnedMessages.set(channel.id, msgId);
+      console.log(`[Pin Message] ストアから取得: ${msgId}`);
       return msgId;
     }
     
@@ -173,7 +199,8 @@ module.exports.bringPinnedToTop = async function(channel, pinnedMessageId) {
 
     if (!message) {
       console.log('[Pin Message] メッセージが見つかりません。');
-      // グローバル管理から削除
+      // ストアとキャッシュから削除
+      pinnedMessageStore.deletePinnedMessage(channel.id);
       pinnedMessages.delete(channel.id);
       return null;
     }
@@ -198,9 +225,15 @@ module.exports.bringPinnedToTop = async function(channel, pinnedMessageId) {
     
     console.log(`[Pin Message] 新規メッセージID: ${newMsg.id}`);
 
-    // グローバル管理を更新
+    // ストアから元の情報を取得してタイトル・コンテンツを保持
+    const storedData = pinnedMessageStore.getPinnedMessage(channel.id);
+    const title = (embeds.length > 0 && embeds[0].title) ? embeds[0].title : '（固定メッセージ）';
+    const contentText = (embeds.length > 0 && embeds[0].description) ? embeds[0].description : content;
+    
+    // ストアとキャッシュを更新
+    pinnedMessageStore.savePinnedMessage(channel.id, newMsg.id, title, contentText);
     pinnedMessages.set(channel.id, newMsg.id);
-    console.log(`[Pin Message] グローバル管理を更新: ${newMsg.id}`);
+    console.log(`[Pin Message] 固定メッセージを更新: ${newMsg.id}`);
     
     // 重複削除チェック: 2秒後に同じembedを持つメッセージがないか確認
     setTimeout(async () => {
@@ -235,7 +268,13 @@ module.exports.bringPinnedToTop = async function(channel, pinnedMessageId) {
           const keepMessageId = samePinnedMessages[0].id;
           console.log(`[Pin Message] 保持する固定メッセージID: ${keepMessageId}`);
           
-          // グローバル管理を最初のメッセージに更新
+          // ストアから情報を取得
+          const storedData = pinnedMessageStore.getPinnedMessage(channel.id);
+          const titleToKeep = (embeds.length > 0 && embeds[0].title) ? embeds[0].title : '（固定メッセージ）';
+          const contentToKeep = (embeds.length > 0 && embeds[0].description) ? embeds[0].description : content;
+          
+          // ストアとキャッシュを最初のメッセージに更新
+          pinnedMessageStore.savePinnedMessage(channel.id, keepMessageId, titleToKeep, contentToKeep);
           pinnedMessages.set(channel.id, keepMessageId);
           
           // 2番目以降のメッセージのみを削除
