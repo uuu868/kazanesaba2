@@ -28,7 +28,7 @@ module.exports = {
         .setDescription('固定メッセージを削除します')
     ),
 
-  async execute(client, interaction) {
+  async execute(interaction) {
     try {
       // ロールチェック
       if (!(await ensureAllowed(interaction))) return;
@@ -40,10 +40,10 @@ module.exports = {
         const title = interaction.options.getString('title');
         const content = interaction.options.getString('content');
 
-        await setPinnedMessage(channel, title, content, client, interaction);
+        await setPinnedMessage(channel, title, content, interaction);
 
       } else if (subcommand === 'remove') {
-        await removePinnedMessage(channel, client, interaction);
+        await removePinnedMessage(channel, interaction);
       }
 
     } catch (err) {
@@ -54,7 +54,7 @@ module.exports = {
 };
 
 // ======== 固定メッセージ設定 ========
-async function setPinnedMessage(channel, title, content, client, interaction) {
+async function setPinnedMessage(channel, title, content, interaction) {
   try {
     // まず最初にインタラクションに応答
     await interaction.deferReply({ flags: 64 }).catch(err => console.error('defer error:', err));
@@ -121,7 +121,7 @@ async function setPinnedMessage(channel, title, content, client, interaction) {
 }
 
 // ======== 固定メッセージ削除 ========
-async function removePinnedMessage(channel, client, interaction) {
+async function removePinnedMessage(channel, interaction) {
   try {
     // まず最初にインタラクションに応答
     await interaction.deferReply({ flags: 64 }).catch(err => console.error('defer error:', err));
