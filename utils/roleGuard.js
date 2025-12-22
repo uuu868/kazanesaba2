@@ -20,7 +20,8 @@ const defaultReminderRoleIds = [
 
 // 許可されたユーザーID
 const allowedUserIds = [
-  '959816319568576582'
+  '959816319568576582',
+  '1376783362852655104'
 ];
 
 /**
