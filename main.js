@@ -54,9 +54,15 @@ for (const file of eventsFiles) {
 // Git自動コミット機能を初期化
 const { startAutoCommit } = require('./utils/autoCommit');
 
+// スケジュール再起動機能を初期化
+const { setupScheduledRestart } = require('./utils/scheduledRestart');
+
 client.once(Events.ClientReady, () => {
   // Git自動コミットを開始
   startAutoCommit();
+  
+  // スケジュール再起動を設定
+  setupScheduledRestart();
 });
 
 client.login(process.env.TOKEN);
