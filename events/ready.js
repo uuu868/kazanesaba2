@@ -20,5 +20,14 @@ module.exports = {
 	    } catch (e) {
 	      console.error('[Ready] リマインドロード中にエラー:', e);
 	    }
+
+	    // 固定メッセージをロード
+	    try {
+	      const pinMessageCommand = require('../commands/pin-message');
+	      pinMessageCommand.loadAllPinnedMessages();
+	      console.log('[Ready] 固定メッセージをロードしました');
+	    } catch (e) {
+	      console.error('[Ready] 固定メッセージロード中にエラー:', e);
+	    }
 	},
 };

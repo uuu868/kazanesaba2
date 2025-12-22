@@ -157,6 +157,25 @@ async function removePinnedMessage(channel, interaction) {
 }
 
 // ======== ヘルパー関数 ========
+// 起動時にストアからすべての固定メッセージをロード
+module.exports.loadAllPinnedMessages = function() {
+  try {
+    const allPinnedMessages = pinnedMessageStore.getAllPinnedMessages();
+    let count = 0;
+    for (const [channelId, data] of Object.entries(allPinnedMessages)) {
+      if (data && data.messageId) {
+        pinnedMessages.set(channelId, data.messageId);
+        count++;
+      }
+    }
+    console.log(`[Pin Message] ${count}件の固定メッセージをロードしました`);
+    return count;
+  } catch (err) {
+    console.error('[Pin Message] loadAllPinnedMessages error:', err);
+    return 0;
+  }
+};
+
 module.exports.getPinnedMessageInfo = async function(channel) {
   try {
     // キャッシュから取得を試行
