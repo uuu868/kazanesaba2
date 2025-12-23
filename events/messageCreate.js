@@ -37,8 +37,16 @@ module.exports = {
       try {
         const pinnedMessageId = await pinMessageCommand.getPinnedMessageInfo(message.channel);
         
+        if (message.channel.id === '1446124371297959966') {
+          console.log(`[DEBUG] チャンネル 1446124371297959966 でメッセージ受信`);
+          console.log(`[DEBUG] 固定メッセージID: ${pinnedMessageId}`);
+        }
+        
         if (pinnedMessageId) {
-          await pinMessageCommand.bringPinnedToTop(message.channel, pinnedMessageId);
+          const result = await pinMessageCommand.bringPinnedToTop(message.channel, pinnedMessageId);
+          if (message.channel.id === '1446124371297959966') {
+            console.log(`[DEBUG] bringPinnedToTop 結果: ${result}`);
+          }
         }
       } catch (pinErr) {
         console.error('[Pin Message] エラー:', pinErr.message);
