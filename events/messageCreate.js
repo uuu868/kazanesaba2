@@ -3,6 +3,7 @@ const pinMessageCommand = require('../commands/pin-message.js');
 const config = require('../config.json');
 const dataStore = require('../utils/dataStore');
 const activityManager = require('../utils/activityManager');
+const duplicateChecker = require('../utils/duplicateChecker');
 
 module.exports = {
   name: Events.MessageCreate,
@@ -31,6 +32,13 @@ module.exports = {
       // ボットメッセージは画像コピー処理をスキップ
       if (message.author.bot) {
         return;
+      }
+
+      // 重複投稿チェック（ボット以外のユーザーメッセージのみ）
+      const duplicateResult = duplicateChecker.checkDuplicate(message);
+      if (duplicateResult.isDuplicate) {
+        await duplicateChecker.handleDuplicate(message, duplicateResult.remainingTime);
+        return; // 重複メッセージは以降の処理をスキップ
       }
 
       // チャンネルに固定メッセージがある場合、最新に保つ（ユーザーメッセージのみ）
