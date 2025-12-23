@@ -324,50 +324,56 @@ module.exports.bringPinnedToTop = async function(channel, pinnedMessageId) {
       }
     }
 
-    console.log('[Pin Message] メッセージが見つかりました。削除して再送信します');
+    // メッセージが存在する場合は、削除せずにそのまま維持
+    // 最新に保つために、メッセージの位置を確認し、必要に応じて再送信
+    console.log('[Pin Message] 固定メッセージは既に存在します。位置を確認します');
+    
+    const recentMessages = await channel.messages.fetch({ limit: 5 }).catch(() => new Map());
+    const messageIds = Array.from(recentMessages.keys());
+    
+    // 固定メッセージが最新の5件の中にない場合のみ再送信
+    if (!messageIds.includes(pinnedMessageId)) {
+      console.log('[Pin Message] 固定メッセージが埋もれているため、再送信します');
+      
+      // メッセージを削除して再送信（最新にする）
+      const embeds = message.embeds || [];
+      const content = message.content || '';
 
-    // メッセージを削除して再送信（最新にする）
-    const embeds = message.embeds || [];
-    const content = message.content || '';
+      await message.delete().catch(err => console.log('[Pin Message] メッセージ削除エラー:', err.message));
+      console.log('[Pin Message] メッセージを削除しました');
 
-    await message.delete().catch(err => console.log('[Pin Message] メッセージ削除エラー:', err.message));
-    console.log('[Pin Message] メッセージを削除しました');
+      let newMsg;
+      if (embeds.length > 0) {
+        newMsg = await channel.send({ embeds });
+        console.log('[Pin Message] 埋め込みメッセージを再送信しました');
+      } else {
+        newMsg = await channel.send(content || '（固定メッセージ）');
+        console.log('[Pin Message] テキストメッセージを再送信しました');
+      }
+      
+      console.log(`[Pin Message] 新規メッセージID: ${newMsg.id}`);
 
-    let newMsg;
-    if (embeds.length > 0) {
-      newMsg = await channel.send({ embeds });
-      console.log('[Pin Message] 埋め込みメッセージを再送信しました');
+      // ストアから元の情報を取得してタイトル・コンテンツを保持
+      const storedData = pinnedMessageStore.getPinnedMessage(channel.id);
+      const title = (embeds.length > 0 && embeds[0].title) ? embeds[0].title : '（固定メッセージ）';
+      const contentText = (embeds.length > 0 && embeds[0].description) ? embeds[0].description : content;
+      
+      // ストアとキャッシュを更新
+      pinnedMessageStore.savePinnedMessage(channel.id, newMsg.id, title, contentText);
+      pinnedMessages.set(channel.id, newMsg.id);
+      console.log(`[Pin Message] 固定メッセージを更新: ${newMsg.id}`);
+      
+      return newMsg.id;
     } else {
-      newMsg = await channel.send(content || '（固定メッセージ）');
-      console.log('[Pin Message] テキストメッセージを再送信しました');
+      console.log('[Pin Message] 固定メッセージは既に最新です。処理をスキップします');
+      return pinnedMessageId;
     }
     
-    console.log(`[Pin Message] 新規メッセージID: ${newMsg.id}`);
-
-    // ストアから元の情報を取得してタイトル・コンテンツを保持
-    const storedData = pinnedMessageStore.getPinnedMessage(channel.id);
-    const title = (embeds.length > 0 && embeds[0].title) ? embeds[0].title : '（固定メッセージ）';
-    const contentText = (embeds.length > 0 && embeds[0].description) ? embeds[0].description : content;
-    
-    // ストアとキャッシュを更新
-    pinnedMessageStore.savePinnedMessage(channel.id, newMsg.id, title, contentText);
-    pinnedMessages.set(channel.id, newMsg.id);
-    console.log(`[Pin Message] 固定メッセージを更新: ${newMsg.id}`);
-    
-    // 重複削除チェック: 1秒後に同じembedを持つメッセージがないか確認（このチャンネル内のみ）
-    setTimeout(async () => {
-      try {
-        const recentMessages = await channel.messages.fetch({ limit: 10 }).catch(err => {
-          console.error('[Pin Message] メッセージ取得エラー:', err.message);
-          return new Map();
-        });
-        
-        if (recentMessages.size === 0) {
-          console.log('[Pin Message] 重複チェック: メッセージが取得できませんでした');
-          return;
-        }
-        
-        const samePinnedMessages = [];
+  } catch (err) {
+    console.error('[Pin Message] bringPinnedToTop error:', err.message);
+    return null;
+  }
+};
         
         // 同じタイトルとコンテンツを持つボットメッセージを検索（より厳密なチェック）
         const embedTitle = embeds.length > 0 && embeds[0].title ? embeds[0].title : null;
