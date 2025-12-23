@@ -773,9 +773,14 @@
     },
     "1372191315097419871": {
       "username": "fantastic_tiger_47486",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766497334996
+      "totalTime": 1396,
+      "sessions": [
+        {
+          "start": 1766497334996,
+          "end": 1766498731485,
+          "duration": 1396
+        }
+      ]
     },
     "707601669801639976": {
       "username": "lisaca_6180",
