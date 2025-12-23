@@ -8,17 +8,8 @@ module.exports = {
   name: Events.MessageCreate,
   once: false,
   async execute(message) {
-    // ボットのメッセージは無視
-    if (message.author.bot) {
-      // ログチャンネル以外でのみログを出力
-      if (message.channel.id !== config.logChannelId) {
-        console.log('[Pin Message] ボットメッセージを無視します');
-      }
-      return;
-    }
-
-    // ユーザーのアクティビティを記録
-    if (message.guild) {
+    // ユーザーのアクティビティを記録（ボット以外）
+    if (message.guild && !message.author.bot) {
       activityManager.recordMessage(
         message.guild.id,
         message.author.id,
@@ -27,19 +18,24 @@ module.exports = {
     }
 
     try {
-      // コピー先チャンネルに投稿された内容を再コピーしない
-      if (message.channel.id === config.imageChannelId) {
+      // ボットのメッセージも処理対象とする（固定メッセージを除外）
+      const pinnedMessageId = await pinMessageCommand.getPinnedMessageInfo(message.channel);
+      
+      // 今送信されたメッセージが固定メッセージ自身の場合はスキップ
+      if (message.id === pinnedMessageId) {
+        console.log('[Pin Message] 固定メッセージ自身はスキップします');
         return;
       }
-      console.log(`[Pin Message] ユーザーメッセージ受信: ${message.author.username} (チャンネル: ${message.channel.name}, メッセージID: ${message.id})`);
 
-      // チャンネルの固定メッセージ情報を取得
-      const pinnedMessageId = await pinMessageCommand.getPinnedMessageInfo(message.channel);
+      // ボット自身が送信したメッセージで、かつ画像コピーチャンネルの場合はスキップ
+      if (message.author.bot && message.channel.id === config.imageChannelId) {
+        return;
+      }
 
-      if (!pinnedMessageId) {
-        // 固定メッセージがない
-        console.log('[Pin Message] 固定メッセージはありません');
-      } else {
+      console.log(`[Pin Message] メッセージ受信: ${message.author.username} (チャンネル: ${message.channel.name}, Bot: ${message.author.bot})`);
+
+      // チャンネルに固定メッセージがある場合、最新に保つ
+      if (pinnedMessageId) {
         console.log(`[Pin Message] 固定メッセージID: ${pinnedMessageId}`);
 
         // 固定メッセージを最新に保つ（削除して再送信）
@@ -50,6 +46,11 @@ module.exports = {
         } else {
           console.log('[Pin Message] 固定メッセージの更新に失敗しました');
         }
+      }
+
+      // ここから下はユーザーメッセージのみ処理
+      if (message.author.bot) {
+        return;
       }
 
       // 画像と動画をコピーする機能
