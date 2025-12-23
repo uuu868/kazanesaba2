@@ -161,7 +161,8 @@
           "end": 1766177224217,
           "duration": 79
         }
-      ]
+      ],
+      "currentSessionStart": 1766491196930
     },
     "1227278738283040909": {
       "username": "matsu03112",
@@ -518,7 +519,7 @@
     },
     "1437797058160623819": {
       "username": "non_scale17",
-      "totalTime": 107,
+      "totalTime": 114,
       "sessions": [
         {
           "start": 1766179257900,
@@ -529,6 +530,11 @@
           "start": 1766490819411,
           "end": 1766490886874,
           "duration": 67
+        },
+        {
+          "start": 1766491232895,
+          "end": 1766491240433,
+          "duration": 7
         }
       ]
     },
@@ -617,6 +623,18 @@
           "duration": 135
         }
       ]
+    },
+    "1100639623937527951": {
+      "username": "yookerubin",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766491334362
+    },
+    "1092357035284234260": {
+      "username": "ttl_3",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766491408097
     }
   }
 }
