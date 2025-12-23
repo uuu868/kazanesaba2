@@ -279,31 +279,35 @@ module.exports.bringPinnedToTop = async function(channel, pinnedMessageId) {
     pinnedMessages.set(channel.id, newMsg.id);
     console.log(`[Pin Message] 固定メッセージを更新: ${newMsg.id}`);
     
-    // 重複削除チェック: 2秒後に同じembedを持つメッセージがないか確認
+    // 重複削除チェック: 2秒後に同じembedを持つメッセージがないか確認（このチャンネル内のみ）
     setTimeout(async () => {
       try {
         const recentMessages = await channel.messages.fetch({ limit: 20 });
         const samePinnedMessages = [];
         
-        // 同じタイトルのembedを持つメッセージを検索
+        // 同じタイトルとコンテンツを持つボットメッセージを検索（より厳密なチェック）
         const embedTitle = embeds.length > 0 && embeds[0].title ? embeds[0].title : null;
+        const embedDescription = embeds.length > 0 && embeds[0].description ? embeds[0].description : null;
         
         for (const [msgId, msg] of recentMessages) {
-          // ボットメッセージのみチェック
+          // このBotのメッセージのみチェック
           if (msg.author.id === newMsg.author.id) {
-            if (embedTitle && msg.embeds.length > 0 && msg.embeds[0].title === embedTitle) {
-              samePinnedMessages.push(msg);
-            } else if (!embedTitle && msg.content === content) {
+            if (embedTitle && msg.embeds.length > 0) {
+              // タイトルとコンテンツ両方が一致する場合のみ重複とみなす
+              if (msg.embeds[0].title === embedTitle && msg.embeds[0].description === embedDescription) {
+                samePinnedMessages.push(msg);
+              }
+            } else if (!embedTitle && msg.content === content && content) {
               samePinnedMessages.push(msg);
             }
           }
         }
         
-        console.log(`[Pin Message] 同じ固定メッセージ数: ${samePinnedMessages.length}`);
+        console.log(`[Pin Message] チャンネル ${channel.name} 内の同じ固定メッセージ数: ${samePinnedMessages.length}`);
         
         // 2つ以上ある場合のみ処理
         if (samePinnedMessages.length >= 2) {
-          console.log(`[Pin Message] 重複固定メッセージを検出: ${samePinnedMessages.length}件`);
+          console.log(`[Pin Message] チャンネル ${channel.name} で重複固定メッセージを検出: ${samePinnedMessages.length}件`);
           
           // タイムスタンプでソート（古い順）
           samePinnedMessages.sort((a, b) => a.createdTimestamp - b.createdTimestamp);
