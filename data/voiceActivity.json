@@ -331,7 +331,7 @@
     },
     "832874898799460364": {
       "username": "koppepan.0824",
-      "totalTime": 72,
+      "totalTime": 169,
       "sessions": [
         {
           "start": 1766161011748,
@@ -342,9 +342,13 @@
           "start": 1766161586570,
           "end": 1766161607362,
           "duration": 20
+        },
+        {
+          "start": 1766492298998,
+          "end": 1766492396673,
+          "duration": 97
         }
-      ],
-      "currentSessionStart": 1766492298998
+      ]
     },
     "1308566953492873266": {
       "username": "pipipi03987",
