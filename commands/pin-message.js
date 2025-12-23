@@ -424,42 +424,35 @@ module.exports.keepPinnedMessageOnTop = async function(channel) {
     const data = pinnedMessageStore.getPinnedMessage(channel.id);
     if (!data) return;
 
-    // 最新の5件のメッセージを取得
-    const recentMessages = await channel.messages.fetch({ limit: 5 });
-    const messageIds = Array.from(recentMessages.keys());
-
-    // 固定メッセージが最新5件に含まれていない場合のみ再送信
-    if (!messageIds.includes(data.messageId)) {
-      // 既存のメッセージを削除
-      try {
-        const oldMessage = await channel.messages.fetch(data.messageId);
-        await oldMessage.delete();
-      } catch (err) {
-        // 削除失敗は無視
-      }
-
-      // 新しいメッセージを送信
-      const embed = new EmbedBuilder()
-        .setTitle(data.title)
-        .setDescription(data.content)
-        .setColor(parseInt(data.color, 16))
-        .setTimestamp()
-        .setFooter({ text: '固定メッセージ' });
-
-      const newMessage = await channel.send({ embeds: [embed] });
-
-      // データベースを更新
-      pinnedMessageStore.savePinnedMessage(channel.id, {
-        messageId: newMessage.id,
-        title: data.title,
-        content: data.content,
-        color: data.color,
-        createdAt: data.createdAt,
-        updatedAt: new Date().toISOString()
-      });
-
-      console.log(`[Pin Message] 自動リフレッシュ: ${channel.name}`);
+    // 既存のメッセージを削除
+    try {
+      const oldMessage = await channel.messages.fetch(data.messageId);
+      await oldMessage.delete();
+    } catch (err) {
+      // 削除失敗は無視（既に削除されている可能性）
     }
+
+    // 新しいメッセージを送信
+    const embed = new EmbedBuilder()
+      .setTitle(data.title)
+      .setDescription(data.content)
+      .setColor(parseInt(data.color, 16))
+      .setTimestamp()
+      .setFooter({ text: '固定メッセージ' });
+
+    const newMessage = await channel.send({ embeds: [embed] });
+
+    // データベースを更新
+    pinnedMessageStore.savePinnedMessage(channel.id, {
+      messageId: newMessage.id,
+      title: data.title,
+      content: data.content,
+      color: data.color,
+      createdAt: data.createdAt,
+      updatedAt: new Date().toISOString()
+    });
+
+    console.log(`[Pin Message] 自動リフレッシュ: ${channel.name}`);
 
   } catch (err) {
     console.error('[Pin Message] 自動リフレッシュエラー:', err.message);

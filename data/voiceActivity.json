@@ -324,15 +324,19 @@
     },
     "1160761097599582219": {
       "username": "renntankoshozu",
-      "totalTime": 480,
+      "totalTime": 12120,
       "sessions": [
         {
           "start": 1766160316294,
           "end": 1766160796856,
           "duration": 480
+        },
+        {
+          "start": 1766491045643,
+          "end": 1766502686236,
+          "duration": 11640
         }
-      ],
-      "currentSessionStart": 1766491045643
+      ]
     },
     "1217991094244085839": {
       "username": "saken0rni",
