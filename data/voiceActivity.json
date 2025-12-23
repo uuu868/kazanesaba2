@@ -492,7 +492,7 @@
     },
     "711184289630257202": {
       "username": "bishopp2458",
-      "totalTime": 232039,
+      "totalTime": 232136,
       "sessions": [
         {
           "start": 1766167415692,
@@ -503,6 +503,11 @@
           "start": 1766253874948,
           "end": 1766480604500,
           "duration": 226729
+        },
+        {
+          "start": 1766496168849,
+          "end": 1766496266448,
+          "duration": 97
         }
       ]
     },
@@ -733,6 +738,12 @@
       "totalTime": 0,
       "sessions": [],
       "currentSessionStart": 1766495608726
+    },
+    "1406298054893764728": {
+      "username": "phraise.hasukal",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766496291660
     }
   }
 }
