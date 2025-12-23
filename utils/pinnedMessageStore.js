@@ -61,13 +61,60 @@ function savePinnedMessage(channelId, messageData) {
 }
 
 /**
- * 固定メッセージを取得
+ * チャンネルIDで固定メッセージを取得
  * @param {string} channelId - チャンネルID
  * @returns {Object|null} メッセージデータまたはnull
  */
 function getPinnedMessage(channelId) {
   const data = readAll();
   return data[channelId] || null;
+}
+
+/**
+ * メッセージIDで固定メッセージを取得
+ * @param {string} messageId - メッセージID
+ * @returns {Object|null} メッセージデータ（channelIdを含む）またはnull
+ */
+function getPinnedMessageByMessageId(messageId) {
+  const data = readAll();
+  for (const [channelId, messageData] of Object.entries(data)) {
+    if (messageData.messageId === messageId) {
+      return {
+        ...messageData,
+        channelId: channelId
+      };
+    }
+  }
+  return null;
+}
+
+/**
+ * チャンネルIDまたはメッセージIDで固定メッセージを検索
+ * @param {string} id - チャンネルIDまたはメッセージID
+ * @returns {Object|null} メッセージデータ（channelIdを含む）またはnull
+ */
+function findPinnedMessage(id) {
+  const data = readAll();
+  
+  // まずチャンネルIDとして検索
+  if (data[id]) {
+    return {
+      ...data[id],
+      channelId: id
+    };
+  }
+  
+  // 次にメッセージIDとして検索
+  for (const [channelId, messageData] of Object.entries(data)) {
+    if (messageData.messageId === id) {
+      return {
+        ...messageData,
+        channelId: channelId
+      };
+    }
+  }
+  
+  return null;
 }
 
 /**
@@ -87,6 +134,24 @@ function deletePinnedMessage(channelId) {
 }
 
 /**
+ * メッセージIDで固定メッセージを削除
+ * @param {string} messageId - メッセージID
+ * @returns {boolean} 削除成功ならtrue
+ */
+function deletePinnedMessageByMessageId(messageId) {
+  const data = readAll();
+  for (const [channelId, messageData] of Object.entries(data)) {
+    if (messageData.messageId === messageId) {
+      delete data[channelId];
+      writeAll(data);
+      console.log(`[Pinned Message Store] 削除: メッセージID ${messageId} (チャンネル ${channelId})`);
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
  * すべての固定メッセージを取得
  * @returns {Object} すべての固定メッセージデータ
  */
@@ -94,9 +159,22 @@ function getAllPinnedMessages() {
   return readAll();
 }
 
+/**
+ * 固定メッセージが存在するか確認（チャンネルIDまたはメッセージID）
+ * @param {string} id - チャンネルIDまたはメッセージID
+ * @returns {boolean} 存在すればtrue
+ */
+function hasPinnedMessage(id) {
+  return findPinnedMessage(id) !== null;
+}
+
 module.exports = {
   savePinnedMessage,
   getPinnedMessage,
+  getPinnedMessageByMessageId,
+  findPinnedMessage,
   deletePinnedMessage,
-  getAllPinnedMessages
+  deletePinnedMessageByMessageId,
+  getAllPinnedMessages,
+  hasPinnedMessage
 };
