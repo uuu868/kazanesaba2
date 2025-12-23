@@ -30,30 +30,23 @@ module.exports = {
 
       // ボットメッセージは画像コピー処理をスキップ
       if (message.author.bot) {
-        console.log(`[Message] ボットメッセージをスキップ: ${message.author.username}`);
         return;
       }
-
-      console.log(`[Pin Message] ユーザーメッセージ受信: ${message.author.username} (チャンネル: ${message.channel.name})`);
 
       // チャンネルに固定メッセージがある場合、最新に保つ（ユーザーメッセージのみ）
       try {
         const pinnedMessageId = await pinMessageCommand.getPinnedMessageInfo(message.channel);
         
         if (pinnedMessageId) {
-          console.log(`[Pin Message] 固定メッセージID: ${pinnedMessageId}`);
-
-          // 固定メッセージを最新に保つ（削除して再送信）
+          // 固定メッセージを最新に保つ
           const newPinnedId = await pinMessageCommand.bringPinnedToTop(message.channel, pinnedMessageId);
 
           if (newPinnedId) {
-            console.log(`[Pin Message] 固定メッセージを更新しました（新ID: ${newPinnedId}）`);
-          } else {
-            console.log('[Pin Message] 固定メッセージの更新に失敗しました');
+            console.log(`[Pin Message] 固定メッセージを更新: ${message.channel.name} (ID: ${newPinnedId})`);
           }
         }
       } catch (pinErr) {
-        console.error('[Pin Message] 固定メッセージ処理エラー:', pinErr.message);
+        console.error('[Pin Message] エラー:', pinErr.message);
       }
 
       // 画像と動画をコピーする機能
