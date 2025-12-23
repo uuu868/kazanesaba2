@@ -133,7 +133,7 @@
     },
     "935057834729697302": {
       "username": "05ullxv_",
-      "totalTime": 3066,
+      "totalTime": 3459,
       "sessions": [
         {
           "start": 1766157279697,
@@ -154,9 +154,13 @@
           "start": 1766495036535,
           "end": 1766495221259,
           "duration": 184
+        },
+        {
+          "start": 1766495327974,
+          "end": 1766495721529,
+          "duration": 393
         }
-      ],
-      "currentSessionStart": 1766495327974
+      ]
     },
     "1113039866725400649": {
       "username": "80.70",
@@ -343,7 +347,7 @@
     },
     "832874898799460364": {
       "username": "koppepan.0824",
-      "totalTime": 169,
+      "totalTime": 978,
       "sessions": [
         {
           "start": 1766161011748,
@@ -359,9 +363,14 @@
           "start": 1766492298998,
           "end": 1766492396673,
           "duration": 97
+        },
+        {
+          "start": 1766495079869,
+          "end": 1766495889641,
+          "duration": 809
         }
       ],
-      "currentSessionStart": 1766495079869
+      "currentSessionStart": 1766495905159
     },
     "1308566953492873266": {
       "username": "pipipi03987",
@@ -455,7 +464,7 @@
     },
     "296612806139052032": {
       "username": "xxx_1304",
-      "totalTime": 11608,
+      "totalTime": 12306,
       "sessions": [
         {
           "start": 1766167323229,
@@ -466,9 +475,14 @@
           "start": 1766491728822,
           "end": 1766494814055,
           "duration": 3085
+        },
+        {
+          "start": 1766495192924,
+          "end": 1766495891667,
+          "duration": 698
         }
       ],
-      "currentSessionStart": 1766495192924
+      "currentSessionStart": 1766495909751
     },
     "789468629154005022": {
       "username": "8qulea_",
