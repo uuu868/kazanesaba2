@@ -524,7 +524,8 @@
           "end": 1766179298651,
           "duration": 40
         }
-      ]
+      ],
+      "currentSessionStart": 1766490819411
     },
     "1122797027395387464": {
       "username": "mito.kua",
@@ -599,6 +600,12 @@
       "totalTime": 0,
       "sessions": [],
       "currentSessionStart": 1766490494314
+    },
+    "711563277657964574": {
+      "username": "echichiritta",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766490853874
     }
   }
 }
