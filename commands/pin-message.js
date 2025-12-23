@@ -157,15 +157,16 @@ async function removePinnedMessage(channel, interaction) {
 }
 
 // ======== ヘルパー関数 ========
-// 起動時にストアからすべての固定メッセージをロード（存在確認付き）
+// 起動時にストアからすべての固定メッセージをロード（存在確認付き、自動再作成機能付き）
 module.exports.loadAllPinnedMessages = async function(client) {
   try {
     const allPinnedMessages = pinnedMessageStore.getAllPinnedMessages();
     let count = 0;
+    let recreatedCount = 0;
     let cleanedCount = 0;
     
     for (const [channelId, data] of Object.entries(allPinnedMessages)) {
-      if (data && data.messageId) {
+      if (data && data.messageId && data.title && data.content) {
         // メッセージが実際に存在するか確認
         try {
           const channel = await client.channels.fetch(channelId).catch(() => null);
@@ -176,13 +177,30 @@ module.exports.loadAllPinnedMessages = async function(client) {
               pinnedMessages.set(channelId, data.messageId);
               count++;
             } else {
-              // メッセージが存在しない場合は削除
-              console.log(`[Pin Message] 存在しない固定メッセージを削除: チャンネル ${channelId}`);
-              pinnedMessageStore.deletePinnedMessage(channelId);
-              cleanedCount++;
+              // メッセージが存在しない場合は設定を使って再作成
+              console.log(`[Pin Message] 固定メッセージが見つかりません。再作成します: チャンネル ${channel.name}`);
+              try {
+                const embed = new EmbedBuilder()
+                  .setTitle(data.title)
+                  .setDescription(data.content)
+                  .setColor(0x0099ff)
+                  .setTimestamp();
+                
+                const newMsg = await channel.send({ embeds: [embed] });
+                
+                // ストアとキャッシュを更新
+                pinnedMessageStore.savePinnedMessage(channelId, newMsg.id, data.title, data.content);
+                pinnedMessages.set(channelId, newMsg.id);
+                
+                console.log(`[Pin Message] 固定メッセージを再作成しました: ${newMsg.id}`);
+                recreatedCount++;
+                count++;
+              } catch (recreateErr) {
+                console.error(`[Pin Message] 再作成に失敗: ${recreateErr.message}`);
+              }
             }
           } else {
-            // チャンネルが存在しない場合も削除
+            // チャンネルが存在しない場合は削除
             console.log(`[Pin Message] 存在しないチャンネルの固定メッセージを削除: ${channelId}`);
             pinnedMessageStore.deletePinnedMessage(channelId);
             cleanedCount++;
@@ -193,7 +211,7 @@ module.exports.loadAllPinnedMessages = async function(client) {
       }
     }
     
-    console.log(`[Pin Message] ${count}件の固定メッセージをロードしました${cleanedCount > 0 ? `（${cleanedCount}件削除）` : ''}`);
+    console.log(`[Pin Message] ${count}件の固定メッセージをロードしました${recreatedCount > 0 ? `（${recreatedCount}件再作成）` : ''}${cleanedCount > 0 ? `（${cleanedCount}件削除）` : ''}`);
     return count;
   } catch (err) {
     console.error('[Pin Message] loadAllPinnedMessages error:', err);
@@ -247,11 +265,38 @@ module.exports.bringPinnedToTop = async function(channel, pinnedMessageId) {
     });
 
     if (!message) {
-      console.log('[Pin Message] メッセージが見つかりません。ストアから削除します');
-      // ストアとキャッシュから削除
-      pinnedMessageStore.deletePinnedMessage(channel.id);
-      pinnedMessages.delete(channel.id);
-      return null;
+      console.log('[Pin Message] メッセージが見つかりません。設定を使って再作成します');
+      
+      // ストアから設定を取得
+      const storedData = pinnedMessageStore.getPinnedMessage(channel.id);
+      if (storedData && storedData.title && storedData.content) {
+        try {
+          // 設定を使って固定メッセージを再作成
+          const embed = new EmbedBuilder()
+            .setTitle(storedData.title)
+            .setDescription(storedData.content)
+            .setColor(0x0099ff)
+            .setTimestamp();
+          
+          const newMsg = await channel.send({ embeds: [embed] });
+          
+          // ストアとキャッシュを更新
+          pinnedMessageStore.savePinnedMessage(channel.id, newMsg.id, storedData.title, storedData.content);
+          pinnedMessages.set(channel.id, newMsg.id);
+          
+          console.log(`[Pin Message] 固定メッセージを再作成しました: ${newMsg.id}`);
+          return newMsg.id;
+        } catch (recreateErr) {
+          console.error('[Pin Message] 再作成に失敗:', recreateErr.message);
+          return null;
+        }
+      } else {
+        console.log('[Pin Message] 設定情報が不完全なためストアから削除します');
+        // 設定情報が不完全な場合のみ削除
+        pinnedMessageStore.deletePinnedMessage(channel.id);
+        pinnedMessages.delete(channel.id);
+        return null;
+      }
     }
 
     console.log('[Pin Message] メッセージが見つかりました。削除して再送信します');
