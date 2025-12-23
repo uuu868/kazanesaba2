@@ -717,9 +717,15 @@
     },
     "1125002232149065808": {
       "username": "tama_2017",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766495298424
+      "totalTime": 1170,
+      "sessions": [
+        {
+          "start": 1766495298424,
+          "end": 1766496468577,
+          "duration": 1170
+        }
+      ],
+      "currentSessionStart": 1766496646151
     },
     "911465187293425674": {
       "username": "hibiki5608",
@@ -744,6 +750,17 @@
       "totalTime": 0,
       "sessions": [],
       "currentSessionStart": 1766496291660
+    },
+    "622784823492214789": {
+      "username": "lii915",
+      "totalTime": 150,
+      "sessions": [
+        {
+          "start": 1766496445271,
+          "end": 1766496596217,
+          "duration": 150
+        }
+      ]
     }
   }
 }
