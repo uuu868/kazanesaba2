@@ -180,6 +180,31 @@ module.exports.loadAllPinnedMessages = async function(client) {
               // メッセージが存在しない場合は設定を使って再作成
               console.log(`[Pin Message] 固定メッセージが見つかりません。再作成します: チャンネル ${channel.name}`);
               try {
+                // まず、チャンネル内の古い固定メッセージを削除
+                try {
+                  const recentMessages = await channel.messages.fetch({ limit: 50 }).catch(() => new Map());
+                  let deletedCount = 0;
+                  
+                  for (const [msgId, msg] of recentMessages) {
+                    // このBotのメッセージで、同じタイトルとコンテンツを持つ埋め込みメッセージを削除
+                    if (msg.author.id === client.user.id && msg.embeds.length > 0) {
+                      const embed = msg.embeds[0];
+                      if (embed.title === data.title && embed.description === data.content) {
+                        await msg.delete().catch(err => console.log(`[Pin Message] 削除失敗: ${err.message}`));
+                        deletedCount++;
+                        console.log(`[Pin Message] 古い固定メッセージを削除: ${msgId}`);
+                      }
+                    }
+                  }
+                  
+                  if (deletedCount > 0) {
+                    console.log(`[Pin Message] ${deletedCount}件の古い固定メッセージを削除しました`);
+                  }
+                } catch (cleanupErr) {
+                  console.log(`[Pin Message] 古いメッセージの削除をスキップ: ${cleanupErr.message}`);
+                }
+                
+                // 新しい固定メッセージを作成
                 const embed = new EmbedBuilder()
                   .setTitle(data.title)
                   .setDescription(data.content)
