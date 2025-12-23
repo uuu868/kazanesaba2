@@ -115,42 +115,75 @@ function queueLog(type, args) {
 }
 
 /**
+ * ログメッセージをフィルタリング（重要なログのみDiscordに送信）
+ */
+function shouldSendToDiscord(args) {
+  const message = args.join(' ');
+  
+  // 除外するログパターン
+  const excludePatterns = [
+    '[Pin Message]',           // 固定メッセージの詳細ログ
+    '[Image Copy]',            // 画像コピーの詳細ログ
+    '[Pinned Message Store]',  // ストアの詳細ログ
+    'キャッシュから取得',
+    'ストアから取得',
+    'メッセージ受信:',
+    'メッセージを取得します',
+    '固定メッセージID:',
+    '-> [Loaded',              // 起動時のロードログ
+  ];
+  
+  // 除外パターンに一致するかチェック
+  for (const pattern of excludePatterns) {
+    if (message.includes(pattern)) {
+      return false;
+    }
+  }
+  
+  return true;
+}
+
+/**
  * ログフックを初期化
  */
 function initLogHook(discordClient) {
   client = discordClient;
 
-  // console.log をオーバーライド
+  // console.log をオーバーライド（フィルタリング付き）
   console.log = function(...args) {
     originalConsole.log(...args);
-    queueLog('log', args);
+    if (shouldSendToDiscord(args)) {
+      queueLog('log', args);
+    }
   };
 
-  // console.error をオーバーライド
+  // console.error をオーバーライド（エラーは常に送信）
   console.error = function(...args) {
     originalConsole.error(...args);
     queueLog('error', args);
   };
 
-  // console.warn をオーバーライド
+  // console.warn をオーバーライド（警告は常に送信）
   console.warn = function(...args) {
     originalConsole.warn(...args);
     queueLog('warn', args);
   };
 
-  // console.info をオーバーライド
+  // console.info をオーバーライド（フィルタリング付き）
   console.info = function(...args) {
     originalConsole.info(...args);
-    queueLog('info', args);
+    if (shouldSendToDiscord(args)) {
+      queueLog('info', args);
+    }
   };
 
-  // console.debug をオーバーライド
+  // console.debug をオーバーライド（デバッグログは送信しない）
   console.debug = function(...args) {
     originalConsole.debug(...args);
-    queueLog('debug', args);
+    // デバッグログはDiscordに送信しない
   };
 
-  originalConsole.log('✅ ログフック機能が初期化されました');
+  originalConsole.log('✅ ログフック機能が初期化されました（フィルタリング有効）');
 }
 
 /**
