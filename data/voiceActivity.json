@@ -26,7 +26,7 @@
           "duration": 4376
         }
       ],
-      "currentSessionStart": 1766252097341
+      "currentSessionStart": 1766494055339
     },
     "574885917693575178": {
       "username": "makitarou0",
@@ -289,7 +289,8 @@
           "end": 1766167043457,
           "duration": 1883
         }
-      ]
+      ],
+      "currentSessionStart": 1766494053251
     },
     "924289862440480778": {
       "username": "siinii_botoru",
@@ -664,9 +665,15 @@
     },
     "1142006585250549821": {
       "username": "gura0446",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766492107528
+      "totalTime": 1984,
+      "sessions": [
+        {
+          "start": 1766492107528,
+          "end": 1766494091588,
+          "duration": 1984
+        }
+      ],
+      "currentSessionStart": 1766494100545
     }
   }
 }
