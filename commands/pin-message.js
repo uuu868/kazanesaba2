@@ -419,10 +419,15 @@ module.exports.loadAllPinnedMessages = async function(client) {
 /**
  * 新しいメッセージが投稿されたときに固定メッセージを最新に保つ
  */
-module.exports.keepPinnedMessageOnTop = async function(channel) {
+module.exports.keepPinnedMessageOnTop = async function(channel, triggerMessage = null) {
   try {
     const data = pinnedMessageStore.getPinnedMessage(channel.id);
     if (!data) return;
+
+    // トリガーとなったメッセージが固定メッセージ自身の場合はスキップ
+    if (triggerMessage && triggerMessage.id === data.messageId) {
+      return;
+    }
 
     // 既存のメッセージを削除
     try {
