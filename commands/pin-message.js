@@ -235,14 +235,19 @@ module.exports.bringPinnedToTop = async function(channel, pinnedMessageId) {
       return null;
     }
 
-    console.log(`[Pin Message] メッセージを取得します (ID: ${pinnedMessageId})`);
+    if (!channel || !channel.isTextBased()) {
+      console.log('[Pin Message] 無効なチャンネルです');
+      return null;
+    }
+
+    console.log(`[Pin Message] メッセージを取得します (ID: ${pinnedMessageId}, チャンネル: ${channel.name})`);
     const message = await channel.messages.fetch(pinnedMessageId).catch(err => {
       console.log(`[Pin Message] メッセージ取得失敗: ${err.message}`);
       return null;
     });
 
     if (!message) {
-      console.log('[Pin Message] メッセージが見つかりません。');
+      console.log('[Pin Message] メッセージが見つかりません。ストアから削除します');
       // ストアとキャッシュから削除
       pinnedMessageStore.deletePinnedMessage(channel.id);
       pinnedMessages.delete(channel.id);
@@ -279,10 +284,19 @@ module.exports.bringPinnedToTop = async function(channel, pinnedMessageId) {
     pinnedMessages.set(channel.id, newMsg.id);
     console.log(`[Pin Message] 固定メッセージを更新: ${newMsg.id}`);
     
-    // 重複削除チェック: 2秒後に同じembedを持つメッセージがないか確認（このチャンネル内のみ）
+    // 重複削除チェック: 1秒後に同じembedを持つメッセージがないか確認（このチャンネル内のみ）
     setTimeout(async () => {
       try {
-        const recentMessages = await channel.messages.fetch({ limit: 20 });
+        const recentMessages = await channel.messages.fetch({ limit: 10 }).catch(err => {
+          console.error('[Pin Message] メッセージ取得エラー:', err.message);
+          return new Map();
+        });
+        
+        if (recentMessages.size === 0) {
+          console.log('[Pin Message] 重複チェック: メッセージが取得できませんでした');
+          return;
+        }
+        
         const samePinnedMessages = [];
         
         // 同じタイトルとコンテンツを持つボットメッセージを検索（より厳密なチェック）
@@ -309,19 +323,18 @@ module.exports.bringPinnedToTop = async function(channel, pinnedMessageId) {
         if (samePinnedMessages.length >= 2) {
           console.log(`[Pin Message] チャンネル ${channel.name} で重複固定メッセージを検出: ${samePinnedMessages.length}件`);
           
-          // タイムスタンプでソート（古い順）
-          samePinnedMessages.sort((a, b) => a.createdTimestamp - b.createdTimestamp);
+          // タイムスタンプでソート（新しい順）
+          samePinnedMessages.sort((a, b) => b.createdTimestamp - a.createdTimestamp);
           
-          // 最初のメッセージIDを記録
+          // 最新のメッセージIDを記録（最初のメッセージを保持）
           const keepMessageId = samePinnedMessages[0].id;
           console.log(`[Pin Message] 保持する固定メッセージID: ${keepMessageId}`);
           
           // ストアから情報を取得
-          const storedData = pinnedMessageStore.getPinnedMessage(channel.id);
           const titleToKeep = (embeds.length > 0 && embeds[0].title) ? embeds[0].title : '（固定メッセージ）';
           const contentToKeep = (embeds.length > 0 && embeds[0].description) ? embeds[0].description : content;
           
-          // ストアとキャッシュを最初のメッセージに更新
+          // ストアとキャッシュを最新のメッセージに更新
           pinnedMessageStore.savePinnedMessage(channel.id, keepMessageId, titleToKeep, contentToKeep);
           pinnedMessages.set(channel.id, keepMessageId);
           
@@ -332,22 +345,24 @@ module.exports.bringPinnedToTop = async function(channel, pinnedMessageId) {
               try {
                 await duplicate.delete();
                 console.log(`[Pin Message] 重複固定メッセージを削除: ${duplicate.id}`);
+                // 少し待機して連続削除を防ぐ
+                await new Promise(resolve => setTimeout(resolve, 100));
               } catch (delErr) {
                 // 既に削除されている場合はスキップ
                 if (delErr.code === 10008) {
                   console.log(`[Pin Message] メッセージは既に削除済み: ${duplicate.id}`);
                 } else {
-                  console.error(`[Pin Message] 削除エラー: ${delErr.message}`);
+                  console.error(`[Pin Message] 削除エラー (${duplicate.id}): ${delErr.message}`);
                 }
               }
             }
           }
-          console.log(`[Pin Message] 最初の固定メッセージを保持しました: ${keepMessageId}`);
+          console.log(`[Pin Message] 最新の固定メッセージを保持しました: ${keepMessageId}`);
         }
       } catch (err) {
-        console.error('[Pin Message] 重複チェックに失敗:', err);
+        console.error('[Pin Message] 重複チェックに失敗:', err.message);
       }
-    }, 2000);
+    }, 1000);
     
     return newMsg.id;
   } catch (err) {

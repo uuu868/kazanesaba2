@@ -28,33 +28,32 @@ module.exports = {
         return;
       }
 
-      // ボットのメッセージも処理対象とする（固定メッセージを除外）
-      const pinnedMessageId = await pinMessageCommand.getPinnedMessageInfo(message.channel);
-      
-      // 今送信されたメッセージが固定メッセージ自身の場合はスキップ
-      if (message.id === pinnedMessageId) {
-        return;
-      }
-
-      console.log(`[Pin Message] メッセージ受信: ${message.author.username} (チャンネル: ${message.channel.name}, Bot: ${message.author.bot})`);
-
-      // チャンネルに固定メッセージがある場合、最新に保つ
-      if (pinnedMessageId) {
-        console.log(`[Pin Message] 固定メッセージID: ${pinnedMessageId}`);
-
-        // 固定メッセージを最新に保つ（削除して再送信）
-        const newPinnedId = await pinMessageCommand.bringPinnedToTop(message.channel, pinnedMessageId);
-
-        if (newPinnedId) {
-          console.log(`[Pin Message] 固定メッセージを更新しました（新ID: ${newPinnedId}）`);
-        } else {
-          console.log('[Pin Message] 固定メッセージの更新に失敗しました');
-        }
-      }
-
-      // ここから下はユーザーメッセージのみ処理
+      // ボットメッセージは画像コピー処理をスキップ
       if (message.author.bot) {
+        console.log(`[Message] ボットメッセージをスキップ: ${message.author.username}`);
         return;
+      }
+
+      console.log(`[Pin Message] ユーザーメッセージ受信: ${message.author.username} (チャンネル: ${message.channel.name})`);
+
+      // チャンネルに固定メッセージがある場合、最新に保つ（ユーザーメッセージのみ）
+      try {
+        const pinnedMessageId = await pinMessageCommand.getPinnedMessageInfo(message.channel);
+        
+        if (pinnedMessageId) {
+          console.log(`[Pin Message] 固定メッセージID: ${pinnedMessageId}`);
+
+          // 固定メッセージを最新に保つ（削除して再送信）
+          const newPinnedId = await pinMessageCommand.bringPinnedToTop(message.channel, pinnedMessageId);
+
+          if (newPinnedId) {
+            console.log(`[Pin Message] 固定メッセージを更新しました（新ID: ${newPinnedId}）`);
+          } else {
+            console.log('[Pin Message] 固定メッセージの更新に失敗しました');
+          }
+        }
+      } catch (pinErr) {
+        console.error('[Pin Message] 固定メッセージ処理エラー:', pinErr.message);
       }
 
       // 画像と動画をコピーする機能
