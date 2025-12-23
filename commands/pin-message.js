@@ -325,12 +325,21 @@ module.exports.bringPinnedToTop = async function(channel, pinnedMessageId) {
           pinnedMessageStore.savePinnedMessage(channel.id, keepMessageId, titleToKeep, contentToKeep);
           pinnedMessages.set(channel.id, keepMessageId);
           
-          // 2番目以降のメッセージのみを削除
+          // 2番目以降のメッセージのみを削除（エラーハンドリング付き）
           for (let i = 1; i < samePinnedMessages.length; i++) {
             const duplicate = samePinnedMessages[i];
             if (duplicate.id !== keepMessageId) {
-              await duplicate.delete();
-              console.log(`[Pin Message] 重複固定メッセージを削除: ${duplicate.id}`);
+              try {
+                await duplicate.delete();
+                console.log(`[Pin Message] 重複固定メッセージを削除: ${duplicate.id}`);
+              } catch (delErr) {
+                // 既に削除されている場合はスキップ
+                if (delErr.code === 10008) {
+                  console.log(`[Pin Message] メッセージは既に削除済み: ${duplicate.id}`);
+                } else {
+                  console.error(`[Pin Message] 削除エラー: ${delErr.message}`);
+                }
+              }
             }
           }
           console.log(`[Pin Message] 最初の固定メッセージを保持しました: ${keepMessageId}`);
