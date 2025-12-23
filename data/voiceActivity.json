@@ -579,15 +579,26 @@
     },
     "1271256234091221033": {
       "username": "0w0_hachi",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766391696007
+      "totalTime": 98729,
+      "sessions": [
+        {
+          "start": 1766391696007,
+          "end": 1766490425008,
+          "duration": 98729
+        }
+      ]
     },
     "516161727528697856": {
       "username": "kii_7227",
       "totalTime": 0,
       "sessions": [],
       "currentSessionStart": 1766391871055
+    },
+    "1076354420901683270": {
+      "username": "suisan_05",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766490494314
     }
   }
 }
