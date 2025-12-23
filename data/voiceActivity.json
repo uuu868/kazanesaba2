@@ -13,7 +13,7 @@
     },
     "881933082142343169": {
       "username": "maripe_mk",
-      "totalTime": 6925,
+      "totalTime": 11237,
       "sessions": [
         {
           "start": 1766155871377,
@@ -24,9 +24,13 @@
           "start": 1766158430007,
           "end": 1766162806669,
           "duration": 4376
+        },
+        {
+          "start": 1766494055339,
+          "end": 1766498367921,
+          "duration": 4312
         }
-      ],
-      "currentSessionStart": 1766494055339
+      ]
     },
     "574885917693575178": {
       "username": "makitarou0",
@@ -91,7 +95,8 @@
           "end": 1766160042550,
           "duration": 3654
         }
-      ]
+      ],
+      "currentSessionStart": 1766498324044
     },
     "675553992553529344": {
       "username": "fnyapochitaro",
@@ -464,7 +469,7 @@
     },
     "296612806139052032": {
       "username": "xxx_1304",
-      "totalTime": 12306,
+      "totalTime": 14905,
       "sessions": [
         {
           "start": 1766167323229,
@@ -480,9 +485,13 @@
           "start": 1766495192924,
           "end": 1766495891667,
           "duration": 698
+        },
+        {
+          "start": 1766495909751,
+          "end": 1766498508820,
+          "duration": 2599
         }
-      ],
-      "currentSessionStart": 1766495909751
+      ]
     },
     "789468629154005022": {
       "username": "8qulea_",
@@ -779,6 +788,24 @@
       "totalTime": 0,
       "sessions": [],
       "currentSessionStart": 1766497832658
+    },
+    "1082643619732795392": {
+      "username": "pichuiscute",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766498397920
+    },
+    "1062393599460909186": {
+      "username": "jamu3964",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766498412414
+    },
+    "1200742045438988340": {
+      "username": "okaki890166",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766498438532
     }
   }
 }
