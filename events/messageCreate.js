@@ -18,6 +18,11 @@ module.exports = {
     }
 
     try {
+      // ログチャンネルでは固定メッセージ処理をスキップ
+      if (message.channel.id === config.logChannelId) {
+        return;
+      }
+
       // ボットのメッセージも処理対象とする（固定メッセージを除外）
       const pinnedMessageId = await pinMessageCommand.getPinnedMessageInfo(message.channel);
       
