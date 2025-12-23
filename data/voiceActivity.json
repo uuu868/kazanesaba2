@@ -343,7 +343,8 @@
           "end": 1766161607362,
           "duration": 20
         }
-      ]
+      ],
+      "currentSessionStart": 1766492298998
     },
     "1308566953492873266": {
       "username": "pipipi03987",
@@ -655,6 +656,12 @@
       "totalTime": 0,
       "sessions": [],
       "currentSessionStart": 1766491807266
+    },
+    "1142006585250549821": {
+      "username": "gura0446",
+      "totalTime": 0,
+      "sessions": [],
+      "currentSessionStart": 1766492107528
     }
   }
 }
