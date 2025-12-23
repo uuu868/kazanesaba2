@@ -6,7 +6,9 @@ module.exports = {
 		.setName('ping')
 		.setDescription('Ping値を計測します'),
 
-	async execute(client, interaction) {
+	async execute(interaction) {
+		const client = interaction.client;
+		
 		// ロールチェック
 		if (!(await ensureAllowed(interaction))) return;
 

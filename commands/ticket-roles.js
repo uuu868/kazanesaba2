@@ -18,8 +18,10 @@ module.exports = {
         )
     ),
 
-  async execute(client, interaction) {
+  async execute(interaction) {
     try {
+      const client = interaction.client;
+      
       // bot作成者チェック
       if (interaction.user.id !== BOT_CREATOR_ID) {
         await interaction.reply({ 

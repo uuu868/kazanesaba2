@@ -7,7 +7,9 @@ module.exports = {
     .setName('status-clear')
     .setDescription('BOTのステータスメッセージをクリアします（bot作成者のみ）'),
 
-  async execute(client, interaction) {
+  async execute(interaction) {
+    const client = interaction.client;
+    
     // ユーザーIDチェック
     if (interaction.user.id !== ALLOWED_USER_ID) {
       await interaction.reply({

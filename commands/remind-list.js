@@ -8,8 +8,10 @@ module.exports = {
     .setName('remind-list')
     .setDescription('現在設定されているリマインド一覧を表示します（bot作成者のみ）'),
 
-  async execute(client, interaction) {
+  async execute(interaction) {
     try {
+      const client = interaction.client;
+      
       // bot作成者チェック
       if (interaction.user.id !== BOT_CREATOR_ID) {
         await interaction.reply({ 

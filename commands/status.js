@@ -24,7 +24,9 @@ module.exports = {
         )
     ),
 
-  async execute(client, interaction) {
+  async execute(interaction) {
+    const client = interaction.client;
+    
     // ユーザーIDチェック
     if (interaction.user.id !== ALLOWED_USER_ID) {
       await interaction.reply({ 

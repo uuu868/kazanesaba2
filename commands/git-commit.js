@@ -13,7 +13,9 @@ module.exports = {
         .setRequired(false)
     ),
 
-  async execute(client, interaction) {
+  async execute(interaction) {
+    const client = interaction.client;
+    
     // 管理者権限チェック
     if (!interaction.member.permissions.has('Administrator')) {
       await interaction.reply({

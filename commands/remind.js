@@ -50,8 +50,10 @@ module.exports = {
     )
 ,
 
-  async execute(client, interaction) {
+  async execute(interaction) {
     try {
+      const client = interaction.client;
+      
       // ロールチェック（リマインド専用）
       const { ensureReminderAllowed } = require('../utils/roleGuard');
       if (!(await ensureReminderAllowed(interaction))) return;

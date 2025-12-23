@@ -13,8 +13,10 @@ module.exports = {
         .addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement)
     ),
 
-  async execute(client, interaction) {
+  async execute(interaction) {
     try {
+      const client = interaction.client;
+      
       if (!(await ensureAllowed(interaction))) return;
 
       const targetChannel = interaction.options.getChannel('channel');

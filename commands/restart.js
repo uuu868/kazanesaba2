@@ -6,7 +6,9 @@ module.exports = {
 		.setName('restart')
 		.setDescription('Botを再起動します'),
 
-	async execute(client, interaction) {
+	async execute(interaction) {
+		const client = interaction.client;
+		
 		// ロールチェック
 		if (!(await ensureAllowed(interaction))) return;
 

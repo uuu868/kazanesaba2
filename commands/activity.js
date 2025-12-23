@@ -63,7 +63,9 @@ module.exports = {
         .setDescription('このサーバーのアクティビティデータをリセットします（管理者のみ）')
     ),
 
-  async execute(client, interaction) {
+  async execute(interaction) {
+    const client = interaction.client;
+    
     // ロールチェック
     if (!(await ensureAllowed(interaction))) return;
 
