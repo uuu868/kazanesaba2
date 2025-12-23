@@ -18,8 +18,13 @@ module.exports = {
     }
 
     try {
-      // ログチャンネルでは固定メッセージ処理をスキップ
+      // ログチャンネルでは全ての処理をスキップ
       if (message.channel.id === config.logChannelId) {
+        return;
+      }
+
+      // 画像コピーチャンネルからのボットメッセージもスキップ
+      if (message.author.bot && message.channel.id === config.imageChannelId) {
         return;
       }
 
@@ -28,12 +33,6 @@ module.exports = {
       
       // 今送信されたメッセージが固定メッセージ自身の場合はスキップ
       if (message.id === pinnedMessageId) {
-        console.log('[Pin Message] 固定メッセージ自身はスキップします');
-        return;
-      }
-
-      // ボット自身が送信したメッセージで、かつ画像コピーチャンネルの場合はスキップ
-      if (message.author.bot && message.channel.id === config.imageChannelId) {
         return;
       }
 
