@@ -249,7 +249,6 @@ module.exports.getPinnedMessageInfo = async function(channel) {
     // キャッシュから取得を試行
     let msgId = pinnedMessages.get(channel.id);
     if (msgId) {
-      console.log(`[Pin Message] キャッシュから取得: ${msgId}`);
       return msgId;
     }
     
@@ -259,11 +258,9 @@ module.exports.getPinnedMessageInfo = async function(channel) {
       msgId = storedData.messageId;
       // キャッシュを更新
       pinnedMessages.set(channel.id, msgId);
-      console.log(`[Pin Message] ストアから取得: ${msgId}`);
       return msgId;
     }
     
-    console.log('[Pin Message] 固定メッセージIDが見つかりません');
     return null;
   } catch (err) {
     console.error('[Pin Message] getPinnedMessageInfo error:', err);
@@ -273,25 +270,13 @@ module.exports.getPinnedMessageInfo = async function(channel) {
 
 module.exports.bringPinnedToTop = async function(channel, pinnedMessageId) {
   try {
-    if (!pinnedMessageId) {
-      console.log('[Pin Message] メッセージIDが無効です');
+    if (!pinnedMessageId || !channel || !channel.isTextBased()) {
       return null;
     }
 
-    if (!channel || !channel.isTextBased()) {
-      console.log('[Pin Message] 無効なチャンネルです');
-      return null;
-    }
-
-    console.log(`[Pin Message] メッセージを取得します (ID: ${pinnedMessageId}, チャンネル: ${channel.name})`);
-    const message = await channel.messages.fetch(pinnedMessageId).catch(err => {
-      console.log(`[Pin Message] メッセージ取得失敗: ${err.message}`);
-      return null;
-    });
+    const message = await channel.messages.fetch(pinnedMessageId).catch(() => null);
 
     if (!message) {
-      console.log('[Pin Message] メッセージが見つかりません。設定を使って再作成します');
-      
       // ストアから設定を取得
       const storedData = pinnedMessageStore.getPinnedMessage(channel.id);
       if (storedData && storedData.title && storedData.content) {
@@ -309,14 +294,12 @@ module.exports.bringPinnedToTop = async function(channel, pinnedMessageId) {
           pinnedMessageStore.savePinnedMessage(channel.id, newMsg.id, storedData.title, storedData.content);
           pinnedMessages.set(channel.id, newMsg.id);
           
-          console.log(`[Pin Message] 固定メッセージを再作成しました: ${newMsg.id}`);
           return newMsg.id;
         } catch (recreateErr) {
-          console.error('[Pin Message] 再作成に失敗:', recreateErr.message);
+          console.error('[Pin Message] 再作成失敗:', recreateErr.message);
           return null;
         }
       } else {
-        console.log('[Pin Message] 設定情報が不完全なためストアから削除します');
         // 設定情報が不完全な場合のみ削除
         pinnedMessageStore.deletePinnedMessage(channel.id);
         pinnedMessages.delete(channel.id);
@@ -324,53 +307,41 @@ module.exports.bringPinnedToTop = async function(channel, pinnedMessageId) {
       }
     }
 
-    // メッセージが存在する場合は、削除せずにそのまま維持
-    // 最新に保つために、メッセージの位置を確認し、必要に応じて再送信
-    console.log('[Pin Message] 固定メッセージは既に存在します。位置を確認します');
-    
+    // メッセージが存在する場合は、最新の5件にあるかチェック
     const recentMessages = await channel.messages.fetch({ limit: 5 }).catch(() => new Map());
     const messageIds = Array.from(recentMessages.keys());
     
     // 固定メッセージが最新の5件の中にない場合のみ再送信
     if (!messageIds.includes(pinnedMessageId)) {
-      console.log('[Pin Message] 固定メッセージが埋もれているため、再送信します');
-      
       // メッセージを削除して再送信（最新にする）
       const embeds = message.embeds || [];
       const content = message.content || '';
 
-      await message.delete().catch(err => console.log('[Pin Message] メッセージ削除エラー:', err.message));
-      console.log('[Pin Message] メッセージを削除しました');
+      await message.delete().catch(() => {});
 
       let newMsg;
       if (embeds.length > 0) {
         newMsg = await channel.send({ embeds });
-        console.log('[Pin Message] 埋め込みメッセージを再送信しました');
       } else {
         newMsg = await channel.send(content || '（固定メッセージ）');
-        console.log('[Pin Message] テキストメッセージを再送信しました');
       }
-      
-      console.log(`[Pin Message] 新規メッセージID: ${newMsg.id}`);
 
       // ストアから元の情報を取得してタイトル・コンテンツを保持
-      const storedData = pinnedMessageStore.getPinnedMessage(channel.id);
       const title = (embeds.length > 0 && embeds[0].title) ? embeds[0].title : '（固定メッセージ）';
       const contentText = (embeds.length > 0 && embeds[0].description) ? embeds[0].description : content;
       
       // ストアとキャッシュを更新
       pinnedMessageStore.savePinnedMessage(channel.id, newMsg.id, title, contentText);
       pinnedMessages.set(channel.id, newMsg.id);
-      console.log(`[Pin Message] 固定メッセージを更新: ${newMsg.id}`);
       
       return newMsg.id;
-    } else {
-      console.log('[Pin Message] 固定メッセージは既に最新です。処理をスキップします');
-      return pinnedMessageId;
     }
     
+    // 既に最新なので何もしない
+    return pinnedMessageId;
+    
   } catch (err) {
-    console.error('[Pin Message] bringPinnedToTop error:', err.message);
+    console.error('[Pin Message] エラー:', err.message);
     return null;
   }
 };

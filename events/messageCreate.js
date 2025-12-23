@@ -38,12 +38,7 @@ module.exports = {
         const pinnedMessageId = await pinMessageCommand.getPinnedMessageInfo(message.channel);
         
         if (pinnedMessageId) {
-          // 固定メッセージを最新に保つ
-          const newPinnedId = await pinMessageCommand.bringPinnedToTop(message.channel, pinnedMessageId);
-
-          if (newPinnedId) {
-            console.log(`[Pin Message] 固定メッセージを更新: ${message.channel.name} (ID: ${newPinnedId})`);
-          }
+          await pinMessageCommand.bringPinnedToTop(message.channel, pinnedMessageId);
         }
       } catch (pinErr) {
         console.error('[Pin Message] エラー:', pinErr.message);
