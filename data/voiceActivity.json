@@ -309,7 +309,8 @@
           "end": 1766160796856,
           "duration": 480
         }
-      ]
+      ],
+      "currentSessionStart": 1766491045643
     },
     "1217991094244085839": {
       "username": "saken0rni",
@@ -517,15 +518,19 @@
     },
     "1437797058160623819": {
       "username": "non_scale17",
-      "totalTime": 40,
+      "totalTime": 107,
       "sessions": [
         {
           "start": 1766179257900,
           "end": 1766179298651,
           "duration": 40
+        },
+        {
+          "start": 1766490819411,
+          "end": 1766490886874,
+          "duration": 67
         }
-      ],
-      "currentSessionStart": 1766490819411
+      ]
     },
     "1122797027395387464": {
       "username": "mito.kua",
@@ -570,7 +575,8 @@
           "end": 1766480610986,
           "duration": 226490
         }
-      ]
+      ],
+      "currentSessionStart": 1766491112567
     },
     "847837146768605234": {
       "username": "enma.kuromata",
@@ -603,9 +609,14 @@
     },
     "711563277657964574": {
       "username": "echichiritta",
-      "totalTime": 0,
-      "sessions": [],
-      "currentSessionStart": 1766490853874
+      "totalTime": 135,
+      "sessions": [
+        {
+          "start": 1766490853874,
+          "end": 1766490989485,
+          "duration": 135
+        }
+      ]
     }
   }
 }
