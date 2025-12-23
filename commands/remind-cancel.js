@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('discord.js');
 const reminderManager = require('../utils/reminderManager');
 const reminderStore = require('../utils/reminderStore');
 
-const BOT_CREATOR_ID = '1088020702583603270';
+const BOT_CREATOR_IDS = ['1088020702583603270', '959816319568576582'];
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -19,7 +19,7 @@ module.exports = {
       const client = interaction.client;
       
       // bot作成者チェック
-      if (interaction.user.id !== BOT_CREATOR_ID) {
+      if (!BOT_CREATOR_IDS.includes(interaction.user.id)) {
         await interaction.reply({ 
           content: '❌ このコマンドはbot作成者のみ使用できます。', 
           flags: 64 

@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, ActivityType } = require('discord.js');
 
-const ALLOWED_USER_ID = '1088020702583603270';
+const ALLOWED_USER_IDS = ['1088020702583603270', '959816319568576582'];
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -28,7 +28,7 @@ module.exports = {
     const client = interaction.client;
     
     // ユーザーIDチェック
-    if (interaction.user.id !== ALLOWED_USER_ID) {
+    if (!ALLOWED_USER_IDS.includes(interaction.user.id)) {
       await interaction.reply({ 
         content: 'このコマンドを使用する権限がありません。', 
         ephemeral: true 
