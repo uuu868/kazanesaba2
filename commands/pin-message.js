@@ -157,18 +157,43 @@ async function removePinnedMessage(channel, interaction) {
 }
 
 // ======== ヘルパー関数 ========
-// 起動時にストアからすべての固定メッセージをロード
-module.exports.loadAllPinnedMessages = function() {
+// 起動時にストアからすべての固定メッセージをロード（存在確認付き）
+module.exports.loadAllPinnedMessages = async function(client) {
   try {
     const allPinnedMessages = pinnedMessageStore.getAllPinnedMessages();
     let count = 0;
+    let cleanedCount = 0;
+    
     for (const [channelId, data] of Object.entries(allPinnedMessages)) {
       if (data && data.messageId) {
-        pinnedMessages.set(channelId, data.messageId);
-        count++;
+        // メッセージが実際に存在するか確認
+        try {
+          const channel = await client.channels.fetch(channelId).catch(() => null);
+          if (channel && channel.isTextBased()) {
+            const message = await channel.messages.fetch(data.messageId).catch(() => null);
+            if (message) {
+              // メッセージが存在する場合のみキャッシュに追加
+              pinnedMessages.set(channelId, data.messageId);
+              count++;
+            } else {
+              // メッセージが存在しない場合は削除
+              console.log(`[Pin Message] 存在しない固定メッセージを削除: チャンネル ${channelId}`);
+              pinnedMessageStore.deletePinnedMessage(channelId);
+              cleanedCount++;
+            }
+          } else {
+            // チャンネルが存在しない場合も削除
+            console.log(`[Pin Message] 存在しないチャンネルの固定メッセージを削除: ${channelId}`);
+            pinnedMessageStore.deletePinnedMessage(channelId);
+            cleanedCount++;
+          }
+        } catch (err) {
+          console.error(`[Pin Message] チャンネル ${channelId} の確認中にエラー:`, err.message);
+        }
       }
     }
-    console.log(`[Pin Message] ${count}件の固定メッセージをロードしました`);
+    
+    console.log(`[Pin Message] ${count}件の固定メッセージをロードしました${cleanedCount > 0 ? `（${cleanedCount}件削除）` : ''}`);
     return count;
   } catch (err) {
     console.error('[Pin Message] loadAllPinnedMessages error:', err);

@@ -21,11 +21,11 @@ module.exports = {
 	      console.error('[Ready] リマインドロード中にエラー:', e);
 	    }
 
-	    // 固定メッセージをロード
+	    // 固定メッセージをロード（存在確認付き）
 	    try {
 	      const pinMessageCommand = require('../commands/pin-message');
-	      pinMessageCommand.loadAllPinnedMessages();
-	      console.log('[Ready] 固定メッセージをロードしました');
+	      await pinMessageCommand.loadAllPinnedMessages(client);
+	      console.log('[Ready] 固定メッセージの確認が完了しました');
 	    } catch (e) {
 	      console.error('[Ready] 固定メッセージロード中にエラー:', e);
 	    }
