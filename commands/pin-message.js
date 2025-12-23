@@ -166,12 +166,12 @@ module.exports.loadAllPinnedMessages = async function(client) {
     let cleanedCount = 0;
     
     for (const [channelId, data] of Object.entries(allPinnedMessages)) {
-      if (data && data.messageId && data.title && data.content) {
+      if (data && data.title && data.content) {
         // メッセージが実際に存在するか確認
         try {
           const channel = await client.channels.fetch(channelId).catch(() => null);
           if (channel && channel.isTextBased()) {
-            const message = await channel.messages.fetch(data.messageId).catch(() => null);
+            const message = data.messageId ? await channel.messages.fetch(data.messageId).catch(() => null) : null;
             if (message) {
               // メッセージが存在する場合のみキャッシュに追加
               pinnedMessages.set(channelId, data.messageId);
