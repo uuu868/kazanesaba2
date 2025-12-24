@@ -29,14 +29,5 @@ module.exports = {
 	    } catch (e) {
 	      console.error('[Ready] 固定メッセージロード中にエラー:', e);
 	    }
-
-	    // 重複チェッカーのクリーンアップを開始
-	    try {
-	      const duplicateChecker = require('../utils/duplicateChecker');
-	      duplicateChecker.startCacheCleanup();
-	      console.log('[Ready] 重複チェッカーを起動しました');
-	    } catch (e) {
-	      console.error('[Ready] 重複チェッカー起動中にエラー:', e);
-	    }
 	},
 };
