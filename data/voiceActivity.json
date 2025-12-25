@@ -34,15 +34,19 @@
     },
     "574885917693575178": {
       "username": "makitarou0",
-      "totalTime": 284,
+      "totalTime": 1207,
       "sessions": [
         {
           "start": 1766354539017,
           "end": 1766354823646,
           "duration": 284
+        },
+        {
+          "start": 1766682607372,
+          "end": 1766683531362,
+          "duration": 923
         }
-      ],
-      "currentSessionStart": 1766682607372
+      ]
     },
     "1088020702583603270": {
       "username": "8.968",
