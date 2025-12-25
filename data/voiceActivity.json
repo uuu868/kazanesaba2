@@ -41,7 +41,8 @@
           "end": 1766354823646,
           "duration": 284
         }
-      ]
+      ],
+      "currentSessionStart": 1766682607372
     },
     "1088020702583603270": {
       "username": "8.968",
@@ -482,15 +483,19 @@
     },
     "1122228093470380045": {
       "username": "rei_0722",
-      "totalTime": 326753,
+      "totalTime": 517744,
       "sessions": [
         {
           "start": 1766164842246,
           "end": 1766491596102,
           "duration": 326753
+        },
+        {
+          "start": 1766491611984,
+          "end": 1766682603612,
+          "duration": 190991
         }
-      ],
-      "currentSessionStart": 1766491611984
+      ]
     },
     "296612806139052032": {
       "username": "xxx_1304",
@@ -672,15 +677,19 @@
     },
     "1189838598711824424": {
       "username": "10ryo_9",
-      "totalTime": 226490,
+      "totalTime": 417972,
       "sessions": [
         {
           "start": 1766254120876,
           "end": 1766480610986,
           "duration": 226490
+        },
+        {
+          "start": 1766491112567,
+          "end": 1766682594581,
+          "duration": 191482
         }
-      ],
-      "currentSessionStart": 1766491112567
+      ]
     },
     "847837146768605234": {
       "username": "enma.kuromata",
