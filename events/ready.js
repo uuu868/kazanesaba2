@@ -32,5 +32,14 @@ module.exports = {
 	    } catch (e) {
 	      console.error('[Ready] 固定メッセージロード中にエラー:', e);
 	    }
+
+	    // Xモニターを起動
+	    try {
+	      const XMonitor = require('../utils/xMonitor');
+	      const xMonitor = new XMonitor(client);
+	      xMonitor.start();
+	    } catch (e) {
+	      console.error('[Ready] Xモニター起動中にエラー:', e);
+	    }
 	},
 };
