@@ -279,7 +279,7 @@
     },
     "722943204172759513": {
       "username": "leic4ma",
-      "totalTime": 16118,
+      "totalTime": 443843,
       "sessions": [
         {
           "start": 1766158647053,
@@ -290,9 +290,13 @@
           "start": 1766167324817,
           "end": 1766174771233,
           "duration": 7446
+        },
+        {
+          "start": 1766254025468,
+          "end": 1766681750497,
+          "duration": 427725
         }
-      ],
-      "currentSessionStart": 1766254025468
+      ]
     },
     "1057641462755500124": {
       "username": "mattsundao_pudding",
@@ -589,7 +593,7 @@
     },
     "1437797058160623819": {
       "username": "non_scale17",
-      "totalTime": 3384,
+      "totalTime": 190215,
       "sessions": [
         {
           "start": 1766179257900,
@@ -615,9 +619,13 @@
           "start": 1766491692765,
           "end": 1766494816407,
           "duration": 3123
+        },
+        {
+          "start": 1766494909193,
+          "end": 1766681740597,
+          "duration": 186831
         }
-      ],
-      "currentSessionStart": 1766494909193
+      ]
     },
     "1122797027395387464": {
       "username": "mito.kua",
