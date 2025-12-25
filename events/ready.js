@@ -1,4 +1,7 @@
 const { Events } = require('discord.js');
+const { exec } = require('child_process');
+const util = require('util');
+const execPromise = util.promisify(exec);
 
 module.exports = {
 	name: Events.ClientReady,
@@ -11,6 +14,20 @@ module.exports = {
 
 	    // ステータスをクリア
 	    client.user.setPresence({ activities: [], status: 'online' });
+
+	    // リモートから最新データをプル（再起動後のデータ同期）
+	    try {
+	      console.log('[Ready] リモートから最新データをプル中...');
+	      await execPromise('git pull origin $(git branch --show-current)');
+	      console.log('[Ready] ✓ データのプル完了');
+	    } catch (error) {
+	      // プルエラーは致命的ではないので警告のみ
+	      if (error.message.includes('Already up to date')) {
+	        console.log('[Ready] データは最新です');
+	      } else {
+	        console.warn('[Ready] データのプル中にエラー:', error.message);
+	      }
+	    }
 
 	    // 永続化されたリマインドをロードしてスケジュール
 	    try {
