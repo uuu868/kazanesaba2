@@ -18,8 +18,15 @@ module.exports = {
 	    // リモートから最新データをプル（再起動後のデータ同期）
 	    try {
 	      console.log('[Ready] リモートから最新データをプル中...');
-	      await execPromise('git pull origin $(git branch --show-current)');
-	      console.log('[Ready] ✓ データのプル完了');
+	      // 現在のブランチ名を取得
+	      const { stdout: branch } = await execPromise('git branch --show-current');
+	      const currentBranch = branch.trim();
+	      if (currentBranch) {
+	        await execPromise(`git pull origin ${currentBranch}`);
+	        console.log('[Ready] ✓ データのプル完了');
+	      } else {
+	        console.warn('[Ready] ブランチ名が取得できませんでした');
+	      }
 	    } catch (error) {
 	      // プルエラーは致命的ではないので警告のみ
 	      if (error.message.includes('Already up to date')) {
