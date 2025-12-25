@@ -35,7 +35,7 @@ class TwitterMonitor {
   }
 
   async checkAllMonitors() {
-    let monitors = dataStore.getMapping('x_monitors');
+    let monitors = dataStore.loadData('x_monitors', []);
     
     // monitorsが配列でない場合は空配列にする
     if (!Array.isArray(monitors)) {
@@ -148,11 +148,11 @@ class TwitterMonitor {
       console.log(`[Twitter Monitor] @${monitor.username} ポストを送信しました`);
 
       // lastTweetIdを更新
-      const monitors = dataStore.getMapping('x_monitors') || [];
+      const monitors = dataStore.loadData('x_monitors', []);
       const index = monitors.findIndex(m => m.username === monitor.username);
       if (index !== -1) {
         monitors[index].lastTweetId = postId;
-        dataStore.saveMapping('x_monitors', monitors);
+        dataStore.saveData('x_monitors', monitors);
       }
 
       console.log(`[Twitter Monitor] ポストを送信しました: ${postUrl}`);

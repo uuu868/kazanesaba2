@@ -35,7 +35,7 @@ class XMonitor {
   }
 
   async checkAllAccounts() {
-    const monitors = dataStore.getMapping('x_monitors') || [];
+    const monitors = dataStore.loadData('x_monitors', []);
     
     if (monitors.length === 0) {
       return;
@@ -80,11 +80,11 @@ class XMonitor {
       }
 
       // 最新のツイートIDを保存
-      const monitors = dataStore.getMapping('x_monitors') || [];
+      const monitors = dataStore.loadData('x_monitors', []);
       const index = monitors.findIndex(m => m.username === monitor.username);
       if (index !== -1) {
         monitors[index].lastTweetId = tweets[tweets.length - 1].id;
-        dataStore.saveMapping('x_monitors', monitors);
+        dataStore.saveData('x_monitors', monitors);
       }
 
     } catch (err) {

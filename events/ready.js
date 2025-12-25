@@ -15,27 +15,6 @@ module.exports = {
 	    // ステータスをクリア
 	    client.user.setPresence({ activities: [], status: 'online' });
 
-	    // リモートから最新データをプル（再起動後のデータ同期）
-	    try {
-	      console.log('[Ready] リモートから最新データをプル中...');
-	      // 現在のブランチ名を取得
-	      const { stdout: branch } = await execPromise('git branch --show-current');
-	      const currentBranch = branch.trim();
-	      if (currentBranch) {
-	        await execPromise(`git pull origin ${currentBranch}`);
-	        console.log('[Ready] ✓ データのプル完了');
-	      } else {
-	        console.warn('[Ready] ブランチ名が取得できませんでした');
-	      }
-	    } catch (error) {
-	      // プルエラーは致命的ではないので警告のみ
-	      if (error.message.includes('Already up to date')) {
-	        console.log('[Ready] データは最新です');
-	      } else {
-	        console.warn('[Ready] データのプル中にエラー:', error.message);
-	      }
-	    }
-
 	    // 永続化されたリマインドをロードしてスケジュール
 	    try {
 	      const reminderManager = require('../utils/reminderManager');
