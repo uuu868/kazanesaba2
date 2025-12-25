@@ -265,16 +265,53 @@ async function performRestart(client) {
   if (channel) {
     const embed = new EmbedBuilder()
       .setTitle('⚡ Bot再起動')
-      .setDescription('Botを再起動しています...')
+      .setDescription('Botを再起動しています...\n💾 データを保存中...')
       .setColor(0x00FF00)
       .setTimestamp();
     await channel.send({ embeds: [embed] }).catch(console.error);
   }
 
+  // データを保存してから再起動
+  try {
+    const { commitChanges, pushChanges } = require('./autoCommit');
+    
+    console.log('[Restart] データを保存しています...');
+    
+    // Gitコミット&プッシュを実行
+    const committed = await commitChanges(false); // コミットのみ
+    if (committed) {
+      console.log('[Restart] データのコミット完了');
+      await pushChanges(); // プッシュ
+      console.log('[Restart] データのプッシュ完了');
+    }
+    
+    if (channel) {
+      const embedSuccess = new EmbedBuilder()
+        .setTitle('⚡ Bot再起動')
+        .setDescription('Botを再起動しています...\n✅ データ保存完了')
+        .setColor(0x00FF00)
+        .setTimestamp();
+      await channel.send({ embeds: [embedSuccess] }).catch(console.error);
+    }
+    
+  } catch (error) {
+    console.error('[Restart] データ保存中にエラー:', error);
+    
+    if (channel) {
+      const embedError = new EmbedBuilder()
+        .setTitle('⚠️ 警告')
+        .setDescription('データ保存中にエラーが発生しましたが、再起動します...')
+        .setColor(0xFFA500)
+        .setTimestamp();
+      await channel.send({ embeds: [embedError] }).catch(console.error);
+    }
+  }
+
   // メッセージ送信後、少し待ってから再起動
   setTimeout(() => {
+    console.log('[Restart] Botを再起動します...');
     process.exit(0); // プロセスを終了（PM2などのプロセスマネージャーが自動再起動します）
-  }, 1000);
+  }, 2000);
 }
 
 module.exports = { setupScheduledRestart };
