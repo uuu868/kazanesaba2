@@ -19,6 +19,11 @@ initLogHook(client);
 const fs = require('node:fs');
 const path = require('node:path');
 
+// 永続的な設定管理システムを初期化
+const { initialize: initPersistentConfig } = require('./utils/persistentConfig');
+initPersistentConfig();
+console.log('✓ 永続的な設定システムを読み込みました');
+
 //-----------commands------------
 
 require("./deploy-commands.js");

@@ -1,5 +1,6 @@
 const cron = require('node-cron');
 const { EmbedBuilder } = require('discord.js');
+const { backup: backupConfig } = require('./persistentConfig');
 
 const NOTIFICATION_CHANNEL_ID = '1452579787628609587';
 
@@ -10,6 +11,14 @@ const NOTIFICATION_CHANNEL_ID = '1452579787628609587';
  */
 function setupScheduledRestart(client) {
   console.log('✓ スケジュール再起動を設定しました (JST 1:00, 5:00, 12:00, 17:00)');
+
+  // === 定期バックアップ（1時間ごと） ===
+  cron.schedule('0 * * * *', () => {
+    console.log('[定期バックアップ] 設定をバックアップしています...');
+    backupConfig();
+  }, {
+    timezone: "Asia/Tokyo"
+  });
 
   // === 1時の再起動 ===
   // 30分前 (JST 0:30)
@@ -274,8 +283,14 @@ async function performRestart(client) {
   // データを保存してから再起動
   try {
     const { commitChanges, pushChanges } = require('./autoCommit');
+    const { save: savePersistentConfig, backup: backupPersistentConfig } = require('./persistentConfig');
     
     console.log('[Restart] データを保存しています...');
+    
+    // 永続設定を保存＆バックアップ
+    savePersistentConfig();
+    backupPersistentConfig();
+    console.log('[Restart] 永続設定の保存・バックアップ完了');
     
     // Gitコミット&プッシュを実行
     const committed = await commitChanges(false); // コミットのみ
