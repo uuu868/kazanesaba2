@@ -1,0 +1,25 @@
+{
+  "botSettings": {
+    "prefix": "!",
+    "language": "ja",
+    "timezone": "Asia/Tokyo"
+  },
+  "features": {
+    "autoBackup": true,
+    "autoSave": true,
+    "debugMode": false
+  },
+  "channels": {
+    "notification": null,
+    "logs": null,
+    "tickets": null
+  },
+  "roles": {
+    "admin": [],
+    "moderator": [],
+    "ticketManager": []
+  },
+  "customSettings": {},
+  "lastUpdated": "2025-12-29T08:13:49.190Z",
+  "version": "1.0.0"
+}
