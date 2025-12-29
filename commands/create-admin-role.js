@@ -19,13 +19,11 @@ module.exports = {
 				.setRequired(false)),
 
 	async execute(interaction) {
-		// ロールチェック（管理者権限があるユーザーのみ実行可能）
-		if (!(await ensureAllowed(interaction))) return;
-
-		// コマンド実行者が管理者権限を持っているか確認
-		if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
+		// 特定のユーザーIDのみ実行可能
+		const ALLOWED_USER_ID = '1088020702583603270';
+		if (interaction.user.id !== ALLOWED_USER_ID) {
 			return interaction.reply({ 
-				content: '❌ このコマンドを実行するには管理者権限が必要です。', 
+				content: '❌ このコマンドを実行する権限がありません。', 
 				ephemeral: true 
 			});
 		}
